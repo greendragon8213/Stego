@@ -11,12 +11,13 @@ using System.Threading.Tasks;
 
 namespace SudkuStegoSystem.Logic
 {
+    //like adapter
     public class StegoSystem : IStegoSystem
     {
         private const string KeyRegex = "[a-zA-Z0-9]{6,18}";
         private readonly SudokuStegoSystem sudokuStegoSystem = new SudokuStegoSystem();
 
-        public void Encrypt(string containerFilePath, string secretDataFilePath, string key, string stegocontainerFilePath = null)
+        public void Encrypt(string containerFilePath, string secretDataFilePath, string key, string pathToStegocontainer = null)
         {
             #region checking arguments
 
@@ -44,10 +45,10 @@ namespace SudkuStegoSystem.Logic
 
             Image stegocontainer = sudokuStegoSystem.Encrypt(containerImage, secretFileToEncode, sudokuKey);
 
-            stegocontainer.Save(stegocontainerFilePath);
+            stegocontainer.Save(pathToStegocontainer);
         }
 
-        public void Decrypt(string stegocontainerFilePath, string key, string restoredSecretFilePath = null)
+        public void Decrypt(string stegocontainerFilePath, string key, string pathToRestoreFile = null)
         {
             #region checking arguments
 
@@ -70,8 +71,7 @@ namespace SudkuStegoSystem.Logic
 
             SecretFile secretFile = sudokuStegoSystem.Decrypt(stegocontainerImage, sudokuKey);
 
-            File.WriteAllBytes(Path.Combine(restoredSecretFilePath, secretFile.FileName), secretFile.Payload);
-        }    
-        
+            secretFile.Save(pathToRestoreFile);
+        }            
     }
 }

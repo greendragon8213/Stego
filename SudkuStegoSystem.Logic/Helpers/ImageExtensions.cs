@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,6 +57,15 @@ namespace SudkuStegoSystem.Logic.Helpers
             // releases a lock
             Bitmap bitmap = (Bitmap)image;
             bitmap.UnlockBits(data);
+        }
+
+        public static Tuple<byte[], BitmapData> GetByteArrayByImageFile(this Image image, ImageLockMode imageLockMode)
+        {
+            BitmapData bitmapData = image.LockBits(imageLockMode);
+            byte[] bytes = new byte[bitmapData.Height * bitmapData.Stride];
+            Marshal.Copy(bitmapData.Scan0, bytes, 0, bytes.Length);
+
+            return new Tuple<byte[], BitmapData>(bytes, bitmapData);
         }
     }
 }

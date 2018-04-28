@@ -84,7 +84,7 @@ namespace SudkuStegoSystem.Logic
 
         public Image Encrypt(Image container, SecretFile secretFile, byte[,] sudokuKey)
         {
-            Tuple<byte[], BitmapData> cover = GetByteArrayByImageFile(container, ImageLockMode.ReadWrite);
+            Tuple<byte[], BitmapData> cover = container.GetByteArrayByImageFile(ImageLockMode.ReadWrite);
             byte[] coverBytes = cover.Item1;
             BitmapData coverBitmap = cover.Item2;
             byte[] secretData = GetSecretBytesToEncode(secretFile);
@@ -122,7 +122,7 @@ namespace SudkuStegoSystem.Logic
 
         public SecretFile Decrypt(Image stegocontainer, byte[,] sudokuKey)
         {
-            Tuple<byte[], BitmapData> stego = GetByteArrayByImageFile(stegocontainer, ImageLockMode.ReadOnly);
+            Tuple<byte[], BitmapData> stego = stegocontainer.GetByteArrayByImageFile(ImageLockMode.ReadOnly);
             byte[] stegoBytes = stego.Item1;
             BitmapData stegoBitmap = stego.Item2;
 
@@ -205,15 +205,6 @@ namespace SudkuStegoSystem.Logic
             //Marshal.Copy(ditherBmpData.Scan0, ditherBytes, 0, ditherBytes.Length);
 
             return resultBytes;
-        }
-
-        private Tuple<byte[], BitmapData> GetByteArrayByImageFile(Image image, ImageLockMode imageLockMode)
-        {
-            BitmapData stegoBmpData = image.LockBits(imageLockMode);
-            byte[] stegoBytes = new byte[stegoBmpData.Height * stegoBmpData.Stride];
-            Marshal.Copy(stegoBmpData.Scan0, stegoBytes, 0, stegoBytes.Length);
-
-            return new Tuple<byte[], BitmapData>(stegoBytes, stegoBmpData);
         }
     }
 }

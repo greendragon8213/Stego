@@ -20,5 +20,10 @@ namespace SudkuStegoSystem.Logic.Models
             FileName = secretFileInfo.Name;
             Payload = File.ReadAllBytes(filePath);
         }
+
+        public void Save(string destinationPath)
+        {
+            File.WriteAllBytes(Path.Combine(destinationPath, FileName), Payload);
+        }
     }
 }
