@@ -48,5 +48,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SudkuStegoSystem.Logic\SudkuStegoSystem.Logic.csproj">
+      <Project>{9f6798f2-36e3-426b-bb80-4a9b3c4132c5}</Project>
+      <Name>SudkuStegoSystem.Logic</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

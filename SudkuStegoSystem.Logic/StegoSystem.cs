@@ -2,6 +2,7 @@
 using SudkuStegoSystem.Logic.Models;
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -44,7 +45,8 @@ namespace SudkuStegoSystem.Logic
 
             Image stegocontainer = sudokuStegoSystem.Encrypt(containerImage, secretFileToEncode, sudokuKey);
 
-            stegocontainer.Save(pathToStegocontainer);
+            string containerFileName = new FileInfo(containerFilePath).Name;            
+            stegocontainer.Save(Path.Combine(pathToStegocontainer, containerFileName), ImageFormat.Bmp);
         }
 
         public void Decrypt(string stegocontainerFilePath, string key, string pathToRestoreFile = null)
