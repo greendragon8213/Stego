@@ -1,22 +1,21 @@
 ﻿using SudkuStegoSystem.Logic.Abstract;
 using SudkuStegoSystem.Logic.Models;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace SudkuStegoSystem.Logic
 {
-    //like adapter
+    //like adapter to general stegosystems
     public class StegoSystem : IStegoSystem
     {
         private const string KeyRegex = "[a-zA-Z0-9]{6,18}";
         private readonly SudokuStegoSystem sudokuStegoSystem = new SudokuStegoSystem();
-
+        //ToDo get from factory
+        private INearestCoordinatesFinder _nearestCoordinatesFinder = new NearestCoordinatesFinder();
+        private const int MatrixSize = 256;
+        
         public void Encrypt(string containerFilePath, string secretDataFilePath, string key, string pathToStegocontainer = null)
         {
             #region checking arguments
@@ -41,7 +40,7 @@ namespace SudkuStegoSystem.Logic
             //ToDo exceptions 
             Image containerImage = Image.FromFile(containerFilePath);           
             SecretFile secretFileToEncode = new SecretFile(secretDataFilePath);
-            byte[,] sudokuKey = sudokuStegoSystem.GetSudokuMatrixByKey(key);
+            SudokuMatrix sudokuKey = new SudokuMatrix(_nearestCoordinatesFinder, key, MatrixSize);
 
             Image stegocontainer = sudokuStegoSystem.Encrypt(containerImage, secretFileToEncode, sudokuKey);
 
@@ -67,7 +66,7 @@ namespace SudkuStegoSystem.Logic
             #endregion
 
             Image stegocontainerImage = Image.FromFile(stegocontainerFilePath);
-            byte[,] sudokuKey = sudokuStegoSystem.GetSudokuMatrixByKey(key);
+            SudokuMatrix sudokuKey = new SudokuMatrix(_nearestCoordinatesFinder, key, MatrixSize);
 
             SecretFile secretFile = sudokuStegoSystem.Decrypt(stegocontainerImage, sudokuKey);
 

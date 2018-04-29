@@ -43,11 +43,13 @@
   <ItemGroup>
     <Compile Include="Abstract\IStegoSystem.cs" />
     <Compile Include="Helpers\ImageExtensions.cs" />
+    <Compile Include="Abstract\INearestCoordinatesFinder.cs" />
     <Compile Include="Models\SecretFile.cs" />
     <Compile Include="Models\SudokoCoordinates.cs" />
     <Compile Include="NearestCoordinatesFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StegoSystem.cs" />
+    <Compile Include="SudokuMatrix.cs" />
     <Compile Include="SudokuStegoSystem.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,16 +1,15 @@
 ﻿using SudkuStegoSystem.Logic.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SudkuStegoSystem.Logic
 {
-    public class NearestCoordinatesFinder
+
+    public class NearestCoordinatesFinder : INearestCoordinatesFinder
     {
-        public static SudokoCoordinates NearestCoordinates(int valueToFind, SudokoCoordinates initialCoordinates, int sudokoSize, byte[,] sudokuMatrix)
+        public SudokoCoordinates Find(int valueToFind, SudokoCoordinates initialCoordinates, byte[,] sudokuMatrix)
         {
+            int sudokoSize = sudokuMatrix.GetLength(1);
+
             if (!(valueToFind >= 0 && valueToFind <= 255
                  && initialCoordinates.X >= 0 && initialCoordinates.X <= 255
                  && initialCoordinates.Y >= 0 && initialCoordinates.Y <= 255))
@@ -62,10 +61,10 @@ namespace SudkuStegoSystem.Logic
                 }
             }
             
-            throw new Exception($"Cannot find needed value: {valueToFind} in the sudoku matrix.");
+            throw new Exception($"Cannot find requested value: {valueToFind} in the sudoku matrix.");
         }
 
-        private static bool CheckValue(int x, int y, int valueToFind, int sudokoSize, byte[,] sudokuMatrix)
+        private bool CheckValue(int x, int y, int valueToFind, int sudokoSize, byte[,] sudokuMatrix)
         {
             if (x < 0 || x >= sudokoSize || y < 0 || y >= sudokoSize)
             {

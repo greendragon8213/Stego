@@ -12,78 +12,20 @@ using System.IO;
 
 namespace SudkuStegoSystem.Logic
 {
+    /// <summary>
+    /// Just encrypts and decrypts data
+    /// </summary>
     public class SudokuStegoSystem
     {
-        private const int SudokuSize = 256;
-
-        //ToDo move this to separate class
-        public byte[,] GetSudokuMatrixByKey(string key)
+        private const int ExpectedSudokuSize = 256;
+        
+        public Image Encrypt(Image container, SecretFile secretFile, SudokuMatrix sudokuKey)
         {
-            byte[,] sudokoBoard = new byte[SudokuSize, SudokuSize];
-            int smallBlockSize = (int)Math.Sqrt(SudokuSize);
-
-            int[] initial = new int[SudokuSize];
-            for (int j = 0; j < SudokuSize; j++)
+            if(sudokuKey.SudokuSize != ExpectedSudokuSize)
             {
-                initial[j] = j;
-            }
-            
-            //generate initial horizontal region
-            for (int i = 0; i < smallBlockSize; i++)
-            {
-                int offset = i * smallBlockSize;
-
-                for (int j = 0; j < SudokuSize; j++)
-                {
-                    if (j + offset < SudokuSize)
-                    {
-                        //initial[j] = initial[j + offset];
-                        sudokoBoard[i, j] = (byte)(offset + j);
-                    }
-                    else
-                    {
-                        sudokoBoard[i, j] = (byte)(-SudokuSize + (offset + j));
-                    }
-
-                    //sudokoBoard[i, j] = initial[j];                    
-                }
+                throw new InvalidOperationException($"This steganography method works only with matrix {ExpectedSudokuSize}x{ExpectedSudokuSize}.");
             }
 
-            //fill by offset
-            for (int k = 1; k < smallBlockSize; k++)
-            {
-                for (int i = 0; i < SudokuSize; i++)
-                {
-                    int offset = k * smallBlockSize;
-
-                    for (int j = 0; j < smallBlockSize; j++)
-                    {
-                        if (j + offset < SudokuSize)
-                        {
-                            //initial[j] = initial[j + offset];
-                            if (i + 1 < SudokuSize)
-                            {
-                                sudokoBoard[j + offset, i] = sudokoBoard[j + offset - smallBlockSize, i + 1];
-                            }
-                            else
-                            {
-                                sudokoBoard[j + offset, i] = sudokoBoard[j + offset - smallBlockSize, 0];
-                            }
-                        }
-                        else
-                        {
-                        }
-                    }
-                }
-            }
-
-            //Assert allright
-            
-            return sudokoBoard;
-        }
-
-        public Image Encrypt(Image container, SecretFile secretFile, byte[,] sudokuKey)
-        {
             Tuple<byte[], BitmapData> cover = container.GetByteArrayByImageFile(ImageLockMode.ReadWrite);
             byte[] coverBytes = cover.Item1;
             BitmapData coverBitmap = cover.Item2;
@@ -101,7 +43,7 @@ namespace SudkuStegoSystem.Logic
                     SudokoCoordinates initialCoordinates = new SudokoCoordinates(coverBytes[i + j], coverBytes[i + j + 3]);
 
                     //ToDo hardcode!
-                    SudokoCoordinates nearestCoordinates = NearestCoordinatesFinder.NearestCoordinates(currentByte, initialCoordinates, SudokuSize, sudokuKey);
+                    SudokoCoordinates nearestCoordinates = sudokuKey.FindNearestCoordinates(currentByte, initialCoordinates);
 
                     coverBytes[i + j] = nearestCoordinates.X;
                     coverBytes[i + j + 3] = nearestCoordinates.Y;
@@ -120,8 +62,13 @@ namespace SudkuStegoSystem.Logic
             #endregion
         }
 
-        public SecretFile Decrypt(Image stegocontainer, byte[,] sudokuKey)
+        public SecretFile Decrypt(Image stegocontainer, SudokuMatrix sudokuKey)
         {
+            if (sudokuKey.SudokuSize != ExpectedSudokuSize)
+            {
+                throw new InvalidOperationException($"This steganography method works only with matrix {ExpectedSudokuSize}x{ExpectedSudokuSize}.");
+            }
+
             Tuple<byte[], BitmapData> stego = stegocontainer.GetByteArrayByImageFile(ImageLockMode.ReadOnly);
             byte[] stegoBytes = stego.Item1;
             BitmapData stegoBitmap = stego.Item2;
