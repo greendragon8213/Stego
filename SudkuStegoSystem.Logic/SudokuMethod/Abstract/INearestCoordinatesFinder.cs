@@ -4,6 +4,6 @@ namespace SudkuStegoSystem.Logic
 {
     public interface INearestCoordinatesFinder
     {
-        SudokoCoordinates Find(int valueToFind, SudokoCoordinates initialCoordinates, byte[,] sudokuMatrix);
+        SudokuCoordinates Find(int valueToFind, SudokuCoordinates initialCoordinates, byte[,] sudokuMatrix);
     }
 }

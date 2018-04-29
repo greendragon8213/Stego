@@ -1,138 +1,94 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SudkuStegoSystem.Logic.Abstract;
+using SudkuStegoSystem.Logic.Models;
+using SudkuStegoSystem.Logic.SudokuMethod.SudokuMatrix;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
-using SudkuStegoSystem.Logic.Helpers;
-using SudkuStegoSystem.Logic.Models;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace SudkuStegoSystem.Logic
 {
     /// <summary>
-    /// Just encrypts and decrypts data
+    /// Represents adaptation of SudokuStegoMethod to general stegosystems interface
     /// </summary>
-    public class SudokuStegoSystem
+    public class SudokuStegoSystem : IStegoSystem
     {
-        private const int ExpectedSudokuSize = 256;
+        private const string KeyRegex = "[a-zA-Z0-9]{6,18}";
+        private readonly ISudokuStegoMethod _sudokuStegoMethod;
+        private readonly SudokuMatrixFactory _sudokuMatrixFactory;
+
+        public SudokuStegoSystem(ISudokuStegoMethod sudokuStegoMethod, SudokuMatrixFactory sudokuMatrixFactory)
+        {
+            _sudokuStegoMethod = sudokuStegoMethod;
+            _sudokuMatrixFactory = sudokuMatrixFactory;
+        }
         
-        public Image Encrypt(Image container, SecretFile secretFile, SudokuMatrix sudokuKey)
+        public void Encrypt(string containerFilePath, string secretDataFilePath, string key, string pathToStegocontainer = null)
         {
-            if(sudokuKey.SudokuSize != ExpectedSudokuSize)
+            #region checking arguments
+
+            if (!File.Exists(containerFilePath))
             {
-                throw new InvalidOperationException($"This steganography method works only with matrix {ExpectedSudokuSize}x{ExpectedSudokuSize}.");
+                throw new ArgumentException("Container file does not exist.");
             }
 
-            Tuple<byte[], BitmapData> cover = container.GetByteArrayByImageFile(ImageLockMode.ReadWrite);
-            byte[] coverBytes = cover.Item1;
-            BitmapData coverBitmap = cover.Item2;
-            byte[] secretData = GetSecretBytesToEncode(secretFile);
-
-            if (secretData.Length * 2 >= coverBytes.Length)
+            if (!File.Exists(secretDataFilePath))
             {
-                throw new ArgumentException("Cannot encrypt secret data because cover image is too small.");
+                throw new ArgumentException("Secret data file does not exist.");
             }
 
-            #region Embedding secret data into the container
-
-            for(int i = 0, secretDataIterator = 0; 
-                i + 1 < coverBytes.Length && secretDataIterator < secretData.Length; 
-                i += 2, secretDataIterator++)
+            if (!Regex.Match(key, KeyRegex).Success)
             {
-                byte currentByte = secretData[secretDataIterator];
-                SudokoCoordinates initialCoordinates = new SudokoCoordinates(coverBytes[i], coverBytes[i + 1]);
-                SudokoCoordinates nearestCoordinates = sudokuKey.FindNearestCoordinates(currentByte, initialCoordinates);
-
-                if(initialCoordinates != nearestCoordinates)
-                {
-                    coverBytes[i] = nearestCoordinates.X;
-                    coverBytes[i + 1] = nearestCoordinates.Y;
-                }
-            }
-            
-            #endregion
-            
-            Marshal.Copy(coverBytes, 0, coverBitmap.Scan0, coverBytes.Length);
-            container.UnlockBits(coverBitmap);
-
-            return container;
-        }
-
-        public SecretFile Decrypt(Image stegocontainer, SudokuMatrix sudokuKey)
-        {
-            if (sudokuKey.SudokuSize != ExpectedSudokuSize)
-            {
-                throw new InvalidOperationException($"This steganography method works only with matrix {ExpectedSudokuSize}x{ExpectedSudokuSize}.");
-            }
-
-            Tuple<byte[], BitmapData> stego = stegocontainer.GetByteArrayByImageFile(ImageLockMode.ReadOnly);
-            byte[] stegoBytes = stego.Item1;
-            BitmapData stegoBitmap = stego.Item2;
-
-            #region Extracting secret data
-
-            //decode file length
-            var fileLengthValueInByteArray = new byte[4];
-            int stegoIterator = 0;
-            for (int i = 0; i < 4; stegoIterator += 2, i++)
-            {
-                fileLengthValueInByteArray[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
-            }
-
-            int secretFilePayloadLength = BitConverter.ToInt32(fileLengthValueInByteArray, 0);
-
-            // decode secret file name length (stored in a 1 byte)
-            int secretFileNameLength = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
-
-            //decode file name
-            byte[] fileNameBytes = new byte[secretFileNameLength];
-
-            stegoIterator += 2;
-            for (int i = 0; i < secretFileNameLength; stegoIterator += 2, i++)
-            {
-                fileNameBytes[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
-            }
-
-            string secretFileName = Encoding.ASCII.GetString(fileNameBytes, 0, fileNameBytes.Length);
-
-            //decode secret file payload
-            byte[] secretFilePayloadBytes = new byte[secretFilePayloadLength];
-            
-            for (int i = 0; i < secretFilePayloadLength; stegoIterator += 2, i++)
-            {
-                secretFilePayloadBytes[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
+                throw new ArgumentException("Wrong key format.");
             }
 
             #endregion
 
-            stegocontainer.UnlockBits(stegoBitmap);
-            return new SecretFile(secretFileName, secretFilePayloadBytes);          
+            //ToDo exceptions 
+            Image containerImage = Image.FromFile(containerFilePath);           
+            SecretFile secretFileToEncode = new SecretFile(secretDataFilePath);
+            SudokuMatrix sudokuKey = GenerateSudokuKey(key);
+
+            Image stegocontainer = _sudokuStegoMethod.Encrypt(containerImage, secretFileToEncode, sudokuKey);
+
+            string containerFileName = new FileInfo(containerFilePath).Name;            
+            stegocontainer.Save(Path.Combine(pathToStegocontainer, containerFileName), ImageFormat.Bmp);
         }
 
-        /// <summary>
-        /// Gets bytes to encode by file. FL = 4byte, FNL = 1byte, FN = computed, Payload = computed 
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        private byte[] GetSecretBytesToEncode(SecretFile file)
-        {            
-            byte[] fileLength = BitConverter.GetBytes(file.Payload.Length);//4 bytes
+        public void Decrypt(string stegocontainerFilePath, string key, string pathToRestoreFile = null)
+        {
+            #region checking arguments
 
-            byte[] fileNameLength = new byte[1] { BitConverter.GetBytes(file.FileName.Length).First() };//1 byte should be enought
-            byte[] fileName = Encoding.ASCII.GetBytes(file.FileName);
+            if (!File.Exists(stegocontainerFilePath))
+            {
+                throw new ArgumentException("Container file does not exist.");
+            }
 
-            byte[] resultBytes = new byte[4 + 1 + fileName.Length + file.Payload.Length];
-            Buffer.BlockCopy(fileLength, 0, resultBytes, 0, fileLength.Length);
-            Buffer.BlockCopy(fileNameLength, 0, resultBytes, fileLength.Length, fileNameLength.Length);
-            Buffer.BlockCopy(fileName, 0, resultBytes, fileLength.Length + fileNameLength.Length, fileName.Length);
-            Buffer.BlockCopy(file.Payload, 0, resultBytes, fileLength.Length + fileNameLength.Length + fileName.Length, file.Payload.Length);
+            //ToDo validate restoredSecretFilePath 
 
-            //Marshal.Copy(ditherBmpData.Scan0, ditherBytes, 0, ditherBytes.Length);
+            if (!Regex.Match(key, KeyRegex).Success)
+            {
+                throw new ArgumentException("Wrong key format.");
+            }
 
-            return resultBytes;
+            #endregion
+
+            Image stegocontainerImage = Image.FromFile(stegocontainerFilePath);
+            SudokuMatrix sudokuKey = GenerateSudokuKey(key);
+
+            SecretFile secretFile = _sudokuStegoMethod.Decrypt(stegocontainerImage, sudokuKey);
+
+            secretFile.Save(pathToRestoreFile);
         }
+
+        #region Private methods
+
+        private SudokuMatrix GenerateSudokuKey(string password)
+        {
+            return _sudokuMatrixFactory.GetByPassword(_sudokuStegoMethod.GetExpectedSudokuSize(), password);
+        }
+
+        #endregion
     }
 }

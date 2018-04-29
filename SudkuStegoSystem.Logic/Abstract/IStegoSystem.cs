@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
-using System.Drawing.Imaging;
-
-namespace SudkuStegoSystem.Logic.Abstract
+﻿namespace SudkuStegoSystem.Logic.Abstract
 {
+    /// <summary>
+    /// Represents stego system functionality in general
+    /// </summary>
     public interface IStegoSystem
     {
-        //ToDo Image here??? 
         /// <summary>
         /// Embeds secret data (from secretDataFilePath file) into container with key
         /// </summary>

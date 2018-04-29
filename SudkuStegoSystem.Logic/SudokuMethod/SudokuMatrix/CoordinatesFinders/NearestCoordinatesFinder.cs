@@ -3,16 +3,15 @@ using System;
 
 namespace SudkuStegoSystem.Logic
 {
-
     public class NearestCoordinatesFinder : INearestCoordinatesFinder
     {
-        public SudokoCoordinates Find(int valueToFind, SudokoCoordinates initialCoordinates, byte[,] sudokuMatrix)
+        public SudokuCoordinates Find(int valueToFind, SudokuCoordinates initialCoordinates, byte[,] sudokuMatrix)
         {
             int sudokoSize = sudokuMatrix.GetLength(1);
 
-            if (!(valueToFind >= 0 && valueToFind <= 255
-                 && initialCoordinates.X >= 0 && initialCoordinates.X <= 255
-                 && initialCoordinates.Y >= 0 && initialCoordinates.Y <= 255))
+            if (!(valueToFind >= 0 && valueToFind < sudokoSize
+                 && initialCoordinates.X >= 0 && initialCoordinates.X < sudokoSize
+                 && initialCoordinates.Y >= 0 && initialCoordinates.Y < sudokoSize))
             {
                 throw new ArgumentException("Wrong initialCoordinates or valueToFind");
             }
@@ -35,28 +34,28 @@ namespace SudkuStegoSystem.Logic
                     int y1 = initialCoordinates.Y + offset;
                     if (CheckValue(x1, y1, valueToFind, sudokoSize, sudokuMatrix))
                     {
-                        return new SudokoCoordinates((byte)x1, (byte)y1);
+                        return new SudokuCoordinates((byte)x1, (byte)y1);
                     }
 
                     int x2 = initialCoordinates.X + i;
                     int y2 = initialCoordinates.Y - offset;
                     if (CheckValue(x2, y2, valueToFind, sudokoSize, sudokuMatrix))
                     {
-                        return new SudokoCoordinates((byte)x2, (byte)y2);
+                        return new SudokuCoordinates((byte)x2, (byte)y2);
                     }
 
                     int x3 = initialCoordinates.X - i;
                     int y3 = initialCoordinates.Y + offset;
                     if (CheckValue(x3, y3, valueToFind, sudokoSize, sudokuMatrix))
                     {
-                        return new SudokoCoordinates((byte)x3, (byte)y3);
+                        return new SudokuCoordinates((byte)x3, (byte)y3);
                     }
 
                     int x4 = initialCoordinates.X - i;
                     int y4 = initialCoordinates.Y - offset;
                     if (CheckValue(x4, y4, valueToFind, sudokoSize, sudokuMatrix))
                     {
-                        return new SudokoCoordinates((byte)x4, (byte)y4);
+                        return new SudokuCoordinates((byte)x4, (byte)y4);
                     }
                 }
             }

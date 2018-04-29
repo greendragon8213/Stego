@@ -1,5 +1,6 @@
 ﻿using SudkuStegoSystem.Logic;
 using SudkuStegoSystem.Logic.Abstract;
+using SudkuStegoSystem.Logic.SudokuMethod.SudokuMatrix;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,8 @@ namespace SudkuStegoSystem
             }
         }
 
-        private static IStegoSystem _stegoSystem = new StegoSystem();
+        //ToDo IoC
+        private static IStegoSystem _stegoSystem = new SudokuStegoSystem(new SudokuStegoMethod_256(), new SudokuMatrixFactory());
 
         private static void EncryptionTest1()
         {

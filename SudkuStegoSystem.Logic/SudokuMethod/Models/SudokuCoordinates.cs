@@ -2,33 +2,33 @@
 
 namespace SudkuStegoSystem.Logic.Models
 {
-    public class SudokoCoordinates : IEquatable<SudokoCoordinates>
+    public class SudokuCoordinates : IEquatable<SudokuCoordinates>
     {
         public byte X { get; set; }
         public byte Y { get; set; }
 
-        public SudokoCoordinates(byte x, byte y)
+        public SudokuCoordinates(byte x, byte y)
         {
             X = x;
             Y = y;
         }
 
-        public static bool operator == (SudokoCoordinates first, SudokoCoordinates second)
+        public static bool operator == (SudokuCoordinates first, SudokuCoordinates second)
         {
             return (first.X == second.X && first.Y == second.Y);
         }
 
-        public static bool operator != (SudokoCoordinates first, SudokoCoordinates second)
+        public static bool operator != (SudokuCoordinates first, SudokuCoordinates second)
         {
             return (first.X != second.X || first.Y != second.Y);
         }
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as SudokoCoordinates);
+            return Equals(obj as SudokuCoordinates);
         }
 
-        public bool Equals(SudokoCoordinates other)
+        public bool Equals(SudokuCoordinates other)
         {
             return other != null &&
                    X == other.X &&
