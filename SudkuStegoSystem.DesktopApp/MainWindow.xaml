@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:SudkuStegoSystem.DesktopApp"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        mc:Ignorable="d"
+                      xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+                      mc:Ignorable="d"
         Title="MainWindow" Height="430" Width="800"
                
         WindowTransitionsEnabled="False"
@@ -41,9 +42,9 @@
                                     TextWrapping="WrapWithOverflow" HorizontalAlignment="Center">
                                     Drop secret file here to hide
                                 </TextBlock>
-                                <Rectangle Width="100" Height="80"  Fill="{DynamicResource AccentColorBrush}">
+                                <Rectangle Width="80" Height="95"  Fill="{DynamicResource AccentColorBrush}">
                                     <Rectangle.OpacityMask>
-                                        <VisualBrush Visual="{StaticResource SecretFileIcon}" Stretch="Fill" />
+                                        <VisualBrush Visual="{StaticResource SecretFileIcon}" Stretch="Fill" />                                        
                                     </Rectangle.OpacityMask>
                                 </Rectangle>
                             </StackPanel>
