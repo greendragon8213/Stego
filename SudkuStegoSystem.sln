@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudkuStegoSystem.App", "Sud
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudkuStegoSystem.Logic", "SudkuStegoSystem.Logic\SudkuStegoSystem.Logic.csproj", "{9F6798F2-36E3-426B-BB80-4A9B3C4132C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudkuStegoSystem.DesktopApp", "SudkuStegoSystem.DesktopApp\SudkuStegoSystem.DesktopApp.csproj", "{48194485-07F9-4DBF-A1DB-211F7F65453E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9F6798F2-36E3-426B-BB80-4A9B3C4132C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F6798F2-36E3-426B-BB80-4A9B3C4132C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F6798F2-36E3-426B-BB80-4A9B3C4132C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48194485-07F9-4DBF-A1DB-211F7F65453E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48194485-07F9-4DBF-A1DB-211F7F65453E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48194485-07F9-4DBF-A1DB-211F7F65453E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48194485-07F9-4DBF-A1DB-211F7F65453E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
