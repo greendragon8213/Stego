@@ -19,14 +19,15 @@
     </Style>-->
 
     <Style 
-       TargetType="Border"
+       TargetType="Button"
        x:Key="DropFile">
         <Setter Property="Padding" Value="10"/>
         <Setter Property="Margin" Value="10"/>
         <Setter Property="AllowDrop" Value="true"/>
 
+        <Setter Property="Background" Value="Transparent"></Setter>
         <Setter Property="BorderThickness" Value="1"></Setter>
-        <Setter Property="BorderBrush">
+        <Setter Property="BorderBrush">        
             <Setter.Value>
                 <VisualBrush>
                     <VisualBrush.Visual>
