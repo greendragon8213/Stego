@@ -8,6 +8,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
                       xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+                      xmlns:views="clr-namespace:SudkuStegoSystem.DesktopApp.Views"
                       mc:Ignorable="d"
         Title="MainWindow" SizeToContent="Height" Width="800" MinWidth="700" MinHeight="450"
         WindowTransitionsEnabled="False"
@@ -53,11 +54,14 @@
                         </Button>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="1" Margin="10" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <views:OutputPathUC Grid.Row="1" Margin="10" >
+                        <!--DataContext="{Binding OutputPathUCVM}"-->
+                    </views:OutputPathUC>
+                    <!--<StackPanel Grid.Row="1" Margin="10" Orientation="Horizontal" HorizontalAlignment="Center">
                         <Label>Output path</Label>
                         <TextBox Controls:TextBoxHelper.AutoWatermark="True" Width="500"  />
-                        <Button Style="{StaticResource MetroFlatButton}" Content="Choose" />
-                    </StackPanel>
+                        <Button Style="{StaticResource MetroFlatButton}" Content="..." />
+                    </StackPanel>-->
 
                     <StackPanel Grid.Row="2" Margin="10" Orientation="Horizontal" HorizontalAlignment="Center">
                         <Label>Password</Label>

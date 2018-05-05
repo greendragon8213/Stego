@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="SudkuStegoSystem.DesktopApp.Views.OutputPathUC"
+             Name="OutputPath"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SudkuStegoSystem.DesktopApp.Views"
+             xmlns:viewModels="clr-namespace:SudkuStegoSystem.DesktopApp.ViewModels"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             >
+    <UserControl.Resources>
+        <viewModels:OutputPathUCVM x:Key="ViewModel" />
+    </UserControl.Resources>
+
+    <StackPanel DataContext="{StaticResource ViewModel}" Orientation="Horizontal" HorizontalAlignment="Center">
+        <Label>Output path</Label>
+        <TextBox Controls:TextBoxHelper.AutoWatermark="True" Width="500" Text="{Binding Path=Path, Mode=TwoWay}"/>
+        <Button Style="{StaticResource MetroFlatButton}" Content="..." Command="{Binding Path=OpenCommand}" />
+    </StackPanel>
+</UserControl>
