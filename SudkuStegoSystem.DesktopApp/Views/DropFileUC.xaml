@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="SudkuStegoSystem.DesktopApp.DropFileUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SudkuStegoSystem.DesktopApp"
+             mc:Ignorable="d" 
+             xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             DataContext="{Binding DropFileUCVM, Source={StaticResource Locator}}">
+
+    <Button Name="ContainerFile" Style="{StaticResource DropFile}" 
+         dd:DragDrop.IsDropTarget="True"
+         dd:DragDrop.DropHandler="{Binding}"
+         Command="{Binding OpenFileCommand}">
+        
+        <StackPanel Style="{StaticResource DropFileStackPanel}">
+            <TextBlock Width="100" Margin="10"
+                                    TextWrapping="WrapWithOverflow" HorizontalAlignment="Center">
+                                    Drop image here to use as container
+            </TextBlock>
+
+            <Rectangle Visibility="Collapsed" Width="80" Height="95"  Style="{StaticResource DropFileRectangle}">
+                <Rectangle.OpacityMask>
+                    <VisualBrush Visual="{StaticResource SecretFileIcon}" Stretch="Fill" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+
+            <Rectangle Visibility="Visible" Width="100" Height="80" Style="{StaticResource DropFileRectangle}">
+                <Rectangle.OpacityMask>
+                    <VisualBrush Visual="{StaticResource ImageIcon}" Stretch="Fill" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+            
+        </StackPanel>
+    </Button>
+
+</UserControl>

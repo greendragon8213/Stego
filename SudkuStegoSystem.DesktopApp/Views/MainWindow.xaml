@@ -27,7 +27,12 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Name="ContainerFile" Style="{StaticResource DropFile}" Drop="ImagePanel_Drop">
+                        
+                        <views:DropFileUC>
+                            <!--DataContext="{Binding OutputPathUCVM}"-->
+                        </views:DropFileUC>
+                        
+                        <!--<Button Name="ContainerFile" Style="{StaticResource DropFile}" Drop="ImagePanel_Drop">
                             <StackPanel Style="{StaticResource DropFileStackPanel}">
                                 <TextBlock Width="100" Margin="10"
                                     TextWrapping="WrapWithOverflow" HorizontalAlignment="Center">
@@ -39,8 +44,8 @@
                                     </Rectangle.OpacityMask>
                                 </Rectangle> 
                             </StackPanel>                        
-                        </Button>
-                        <Button Name="SecretFile" Style="{StaticResource DropFile}" Drop="ImagePanel_Drop" >
+                        </Button>-->
+                        <Button Name="SecretFile" Style="{StaticResource DropFile}" >
                             <StackPanel Style="{StaticResource DropFileStackPanel}">
                                 <TextBlock Width="100" Margin="10"
                                     TextWrapping="WrapWithOverflow" HorizontalAlignment="Center">
