@@ -90,6 +90,7 @@
     <Compile Include="ViewModels\OutputPathUCVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="ViewModels\PasswordUCVM.cs" />
+    <Compile Include="ViewModels\StatusBarUCVM.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\Helpers\PasswordBoxAssistant.cs" />
     <Compile Include="Views\OutputPathUC.xaml.cs">
@@ -97,6 +98,9 @@
     </Compile>
     <Compile Include="Views\PasswordUC.xaml.cs">
       <DependentUpon>PasswordUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StatusBarUC.xaml.cs">
+      <DependentUpon>StatusBarUC.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\PasswordUC.xaml">
       <SubType>Designer</SubType>
@@ -123,6 +127,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\OutputPathUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StatusBarUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

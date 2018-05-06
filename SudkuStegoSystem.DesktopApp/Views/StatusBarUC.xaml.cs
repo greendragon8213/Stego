@@ -3,11 +3,11 @@
 namespace SudkuStegoSystem.DesktopApp
 {
     /// <summary>
-    /// Interaction logic for PasswordUC.xaml
+    /// Interaction logic for StatusBarUC.xaml
     /// </summary>
-    public partial class PasswordUC : UserControl
+    public partial class StatusBarUC : UserControl
     {
-        public PasswordUC()
+        public StatusBarUC()
         {
             InitializeComponent();
         }

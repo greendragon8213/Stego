@@ -65,14 +65,9 @@
                                         
                     <Button Command="{Binding EncryptCommand}" Style="{StaticResource AccentedSquareButtonStyle}" Content="Encrypt" HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Bottom" Width="75" Grid.Row="3"/>
 
-                    <StackPanel Grid.Row="4" Margin="10  2" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                        <TextBlock>Encryption completed successfully. Container with embedded secret data:</TextBlock>
-                        <TextBlock Width="{c:Binding '(ActualWidth)'}" Height="Auto" 
-                                   Text="c:/7777777799999999999999999997777777777777777777777777777777777777777777777777777777777777777777777777777777777777000000000000000000000000000uuuuuuuuuuuuuuuuuuuuuu7777777777777777" 
-                                   TextDecorations="Underline" 
-                                   TextWrapping="Wrap">                            
-                        </TextBlock>
-                    </StackPanel>
+                    <views:StatusBarUC Grid.Row="4" Margin="10  2"  Width="{c:Binding '(ActualWidth)'}" Height="Auto" >
+                        <!--DataContext="{Binding OutputPathUCVM}"-->
+                    </views:StatusBarUC>
                 </Grid>
             </TabItem>
             <TabItem Header="Decryption">

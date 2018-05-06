@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="SudkuStegoSystem.DesktopApp.StatusBarUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SudkuStegoSystem.DesktopApp"
+             mc:Ignorable="d" 
+             
+             DataContext="{Binding StatusBarUCVM, Source={StaticResource Locator}}">
+    
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+        <TextBlock TextWrapping="Wrap" Text="{Binding Path=Text, Mode=OneWay}"></TextBlock>
+        <TextBlock>
+            <Hyperlink Command="{Binding ShowLocalFileInExplorerCommand}" CommandParameter="{Binding}">
+                <TextBlock TextWrapping="Wrap" Text="{Binding Path=LocalFilePath, Mode=OneWay}"/>
+            </Hyperlink>
+        </TextBlock>        
+    </StackPanel>
+</UserControl>
