@@ -8,9 +8,10 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
                       xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
-                      xmlns:views="clr-namespace:SudkuStegoSystem.DesktopApp.Views"
+                      xmlns:views="clr-namespace:SudkuStegoSystem.DesktopApp"
                       mc:Ignorable="d"
         Title="MainWindow" SizeToContent="Height" Width="800" MinWidth="700" MinHeight="450"
+        DataContext="{Binding MainVM, Source={StaticResource Locator}}"
         WindowTransitionsEnabled="False"
         WindowStartupLocation="CenterScreen">
     <Grid>
@@ -67,8 +68,8 @@
                         <Label>Password</Label>
                         <PasswordBox Width="180"></PasswordBox>
                     </StackPanel>
-
-                    <Button Style="{StaticResource AccentedSquareButtonStyle}" Content="Encrypt" HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Bottom" Width="75" Grid.Row="3"/>
+                    
+                    <Button Command="{Binding EncryptCommand}" Style="{StaticResource AccentedSquareButtonStyle}" Content="Encrypt" HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Bottom" Width="75" Grid.Row="3"/>
 
                     <StackPanel Grid.Row="4" Margin="10  2" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                         <TextBlock>Encryption completed successfully. Container with embedded secret data:</TextBlock>

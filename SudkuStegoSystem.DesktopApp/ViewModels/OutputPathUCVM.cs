@@ -1,33 +1,19 @@
-﻿using MyToolkit.Command;
+﻿using GalaSoft.MvvmLight;
+using MyToolkit.Command;
 using SudkuStegoSystem.DesktopApp.Services;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
-    public class OutputPathUCVM : BaseVM
+    public class OutputPathUCVM : ViewModelBase
     {
         private readonly IFileDialogService _fileDialogService = new FileDialogService();
         private string _path;
-
-        //ToDo remove this!
-        public OutputPathUCVM()
+        
+        public OutputPathUCVM(string defaultPath, IFileDialogService fileDialogService)
         {
-            //ToDo map default path
-            Path = null;
-            OpenCommand = new RelayCommand(OpenFile);
-        }
-
-        //ToDo remove this!
-        public OutputPathUCVM(string defaultPath = null)
-        {
-            //ToDo map default path
             Path = defaultPath;
-            OpenCommand = new RelayCommand(OpenFile);
-        }
-
-        //ToDo DI!
-        public OutputPathUCVM(IFileDialogService fileDialogService) : this()
-        {
             _fileDialogService = fileDialogService;
+            OpenCommand = new RelayCommand(OpenFile);
         }
 
         public string Path
@@ -37,7 +23,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             {
                 //ToDo path validation
                 _path = value;
-                OnPropertyChanged(nameof(Path));
+                RaisePropertyChanged(nameof(Path));
             }
         }
         
