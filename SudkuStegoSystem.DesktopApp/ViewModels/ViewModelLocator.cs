@@ -38,25 +38,16 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             SimpleIoc.Default.Unregister<OutputPathUCVM>();
             SimpleIoc.Default.Register(() => new OutputPathUCVM(_defaultPath, SimpleIoc.Default.GetInstance<IFileDialogService>()));
 
+            SimpleIoc.Default.Register<PasswordUCVM>();
             SimpleIoc.Default.Register<MainVM>();
         }
 
-        public OutputPathUCVM OutputPathUCVM
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<OutputPathUCVM>();
-            }
-        }
+        public PasswordUCVM PasswordUCVM => ServiceLocator.Current.GetInstance<PasswordUCVM>();
 
-        public MainVM MainVM
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<MainVM>();
-            }
-        }
-        
+        public OutputPathUCVM OutputPathUCVM => ServiceLocator.Current.GetInstance<OutputPathUCVM>();
+
+        public MainVM MainVM => ServiceLocator.Current.GetInstance<MainVM>();
+
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

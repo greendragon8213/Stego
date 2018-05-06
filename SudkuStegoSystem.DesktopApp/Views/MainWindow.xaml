@@ -58,22 +58,20 @@
                     <views:OutputPathUC Grid.Row="1" Margin="10" >
                         <!--DataContext="{Binding OutputPathUCVM}"-->
                     </views:OutputPathUC>
-                    <!--<StackPanel Grid.Row="1" Margin="10" Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Label>Output path</Label>
-                        <TextBox Controls:TextBoxHelper.AutoWatermark="True" Width="500"  />
-                        <Button Style="{StaticResource MetroFlatButton}" Content="..." />
-                    </StackPanel>-->
 
-                    <StackPanel Grid.Row="2" Margin="10" Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Label>Password</Label>
-                        <PasswordBox Width="180"></PasswordBox>
-                    </StackPanel>
-                    
+                    <views:PasswordUC Grid.Row="2" Margin="10" >
+                        <!--DataContext="{Binding OutputPathUCVM}"-->
+                    </views:PasswordUC>
+                                        
                     <Button Command="{Binding EncryptCommand}" Style="{StaticResource AccentedSquareButtonStyle}" Content="Encrypt" HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Bottom" Width="75" Grid.Row="3"/>
 
                     <StackPanel Grid.Row="4" Margin="10  2" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                         <TextBlock>Encryption completed successfully. Container with embedded secret data:</TextBlock>
-                        <TextBlock Width="{c:Binding '(ActualWidth)'}" Height="Auto" Text="c:/7777777799999999999999999997777777777777777777777777777777777777777777777777777777777777777777777777777777777777000000000000000000000000000uuuuuuuuuuuuuuuuuuuuuu7777777777777777" TextDecorations="Underline" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Width="{c:Binding '(ActualWidth)'}" Height="Auto" 
+                                   Text="c:/7777777799999999999999999997777777777777777777777777777777777777777777777777777777777777777777777777777777777777000000000000000000000000000uuuuuuuuuuuuuuuuuuuuuu7777777777777777" 
+                                   TextDecorations="Underline" 
+                                   TextWrapping="Wrap">                            
+                        </TextBlock>
                     </StackPanel>
                 </Grid>
             </TabItem>

@@ -87,13 +87,21 @@
     </ApplicationDefinition>
     <Compile Include="Services\FileDialogService.cs" />
     <Compile Include="Services\Abstract\IFileDialogService.cs" />
-    <Compile Include="ViewModels\BaseVM.cs" />
     <Compile Include="ViewModels\OutputPathUCVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
+    <Compile Include="ViewModels\PasswordUCVM.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\Helpers\PasswordBoxAssistant.cs" />
     <Compile Include="Views\OutputPathUC.xaml.cs">
       <DependentUpon>OutputPathUC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PasswordUC.xaml.cs">
+      <DependentUpon>PasswordUC.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\PasswordUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Resources\Icons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
