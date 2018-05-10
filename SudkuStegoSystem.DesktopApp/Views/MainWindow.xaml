@@ -10,6 +10,7 @@
                       xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
                       xmlns:views="clr-namespace:SudkuStegoSystem.DesktopApp"
                       mc:Ignorable="d"
+                      xmlns:ff="clr-namespace:SudkuStegoSystem.DesktopApp"
         Title="MainWindow" SizeToContent="Height" Width="800" MinWidth="700" MinHeight="450"
         DataContext="{Binding MainVM, Source={StaticResource Locator}}"
         WindowTransitionsEnabled="False"
@@ -27,11 +28,19 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-                        
-                        <views:DropFileUC>
+
+                        <views:DropFileUC
+                            ff:DropFileAssistant.FileType="Image"
+                            ff:DropFileAssistant.Content="Drop image here to use as container">
                             <!--DataContext="{Binding OutputPathUCVM}"-->
                         </views:DropFileUC>
-                        
+
+                        <views:DropFileUC
+                            ff:DropFileAssistant.FileType="SecretFile"
+                            ff:DropFileAssistant.Content="Drop secret file here to hide">
+                            <!--DataContext="{Binding OutputPathUCVM}"-->
+                        </views:DropFileUC>
+
                         <!--<Button Name="ContainerFile" Style="{StaticResource DropFile}" Drop="ImagePanel_Drop">
                             <StackPanel Style="{StaticResource DropFileStackPanel}">
                                 <TextBlock Width="100" Margin="10"
@@ -45,7 +54,7 @@
                                 </Rectangle> 
                             </StackPanel>                        
                         </Button>-->
-                        <Button Name="SecretFile" Style="{StaticResource DropFile}" >
+                        <!--<Button Name="SecretFile" Style="{StaticResource DropFile}" >
                             <StackPanel Style="{StaticResource DropFileStackPanel}">
                                 <TextBlock Width="100" Margin="10"
                                     TextWrapping="WrapWithOverflow" HorizontalAlignment="Center">
@@ -57,7 +66,7 @@
                                     </Rectangle.OpacityMask>
                                 </Rectangle>
                             </StackPanel>
-                        </Button>
+                        </Button>-->
                     </StackPanel>
 
                     <views:OutputPathUC Grid.Row="1" Margin="10" >

@@ -9,16 +9,29 @@ using System.Windows;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
+
     public class DropFileUCVM : ViewModelBase, IDropTarget
     {
         private readonly IFileDialogService _fileDialogService;
         private string _filePath;
-
+        private FileTypes _fileType;
+        
         public DropFileUCVM(IFileDialogService fileDialogService)
         {
             AllowedExtensions = new string[0];
             _fileDialogService = fileDialogService;
             OpenFileCommand = new RelayCommand(OpenFile);
+        }
+
+        public FileTypes FileType
+        {
+            get => _fileType;
+
+            set
+            {
+                _fileType = value;
+                RaisePropertyChanged(nameof(FileType));
+            }
         }
 
         //ToDo improve AllowedExtensions and file dialog filters
@@ -33,8 +46,8 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             get => _filePath;
 
             protected set
-            {                
-                if(IsFileExtensionAllowed(value))
+            {
+                if (IsFileExtensionAllowed(value))
                 {
                     _filePath = value;
                     RaisePropertyChanged(nameof(IsFilePathProvided));
@@ -52,7 +65,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             var filePath = dragFileList.FirstOrDefault();
 
             if (IsFileExtensionAllowed(filePath))
-            {               
+            {
                 dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
                 dropInfo.Effects = DragDropEffects.Move;
             }
@@ -64,12 +77,12 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
         public void Drop(IDropInfo dropInfo)
         {
-            var dragFileList = ((DataObject)dropInfo.Data).GetFileDropList().Cast<string>();            
+            var dragFileList = ((DataObject)dropInfo.Data).GetFileDropList().Cast<string>();
             FilePath = dragFileList.FirstOrDefault();
         }
-        
+
         public RelayCommand OpenFileCommand { get; set; }
-        
+
         #region Private methods
 
         private void OpenFile()
@@ -82,8 +95,8 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
         {
             var extension = Path.GetExtension(fileName);
 
-            return (AllowedExtensions.Count() == 0 
-                || AllowedExtensions.Any(ae => extension.Equals(ae, StringComparison.InvariantCultureIgnoreCase)));            
+            return (AllowedExtensions.Count() == 0
+                || AllowedExtensions.Any(ae => extension.Equals(ae, StringComparison.InvariantCultureIgnoreCase)));
         }
 
         #endregion

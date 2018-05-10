@@ -7,30 +7,36 @@
              mc:Ignorable="d" 
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
-             DataContext="{Binding DropFileUCVM, Source={StaticResource Locator}}">
+             xmlns:ff="clr-namespace:SudkuStegoSystem.DesktopApp"
+             DataContext="{Binding DropFileUCVM, Source={StaticResource Locator}}"
+             ff:DropFileAssistant.FileType="{Binding FileType, Mode=OneWayToSource}"             
+             ff:DropFileAssistant.Content="Drop file here">
 
-    <Button Name="ContainerFile" Style="{StaticResource DropFile}" 
+    <Button Name="ContainerFile" Style="{StaticResource DropFile}"
          dd:DragDrop.IsDropTarget="True"
          dd:DragDrop.DropHandler="{Binding}"
          Command="{Binding OpenFileCommand}">
-        
+
         <StackPanel Style="{StaticResource DropFileStackPanel}">
-            <TextBlock Width="100" Margin="10"
-                                    TextWrapping="WrapWithOverflow" HorizontalAlignment="Center">
-                                    Drop image here to use as container
+            <TextBlock Width="100" Margin="10" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center"                       
+                       Text="{Binding Path=(ff:DropFileAssistant.Content), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">                                    
             </TextBlock>
 
-            <Rectangle Visibility="Collapsed" Width="80" Height="95"  Style="{StaticResource DropFileRectangle}">
+            <Rectangle Visibility="{c:Binding '(FileType==local:FileTypes.SecretFile)', FalseToVisibility=Collapsed}" 
+                       Width="80" Height="95"  
+                       Style="{StaticResource DropFileRectangle}">
                 <Rectangle.OpacityMask>
                     <VisualBrush Visual="{StaticResource SecretFileIcon}" Stretch="Fill" />
                 </Rectangle.OpacityMask>
             </Rectangle>
-
-            <Rectangle Visibility="Visible" Width="100" Height="80" Style="{StaticResource DropFileRectangle}">
+            <Rectangle Visibility="{c:Binding '(FileType==local:FileTypes.Image)', FalseToVisibility=Collapsed}" 
+                       Width="100" Height="80" 
+                       Style="{StaticResource DropFileRectangle}">
                 <Rectangle.OpacityMask>
                     <VisualBrush Visual="{StaticResource ImageIcon}" Stretch="Fill" />
                 </Rectangle.OpacityMask>
             </Rectangle>
+            <!--ToDo implement rectangle for File-->
             
         </StackPanel>
     </Button>
