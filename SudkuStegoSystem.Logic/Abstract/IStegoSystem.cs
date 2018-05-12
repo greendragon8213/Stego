@@ -5,6 +5,10 @@
     /// </summary>
     public interface IStegoSystem
     {
+        FileTypeConstraints ContainerFileConstraints { get; }
+        FileTypeConstraints StegoContainerFileConstraints { get; }
+        FileTypeConstraints SecretFileConstraints { get; }
+
         /// <summary>
         /// Embeds secret data (from secretDataFilePath file) into container with key
         /// </summary>

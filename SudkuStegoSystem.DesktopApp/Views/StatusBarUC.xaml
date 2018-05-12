@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SudkuStegoSystem.DesktopApp"
              mc:Ignorable="d" 
-             
-             DataContext="{Binding StatusBarUCVM, Source={StaticResource Locator}}">
-    
+                          
+             xmlns:vms="clr-namespace:SudkuStegoSystem.DesktopApp.ViewModels"             
+             d:DataContext="{d:DesignInstance vms:StatusBarUCVM, IsDesignTimeCreatable=False}">
+
     <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Bottom">
         <TextBlock TextWrapping="Wrap" Text="{Binding Path=Text, Mode=OneWay}"></TextBlock>
         <TextBlock>

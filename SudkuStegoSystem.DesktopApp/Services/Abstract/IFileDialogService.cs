@@ -2,9 +2,6 @@
 {
     public interface IFileDialogService
     {
-        string GetImagesFilter();
-        string GetDefaultFilter();
-
-        string OpenFileDialog(string filter = null);
+        string OpenFileDialog(string filter);
     }
 }

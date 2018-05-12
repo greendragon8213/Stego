@@ -6,6 +6,8 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using SudkuStegoSystem.Logic.Helpers;
 using SudkuStegoSystem.Logic.Models;
+using SudkuStegoSystem.Logic.Abstract;
+using SudkuStegoSystem.Logic.SudokuMethod.FileConstraints;
 
 namespace SudkuStegoSystem.Logic
 {
@@ -14,6 +16,11 @@ namespace SudkuStegoSystem.Logic
     /// </summary>
     public class SudokuStegoMethod_256 : ISudokuStegoMethod
     {
+        //ToDo add usage of this methods here!
+        public FileTypeConstraints ContainerFileConstraints => new ContainerFileTypeConstraints();
+        public FileTypeConstraints StegoContainerFileConstraints => new StegoContainerFileTypeConstraints();
+        public FileTypeConstraints SecretFileConstraints => new SecretFileTypeConstraints();
+
         public int GetExpectedSudokuSize() => 256;
 
         public Image Encrypt(Image container, SecretFile secretFile, SudokuMatrix sudokuKey)

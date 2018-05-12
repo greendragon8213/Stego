@@ -41,7 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\FileTypeConstraints.cs" />
+    <Compile Include="FileTypes.cs" />
     <Compile Include="Abstract\IStegoSystem.cs" />
+    <Compile Include="SudokuMethod\FileConstraints\ContainerFileTypeConstraints.cs" />
+    <Compile Include="SudokuMethod\FileConstraints\SecretFileTypeConstraints.cs" />
+    <Compile Include="SudokuMethod\FileConstraints\StegoContainerFileTypeConstraints.cs" />
     <Compile Include="SudokuMethod\Helpers\ImageExtensions.cs" />
     <Compile Include="SudokuMethod\Abstract\INearestCoordinatesFinder.cs" />
     <Compile Include="Models\SecretFile.cs" />

@@ -7,8 +7,10 @@
              xmlns:local="clr-namespace:SudkuStegoSystem.DesktopApp"
              xmlns:viewModels="clr-namespace:SudkuStegoSystem.DesktopApp.ViewModels"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" 
              
-             DataContext="{Binding OutputPathUCVM, Source={StaticResource Locator}}">
+             xmlns:vms="clr-namespace:SudkuStegoSystem.DesktopApp.ViewModels"             
+             d:DataContext="{d:DesignInstance vms:OutputPathUCVM, IsDesignTimeCreatable=False}">
     <!--<UserControl.Resources>
         <viewModels:OutputPathUCVM x:Key="ViewModel" />
     </UserControl.Resources>-->

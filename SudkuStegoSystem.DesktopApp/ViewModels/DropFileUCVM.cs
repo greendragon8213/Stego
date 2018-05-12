@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using GongSolutions.Wpf.DragDrop;
 using SudkuStegoSystem.DesktopApp.Services;
+using SudkuStegoSystem.Logic.Abstract;
 using System;
 using System.IO;
 using System.Linq;
@@ -14,11 +15,14 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
     {
         private readonly IFileDialogService _fileDialogService;
         private string _filePath;
+
         private FileTypes _fileType;
+        private readonly FileTypeConstraints _fileTypeConstraints;
         
-        public DropFileUCVM(IFileDialogService fileDialogService)
+        public DropFileUCVM(IFileDialogService fileDialogService, FileTypeConstraints fileTypeConstraints)
         {
-            AllowedExtensions = new string[0];
+            _fileTypeConstraints = fileTypeConstraints;
+
             _fileDialogService = fileDialogService;
             OpenFileCommand = new RelayCommand(OpenFile);
         }
@@ -34,10 +38,10 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             }
         }
 
-        //ToDo improve AllowedExtensions and file dialog filters
-        //By default all extensions are allowed
-        //public string[] AllowedExtensions => new string[] { ".jpg" };
-        public string[] AllowedExtensions { get; set; }
+        ////ToDo improve AllowedExtensions and file dialog filters
+        ////By default all extensions are allowed
+        ////public string[] AllowedExtensions => new string[] { ".jpg" };
+        //public string[] AllowedExtensions { get; set; }
 
         public bool IsFilePathProvided => !string.IsNullOrEmpty(FilePath);
 
@@ -47,7 +51,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
             protected set
             {
-                if (IsFileExtensionAllowed(value))
+                if (_fileTypeConstraints.IsFileExtensionAllowed(value))
                 {
                     _filePath = value;
                     RaisePropertyChanged(nameof(IsFilePathProvided));
@@ -64,7 +68,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             var dragFileList = ((DataObject)dropInfo.Data).GetFileDropList().Cast<string>();
             var filePath = dragFileList.FirstOrDefault();
 
-            if (IsFileExtensionAllowed(filePath))
+            if (_fileTypeConstraints.IsFileExtensionAllowed(filePath))
             {
                 dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
                 dropInfo.Effects = DragDropEffects.Move;
@@ -87,18 +91,9 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
         private void OpenFile()
         {
-            //ToDo file filter customization
-            FilePath = _fileDialogService.OpenFileDialog(_fileDialogService.GetDefaultFilter());
+            FilePath = _fileDialogService.OpenFileDialog(_fileTypeConstraints.GetFilter());
         }
-
-        private bool IsFileExtensionAllowed(string fileName)
-        {
-            var extension = Path.GetExtension(fileName);
-
-            return (AllowedExtensions.Count() == 0
-                || AllowedExtensions.Any(ae => extension.Equals(ae, StringComparison.InvariantCultureIgnoreCase)));
-        }
-
+        
         #endregion
     }
 }

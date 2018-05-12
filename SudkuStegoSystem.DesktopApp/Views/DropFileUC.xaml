@@ -4,12 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SudkuStegoSystem.DesktopApp"
+             xmlns:vms="clr-namespace:SudkuStegoSystem.DesktopApp.ViewModels"
              mc:Ignorable="d" 
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:ff="clr-namespace:SudkuStegoSystem.DesktopApp"
-             DataContext="{Binding DropFileUCVM, Source={StaticResource Locator}}"
-             ff:DropFileAssistant.FileType="{Binding FileType, Mode=OneWayToSource}"             
+             
+             d:DataContext="{d:DesignInstance vms:DropFileUCVM, IsDesignTimeCreatable=False}"
+                          
              ff:DropFileAssistant.Content="Drop file here">
 
     <Button Name="ContainerFile" Style="{StaticResource DropFile}"

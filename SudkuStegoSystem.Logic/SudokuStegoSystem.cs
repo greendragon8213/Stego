@@ -18,6 +18,11 @@ namespace SudkuStegoSystem.Logic
         private readonly ISudokuStegoMethod _sudokuStegoMethod;
         private readonly SudokuMatrixFactory _sudokuMatrixFactory;
 
+        //ToDo use it in validation!
+        public FileTypeConstraints ContainerFileConstraints => _sudokuStegoMethod.ContainerFileConstraints;
+        public FileTypeConstraints StegoContainerFileConstraints => _sudokuStegoMethod.StegoContainerFileConstraints;
+        public FileTypeConstraints SecretFileConstraints => _sudokuStegoMethod.SecretFileConstraints;
+
         public SudokuStegoSystem(ISudokuStegoMethod sudokuStegoMethod, SudokuMatrixFactory sudokuMatrixFactory)
         {
             _sudokuStegoMethod = sudokuStegoMethod;

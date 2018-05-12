@@ -1,25 +1,14 @@
-﻿using System;
-
-namespace SudkuStegoSystem.DesktopApp.Services
+﻿namespace SudkuStegoSystem.DesktopApp.Services
 {
     public class FileDialogService : IFileDialogService
-    {
-        public string GetDefaultFilter()
-        {
-            return "All files |*.*";
-        }
-
-        public string GetImagesFilter()
-        {
-            return "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
-    }
-
-        public string OpenFileDialog(string filter = null)
+    {       
+        public string OpenFileDialog(string filter)
         {
             var ofd = new Microsoft.Win32.OpenFileDialog()
             {
-                Filter = string.IsNullOrEmpty(filter) ? GetDefaultFilter() : filter
+                Filter = filter
             };
+
             var result = ofd.ShowDialog();
 
             //ToDo default path

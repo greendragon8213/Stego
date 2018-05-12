@@ -18,7 +18,10 @@
     <Grid>
         <TabControl >
             <TabItem Header="Encryption">
-                <Grid VerticalAlignment="Center">
+                <views:EncryptionUC DataContext="{Binding EncryptionUCVM, Source={StaticResource Locator}}">                    
+                </views:EncryptionUC>
+                
+                <!--<Grid VerticalAlignment="Center">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -32,16 +35,16 @@
                         <views:DropFileUC
                             ff:DropFileAssistant.FileType="Image"
                             ff:DropFileAssistant.Content="Drop image here to use as container">
-                            <!--DataContext="{Binding OutputPathUCVM}"-->
+                            --><!--DataContext="{Binding OutputPathUCVM}"--><!--
                         </views:DropFileUC>
 
                         <views:DropFileUC
                             ff:DropFileAssistant.FileType="SecretFile"
                             ff:DropFileAssistant.Content="Drop secret file here to hide">
-                            <!--DataContext="{Binding OutputPathUCVM}"-->
+                            --><!--DataContext="{Binding OutputPathUCVM}"--><!--
                         </views:DropFileUC>
 
-                        <!--<Button Name="ContainerFile" Style="{StaticResource DropFile}" Drop="ImagePanel_Drop">
+                        --><!--<Button Name="ContainerFile" Style="{StaticResource DropFile}" Drop="ImagePanel_Drop">
                             <StackPanel Style="{StaticResource DropFileStackPanel}">
                                 <TextBlock Width="100" Margin="10"
                                     TextWrapping="WrapWithOverflow" HorizontalAlignment="Center">
@@ -66,23 +69,23 @@
                                     </Rectangle.OpacityMask>
                                 </Rectangle>
                             </StackPanel>
-                        </Button>-->
+                        </Button>--><!--
                     </StackPanel>
 
                     <views:OutputPathUC Grid.Row="1" Margin="10" >
-                        <!--DataContext="{Binding OutputPathUCVM}"-->
+                        --><!--DataContext="{Binding OutputPathUCVM}"--><!--
                     </views:OutputPathUC>
 
                     <views:PasswordUC Grid.Row="2" Margin="10" >
-                        <!--DataContext="{Binding OutputPathUCVM}"-->
+                        --><!--DataContext="{Binding OutputPathUCVM}"--><!--
                     </views:PasswordUC>
                                         
                     <Button Command="{Binding EncryptCommand}" Style="{StaticResource AccentedSquareButtonStyle}" Content="Encrypt" HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Bottom" Width="75" Grid.Row="3"/>
 
                     <views:StatusBarUC Grid.Row="4" Margin="10  2"  Width="{c:Binding '(ActualWidth)'}" Height="Auto" >
-                        <!--DataContext="{Binding OutputPathUCVM}"-->
+                        --><!--DataContext="{Binding OutputPathUCVM}"--><!--
                     </views:StatusBarUC>
-                </Grid>
+                </Grid>-->
             </TabItem>
             <TabItem Header="Decryption">
                 <Grid />

@@ -37,7 +37,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
         private void OpenFile()
         {
             //ToDo customization
-            Path = _fileDialogService.OpenFileDialog(_fileDialogService.GetDefaultFilter());            
+            Path = _fileDialogService.OpenFileDialog("Folders |*");            
         }
 
         #endregion

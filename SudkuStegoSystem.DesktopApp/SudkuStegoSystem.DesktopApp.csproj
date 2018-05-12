@@ -91,6 +91,7 @@
     <Compile Include="Services\FileDialogService.cs" />
     <Compile Include="Services\Abstract\IFileDialogService.cs" />
     <Compile Include="ViewModels\DropFileUCVM.cs" />
+    <Compile Include="ViewModels\EncryptionUCVM.cs" />
     <Compile Include="ViewModels\FileTypes.cs" />
     <Compile Include="ViewModels\OutputPathUCVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
@@ -99,6 +100,9 @@
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\DropFileUC.xaml.cs">
       <DependentUpon>DropFileUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EncryptionUC.xaml.cs">
+      <DependentUpon>EncryptionUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Helpers\DropFileAssistant.cs" />
     <Compile Include="Views\Helpers\PasswordBoxAssistant.cs" />
@@ -112,6 +116,10 @@
       <DependentUpon>StatusBarUC.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\DropFileUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EncryptionUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -179,6 +187,12 @@
     <Folder Include="Controls\" />
     <Folder Include="Localization\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SudkuStegoSystem.Logic\SudkuStegoSystem.Logic.csproj">
+      <Project>{9F6798F2-36E3-426B-BB80-4A9B3C4132C5}</Project>
+      <Name>SudkuStegoSystem.Logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
