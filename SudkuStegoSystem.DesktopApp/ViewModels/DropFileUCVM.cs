@@ -4,13 +4,11 @@ using GongSolutions.Wpf.DragDrop;
 using SudkuStegoSystem.DesktopApp.Services;
 using SudkuStegoSystem.Logic.Abstract;
 using System;
-using System.IO;
 using System.Linq;
 using System.Windows;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
-
     public class DropFileUCVM : ViewModelBase, IDropTarget
     {
         private readonly IFileDialogService _fileDialogService;
@@ -22,7 +20,6 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
         public DropFileUCVM(IFileDialogService fileDialogService, FileTypeConstraints fileTypeConstraints)
         {
             _fileTypeConstraints = fileTypeConstraints;
-
             _fileDialogService = fileDialogService;
             OpenFileCommand = new RelayCommand(OpenFile);
         }
@@ -38,11 +35,6 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             }
         }
 
-        ////ToDo improve AllowedExtensions and file dialog filters
-        ////By default all extensions are allowed
-        ////public string[] AllowedExtensions => new string[] { ".jpg" };
-        //public string[] AllowedExtensions { get; set; }
-
         public bool IsFilePathProvided => !string.IsNullOrEmpty(FilePath);
 
         public string FilePath
@@ -51,6 +43,11 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
             protected set
             {
+                if (string.IsNullOrEmpty(value))
+                {
+                    return;
+                }
+
                 if (_fileTypeConstraints.IsFileExtensionAllowed(value))
                 {
                     _filePath = value;
@@ -59,7 +56,6 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
                 }
 
                 throw new InvalidOperationException("wrong file type!");
-                //ToDo show message or smth
             }
         }
 

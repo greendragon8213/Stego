@@ -1,5 +1,4 @@
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
@@ -20,7 +19,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainVM()
+        public MainVM(EncryptionUCVM encryptionUCVM, DecryptionUCVM decryptionUCVM)
         {
             ////if (IsInDesignMode)
             ////{
@@ -30,18 +29,12 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             ////{
             ////    // Code runs "for real"
             ////}
-            EncryptCommand = new RelayCommand(Encrypt);
+
+            EncryptionUCVM = encryptionUCVM;
+            DecryptionUCVM = decryptionUCVM;
         }
         
-        public RelayCommand EncryptCommand
-        {
-            get; set;
-        }
-
-        private void Encrypt()
-        {
-            //ToDo customization            
-        }
-
+        public EncryptionUCVM EncryptionUCVM { get; }
+        public DecryptionUCVM DecryptionUCVM { get; }
     }
 }

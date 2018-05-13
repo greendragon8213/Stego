@@ -27,17 +27,14 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             }
         }
         
-        public RelayCommand OpenCommand
-        {
-            get; set;
-        }
+        public RelayCommand OpenCommand { get; set; }
 
         #region Private methods
 
         private void OpenFile()
         {
-            //ToDo customization
-            Path = _fileDialogService.OpenFileDialog("Folders |*");            
+            //ToDo folder dialog
+            Path = _fileDialogService.OpenFileDialog("Folders |*", Path);            
         }
 
         #endregion

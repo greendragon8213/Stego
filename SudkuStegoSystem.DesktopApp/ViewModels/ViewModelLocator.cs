@@ -28,13 +28,13 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
     /// </summary>
     public class ViewModelLocator
     {
-        private readonly string _defaultPath = Environment.SpecialFolder.MyDocuments.ToString();
+        private readonly string _defaultPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
         /// </summary>
         public ViewModelLocator()
         {
-            //all this things are singletons. Need to fix that
+            //all this things are singletons.
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             SimpleIoc.Default.Register<IFileDialogService, FileDialogService>();
@@ -43,14 +43,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             SimpleIoc.Default.Register<SudokuMatrixFactory>();
             SimpleIoc.Default.Register<IStegoSystem, SudokuStegoSystem>();
 
-            SimpleIoc.Default.Register<EncryptionUCVM>();
-
-            SimpleIoc.Default.Unregister<OutputPathUCVM>();
-            SimpleIoc.Default.Register(() => new OutputPathUCVM(_defaultPath, SimpleIoc.Default.GetInstance<IFileDialogService>()));
-            
             SimpleIoc.Default.Register<StatusBarUCVM>();
-            SimpleIoc.Default.Register<PasswordUCVM>();
-            SimpleIoc.Default.Register<MainVM>();
         }
 
         public EncryptionUCVM EncryptionUCVM
@@ -67,17 +60,36 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
                     stegoSystem.ContainerFileConstraints)
                 { FileType = (stegoSystem.ContainerFileConstraints.FileType == Logic.FileTypes.Images) ? FileTypes.Image : FileTypes.File };
 
-                OutputPathUCVM outputPathVM = ServiceLocator.Current.GetInstance<OutputPathUCVM>();
-                PasswordUCVM passwordVM = ServiceLocator.Current.GetInstance<PasswordUCVM>();
+                OutputPathUCVM outputPathVM = OutputPathUCVM;//ServiceLocator.Current.GetInstance<OutputPathUCVM>();
+                PasswordUCVM passwordVM = PasswordUCVM;//ServiceLocator.Current.GetInstance<PasswordUCVM>();
 
                 return new EncryptionUCVM(stegoSystem, dropSecretFileVM, dropContainerFileVM, outputPathVM, passwordVM);
             }
         }
 
+        public DecryptionUCVM DecryptionUCVM
+        {
+            get
+            {
+                IStegoSystem stegoSystem = ServiceLocator.Current.GetInstance<IStegoSystem>();
+
+                DropFileUCVM dropStegoContainerFileVM = new DropFileUCVM(ServiceLocator.Current.GetInstance<IFileDialogService>(),
+                    stegoSystem.StegoContainerFileConstraints)
+                { FileType = (stegoSystem.StegoContainerFileConstraints.FileType == Logic.FileTypes.Images) ? FileTypes.Image : FileTypes.File };
+
+                OutputPathUCVM outputPathVM = OutputPathUCVM;//ServiceLocator.Current.GetInstance<OutputPathUCVM>();
+                PasswordUCVM passwordVM = PasswordUCVM;//ServiceLocator.Current.GetInstance<PasswordUCVM>();
+
+                return new DecryptionUCVM(stegoSystem, dropStegoContainerFileVM, outputPathVM, passwordVM);
+            }
+        }
+
         public StatusBarUCVM StatusBarUCVM => ServiceLocator.Current.GetInstance<StatusBarUCVM>();
-        public PasswordUCVM PasswordUCVM => ServiceLocator.Current.GetInstance<PasswordUCVM>();
-        public OutputPathUCVM OutputPathUCVM => ServiceLocator.Current.GetInstance<OutputPathUCVM>();
-        public MainVM MainVM => ServiceLocator.Current.GetInstance<MainVM>();
+
+        public PasswordUCVM PasswordUCVM => new PasswordUCVM();
+        public OutputPathUCVM OutputPathUCVM => new OutputPathUCVM(_defaultPath, SimpleIoc.Default.GetInstance<IFileDialogService>());
+
+        public MainVM MainVM => new MainVM(EncryptionUCVM, DecryptionUCVM);
 
         public static void Cleanup()
         {
