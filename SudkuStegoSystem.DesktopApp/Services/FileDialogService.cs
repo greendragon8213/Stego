@@ -4,18 +4,18 @@
     {       
         public string OpenFileDialog(string filter, string defaultPath = "")
         {
-            var ofd = new Microsoft.Win32.OpenFileDialog()
+            var dialog = new Microsoft.Win32.OpenFileDialog()
             {
                 Filter = filter,
                 InitialDirectory = defaultPath           
             };
 
-            var result = ofd.ShowDialog();
+            var result = dialog.ShowDialog();
             
             if (result == false)
                 return string.Empty;
 
-            return ofd.FileName;
+            return dialog.FileName;
         }
     }
 }

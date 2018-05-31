@@ -38,6 +38,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             SimpleIoc.Default.Register<IFileDialogService, FileDialogService>();
+            SimpleIoc.Default.Register<IFolderDialogService, FolderDialogService>();
 
             SimpleIoc.Default.Register<ISudokuStegoMethod, SudokuStegoMethod_256>();
             SimpleIoc.Default.Register<SudokuMatrixFactory>();
@@ -87,7 +88,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
         public StatusBarUCVM StatusBarUCVM => ServiceLocator.Current.GetInstance<StatusBarUCVM>();
 
         public PasswordUCVM PasswordUCVM => new PasswordUCVM();
-        public OutputPathUCVM OutputPathUCVM => new OutputPathUCVM(_defaultPath, SimpleIoc.Default.GetInstance<IFileDialogService>());
+        public OutputPathUCVM OutputPathUCVM => new OutputPathUCVM(_defaultPath, SimpleIoc.Default.GetInstance<IFolderDialogService>());
 
         public MainVM MainVM => new MainVM(EncryptionUCVM, DecryptionUCVM);
 

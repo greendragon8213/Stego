@@ -6,14 +6,14 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
     public class OutputPathUCVM : ViewModelBase
     {
-        private readonly IFileDialogService _fileDialogService = new FileDialogService();
+        private readonly IFolderDialogService _folderDialogService;
         private string _path;
         
-        public OutputPathUCVM(string defaultPath, IFileDialogService fileDialogService)
+        public OutputPathUCVM(string defaultPath, IFolderDialogService folderDialogService)
         {
             Path = defaultPath;
-            _fileDialogService = fileDialogService;
-            OpenCommand = new RelayCommand(OpenFile);
+            _folderDialogService = folderDialogService;
+            OpenCommand = new RelayCommand(OpenFolder);
         }
 
         public string Path
@@ -31,10 +31,9 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
         #region Private methods
 
-        private void OpenFile()
+        private void OpenFolder()
         {
-            //ToDo folder dialog
-            Path = _fileDialogService.OpenFileDialog("Folders |*", Path);            
+            Path = _folderDialogService.OpenFolderDialog();            
         }
 
         #endregion

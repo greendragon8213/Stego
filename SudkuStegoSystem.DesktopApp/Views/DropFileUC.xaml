@@ -38,8 +38,14 @@
                     <VisualBrush Visual="{StaticResource ImageIcon}" Stretch="Fill" />
                 </Rectangle.OpacityMask>
             </Rectangle>
-            <!--ToDo implement rectangle for File-->
-            
+            <Rectangle Visibility="{c:Binding '(FileType==local:FileTypes.File)', FalseToVisibility=Collapsed}" 
+                       Width="65" Height="80" 
+                       Style="{StaticResource DropFileRectangle}">
+                <Rectangle.OpacityMask>
+                    <VisualBrush Visual="{StaticResource FileIcon}" Stretch="Fill" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+
         </StackPanel>
     </Button>
 
