@@ -16,7 +16,11 @@
         WindowTransitionsEnabled="False"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        <TabControl >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0">
             <TabItem Header="Encryption">
                 <views:EncryptionUC DataContext="{Binding EncryptionUCVM}">                    
                 </views:EncryptionUC>                
@@ -26,5 +30,8 @@
                 </views:DecryptionUC>
             </TabItem>
         </TabControl>
+        <views:StatusBarUC Grid.Row="1" Margin="10  2"  Width="{c:Binding '(ActualWidth)'}" Height="Auto" 
+                           DataContext="{Binding StatusBarUCVM, Source={StaticResource Locator}}">
+        </views:StatusBarUC>
     </Grid>
 </Controls:MetroWindow>

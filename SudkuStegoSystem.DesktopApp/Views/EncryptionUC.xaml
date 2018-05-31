@@ -21,7 +21,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
@@ -73,10 +72,5 @@
         </views:PasswordUC>
 
         <Button Command="{Binding EncryptCommand}" Style="{StaticResource AccentedSquareButtonStyle}" Content="Encrypt" HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Bottom" Width="75" Grid.Row="3"/>
-
-        <views:StatusBarUC Grid.Row="4" Margin="10  2"  Width="{c:Binding '(ActualWidth)'}" Height="Auto" 
-                           DataContext="{Binding StatusBarUCVM, Source={StaticResource Locator}}">
-            <!--ToDo this DataContext">-->
-        </views:StatusBarUC>
     </Grid>
 </UserControl>

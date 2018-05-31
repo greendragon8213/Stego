@@ -43,8 +43,6 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             SimpleIoc.Default.Register<ISudokuStegoMethod, SudokuStegoMethod_256>();
             SimpleIoc.Default.Register<SudokuMatrixFactory>();
             SimpleIoc.Default.Register<IStegoSystem, SudokuStegoSystem>();
-
-            SimpleIoc.Default.Register<StatusBarUCVM>();
         }
 
         public EncryptionUCVM EncryptionUCVM
@@ -85,7 +83,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             }
         }
 
-        public StatusBarUCVM StatusBarUCVM => ServiceLocator.Current.GetInstance<StatusBarUCVM>();
+        public StatusBarUCVM StatusBarUCVM => StatusBarUCVM.GetInstance();
 
         public PasswordUCVM PasswordUCVM => new PasswordUCVM();
         public OutputPathUCVM OutputPathUCVM => new OutputPathUCVM(_defaultPath, SimpleIoc.Default.GetInstance<IFolderDialogService>());
