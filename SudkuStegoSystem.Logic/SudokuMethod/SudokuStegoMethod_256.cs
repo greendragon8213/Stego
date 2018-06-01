@@ -16,7 +16,6 @@ namespace SudkuStegoSystem.Logic
     /// </summary>
     public class SudokuStegoMethod_256 : ISudokuStegoMethod
     {
-        //ToDo add usage of this methods here!
         public FileTypeConstraints ContainerFileConstraints => new ContainerFileTypeConstraints();
         public FileTypeConstraints StegoContainerFileConstraints => new StegoContainerFileTypeConstraints();
         public FileTypeConstraints SecretFileConstraints => new SecretFileTypeConstraints();
@@ -27,6 +26,16 @@ namespace SudkuStegoSystem.Logic
         {
             ValidateSudoku(sudokuKey);
 
+            if (!ContainerFileConstraints.IsFileExtensionAllowed(container.GetImageExtension()))
+            {
+                throw new ArgumentException("Container file extension not allowed", nameof(container));
+            }
+
+            if (!SecretFileConstraints.IsFileExtensionAllowedByPath(secretFile.FileName))
+            {
+                throw new ArgumentException("Secret file extension not allowed", nameof(secretFile));
+            }
+
             Tuple<byte[], BitmapData> cover = container.GetByteArrayByImageFile(ImageLockMode.ReadWrite);
             byte[] coverBytes = cover.Item1;
             BitmapData coverBitmap = cover.Item2;
@@ -34,7 +43,7 @@ namespace SudkuStegoSystem.Logic
 
             if (secretData.Length * 2 >= coverBytes.Length)
             {
-                throw new ArgumentException("Cannot encrypt secret data because cover image is too small.");
+                throw new InvalidOperationException("Cannot encrypt secret data because container image is too small.");
             }
 
             #region Embedding secret data into the container
@@ -66,6 +75,11 @@ namespace SudkuStegoSystem.Logic
         {
             ValidateSudoku(sudokuKey);
 
+            if (!StegoContainerFileConstraints.IsFileExtensionAllowed(stegocontainer.GetImageExtension()))
+            {
+                throw new ArgumentException("Stegocontainer file extension not allowed", nameof(stegocontainer));
+            }
+            
             Tuple<byte[], BitmapData> stego = stegocontainer.GetByteArrayByImageFile(ImageLockMode.ReadOnly);
             byte[] stegoBytes = stego.Item1;
             BitmapData stegoBitmap = stego.Item2;

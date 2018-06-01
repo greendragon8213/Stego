@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using SudkuStegoSystem.Logic.Abstract;
+using System;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
@@ -28,9 +29,18 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
         private void Decrypt()
         {
-            //ToDo validation
-            _stegoSystem.Decrypt(DropStegoContainerFileVM.FilePath, PasswordVM.Password, 
-                OutputPathVM.Path);            
+            try
+            {
+                _stegoSystem.Decrypt(DropStegoContainerFileVM.FilePath, PasswordVM.Password,
+                    OutputPathVM.Path);
+
+                StatusBarUCVM.UpdateStatus(text: "Decryption has been successfully done. Secret file is located: ", 
+                    localFilePath: OutputPathVM.Path, isErrorStatus: false);
+            }
+            catch (Exception e)
+            {
+                StatusBarUCVM.UpdateStatus(text: e.Message, isErrorStatus: true);
+            }
         }
     }
 }

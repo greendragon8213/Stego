@@ -48,7 +48,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
                     return;
                 }
 
-                if (_fileTypeConstraints.IsFileExtensionAllowed(value))
+                if (_fileTypeConstraints.IsFileExtensionAllowedByPath(value))
                 {
                     _filePath = value;
                     RaisePropertyChanged(nameof(IsFilePathProvided));
@@ -64,7 +64,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             var dragFileList = ((DataObject)dropInfo.Data).GetFileDropList().Cast<string>();
             var filePath = dragFileList.FirstOrDefault();
 
-            if (_fileTypeConstraints.IsFileExtensionAllowed(filePath))
+            if (_fileTypeConstraints.IsFileExtensionAllowedByPath(filePath))
             {
                 dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
                 dropInfo.Effects = DragDropEffects.Move;

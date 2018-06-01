@@ -16,7 +16,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
         }
 
         public static StatusBarUCVM GetInstance()
-        {            
+        {
             if (_instance == null)
             {
                 lock (_locker)
@@ -33,16 +33,19 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
         public static string Text { get; private set; }
         public static string LocalFilePath { get; private set; }
+        public static bool IsErrorStatus {get; private set;}
 
-        public static void UpdateStatus(string text, string localFilePath)
+        public static void UpdateStatus(string text, string localFilePath = "", bool isErrorStatus = false)
         {
             lock (_locker)
             {
                 Text = text;
                 LocalFilePath = localFilePath;
+                IsErrorStatus = isErrorStatus;
 
                 _instance.RaisePropertyChanged(nameof(Text));
                 _instance.RaisePropertyChanged(nameof(LocalFilePath));
+                _instance.RaisePropertyChanged(nameof(IsErrorStatus));
             }
         }
 

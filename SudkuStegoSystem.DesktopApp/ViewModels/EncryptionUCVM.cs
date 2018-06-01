@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using SudkuStegoSystem.Logic.Abstract;
+using System;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
@@ -30,9 +31,18 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
         private void Encrypt()
         {
-            //ToDo validation
-            _stegoSystem.Encrypt(DropContainerFileVM.FilePath, DropSecretFileVM.FilePath, PasswordVM.Password, 
-                OutputPathVM.Path);            
+            try
+            {
+                _stegoSystem.Encrypt(DropContainerFileVM.FilePath, DropSecretFileVM.FilePath, PasswordVM.Password,
+                    OutputPathVM.Path);
+
+                StatusBarUCVM.UpdateStatus(text: "Encryption has been successfully done. Stegocontainer is located: ",
+                        localFilePath: OutputPathVM.Path, isErrorStatus: false);
+            }
+            catch (Exception e)
+            {
+                StatusBarUCVM.UpdateStatus(text: e.Message, isErrorStatus: true);
+            }
         }
     }
 }

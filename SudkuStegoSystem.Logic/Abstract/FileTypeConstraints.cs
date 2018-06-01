@@ -12,10 +12,15 @@ namespace SudkuStegoSystem.Logic.Abstract
         public abstract FileTypes FileType { get; }
         public abstract string[] AllowedExtensions { get; }
 
-        public bool IsFileExtensionAllowed(string fileName)
+        public bool IsFileExtensionAllowedByPath(string filePath)
         {
-            var extension = Path.GetExtension(fileName);
+            var extension = Path.GetExtension(filePath);
 
+            return IsFileExtensionAllowed(extension);
+        }
+
+        public bool IsFileExtensionAllowed(string extension)
+        {            
             if (!string.IsNullOrEmpty(extension) && extension[0] == '.')
             {
                 extension = extension.Remove(0, 1);

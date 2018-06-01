@@ -12,7 +12,7 @@
         /// <summary>
         /// Embeds secret data (from secretDataFilePath file) into container with key
         /// </summary>
-        /// <param name="container"></param>
+        /// <param name="containerFilePath"></param>
         /// <param name="secretDataFilePath"></param>
         /// <param name="key"></param>
         /// <returns>Path to stogocontainer</returns>
