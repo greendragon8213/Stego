@@ -47,7 +47,7 @@ namespace SudkuStegoSystem.Logic
             }
 
             #region Embedding secret data into the container
-
+            
             for(int i = 0, secretDataIterator = 0; 
                 i + 1 < coverBytes.Length && secretDataIterator < secretData.Length; 
                 i += 2, secretDataIterator++)
