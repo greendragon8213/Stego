@@ -21,9 +21,11 @@ namespace SudkuStegoSystem.Logic.Models
             Payload = File.ReadAllBytes(filePath);
         }
 
-        public void Save(string destinationPath)
+        public string Save(string destinationPath)
         {
-            File.WriteAllBytes(Path.Combine(destinationPath, FileName), Payload);
+            string filePath = Path.Combine(destinationPath, FileName);
+            File.WriteAllBytes(filePath, Payload);
+            return filePath;
         }
     }
 }

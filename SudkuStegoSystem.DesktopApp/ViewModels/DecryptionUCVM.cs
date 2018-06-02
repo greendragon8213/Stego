@@ -31,11 +31,11 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
         {
             try
             {
-                _stegoSystem.Decrypt(DropStegoContainerFileVM.FilePath, PasswordVM.Password,
+                string filePath = _stegoSystem.Decrypt(DropStegoContainerFileVM.FilePath, PasswordVM.Password,
                     OutputPathVM.Path);
 
                 StatusBarUCVM.UpdateStatus(text: "Decryption has been successfully done. Secret file is located: ", 
-                    localFilePath: OutputPathVM.Path, isErrorStatus: false);
+                    localFilePath: filePath, isErrorStatus: false);
             }
             catch (Exception e)
             {

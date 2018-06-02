@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SudkuStegoSystem.Logic.Helpers
 {
@@ -67,48 +63,48 @@ namespace SudkuStegoSystem.Logic.Helpers
 
             return new Tuple<byte[], BitmapData>(bytes, bitmapData);
         }
-
+        
         public static string GetImageExtension(this Image image)
         {
             if (image.RawFormat.Equals(ImageFormat.Bmp))
             {
-                return "Bmp";
+                return "bmp";
             }
             else if (image.RawFormat.Equals(ImageFormat.MemoryBmp))
             {
-                return "BMP";
+                return "bmp";
             }
             else if (image.RawFormat.Equals(ImageFormat.Wmf))
             {
-                return "Emf";
+                return "emf";
             }
             else if (image.RawFormat.Equals(ImageFormat.Wmf))
             {
-                return "Wmf";
+                return "wmf";
             }
             else if (image.RawFormat.Equals(ImageFormat.Gif))
             {
-                return "Gif";
+                return "gif";
             }
             else if (image.RawFormat.Equals(ImageFormat.Jpeg))
             {
-                return "Jpeg";
+                return "jpeg";
             }
             else if (image.RawFormat.Equals(ImageFormat.Png))
             {
-                return "Png";
+                return "png";
             }
             else if (image.RawFormat.Equals(ImageFormat.Tiff))
             {
-                return "Tiff";
+                return "tiff";
             }
             else if (image.RawFormat.Equals(ImageFormat.Exif))
             {
-                return "Exif";
+                return "exif";
             }
             else if (image.RawFormat.Equals(ImageFormat.Icon))
             {
-                return "Ico";
+                return "ico";
             }
 
             return string.Empty;

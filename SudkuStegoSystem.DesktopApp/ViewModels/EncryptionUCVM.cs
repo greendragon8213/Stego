@@ -33,11 +33,11 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
         {
             try
             {
-                _stegoSystem.Encrypt(DropContainerFileVM.FilePath, DropSecretFileVM.FilePath, PasswordVM.Password,
+                string filePath = _stegoSystem.Encrypt(DropContainerFileVM.FilePath, DropSecretFileVM.FilePath, PasswordVM.Password,
                     OutputPathVM.Path);
 
                 StatusBarUCVM.UpdateStatus(text: "Encryption has been successfully done. Stegocontainer is located: ",
-                        localFilePath: OutputPathVM.Path, isErrorStatus: false);
+                        localFilePath: filePath, isErrorStatus: false);
             }
             catch (Exception e)
             {

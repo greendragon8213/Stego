@@ -28,7 +28,7 @@ namespace SudkuStegoSystem.Logic
             _sudokuMatrixFactory = sudokuMatrixFactory;
         }
         
-        public void Encrypt(string containerFilePath, string secretDataFilePath, string key, string pathToStegocontainer = null)
+        public string Encrypt(string containerFilePath, string secretDataFilePath, string key, string pathToStegocontainer = null)
         {
             #region checking arguments
 
@@ -57,7 +57,7 @@ namespace SudkuStegoSystem.Logic
                 throw new ArgumentException("Stegocontainer directory does not exist.");
             }
 
-            if (!Regex.Match(key, KeyRegex).Success)
+            if (string.IsNullOrEmpty(key) || !Regex.Match(key, KeyRegex).Success)
             {
                 throw new ArgumentException("Wrong key format.");
             }
@@ -103,8 +103,13 @@ namespace SudkuStegoSystem.Logic
 
             try
             {
-                string containerFileName = new FileInfo(containerFilePath).Name;
-                stegocontainer.Save(Path.Combine(pathToStegocontainer, containerFileName), ImageFormat.Bmp);
+                string stegocontainerFilePath = Path.Combine(pathToStegocontainer, new FileInfo(containerFilePath).Name);
+                ImageFormat stegoContainerFormat = ImageFormat.Bmp;
+
+                stegocontainerFilePath = Path.ChangeExtension(stegocontainerFilePath, stegoContainerFormat.ToString().ToLower());
+                stegocontainer.Save(stegocontainerFilePath, stegoContainerFormat);
+
+                return stegocontainerFilePath;
             }
             catch(Exception e)
             {
@@ -112,7 +117,7 @@ namespace SudkuStegoSystem.Logic
             }
         }
 
-        public void Decrypt(string stegocontainerFilePath, string key, string pathToRestoreFile = null)
+        public string Decrypt(string stegocontainerFilePath, string key, string pathToRestoreFile = null)
         {
             #region checking arguments
 
@@ -162,20 +167,20 @@ namespace SudkuStegoSystem.Logic
 
             try
             { 
-                secretFile.Save(pathToRestoreFile);
+                return secretFile.Save(pathToRestoreFile);
             }
             catch (Exception e)
             {
                 throw new Exception("Cannot save decrypted file. Try again.", e);
             }
         }
-
+        
         #region Private methods
 
         private SudokuMatrix GenerateSudokuKey(string password)
         {
             return _sudokuMatrixFactory.GetByPassword(_sudokuStegoMethod.GetExpectedSudokuSize(), password);
-        }
+        }        
 
         #endregion
     }

@@ -16,7 +16,7 @@
         /// <param name="secretDataFilePath"></param>
         /// <param name="key"></param>
         /// <returns>Path to stogocontainer</returns>
-        void Encrypt(string containerFilePath, string secretDataFilePath, string key, string stegocontainerFilePath = null);
+        string Encrypt(string containerFilePath, string secretDataFilePath, string key, string stegocontainerFilePath = null);
 
         /// <summary>
         /// Restores secret data from stegocontainer with key
@@ -24,6 +24,6 @@
         /// <param name="stegocontainer"></param>
         /// <param name="key"></param>
         /// <returns>Path to restored data</returns>
-        void Decrypt(string stegocontainerFilePath, string key, string restoredSecretFilePath = null);
+        string Decrypt(string stegocontainerFilePath, string key, string restoredSecretFilePath = null);
     }
 }
