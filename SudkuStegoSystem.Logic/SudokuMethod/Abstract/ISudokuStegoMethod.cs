@@ -12,7 +12,7 @@ namespace SudkuStegoSystem.Logic
 
         int GetExpectedSudokuSize();
 
-        Image Encrypt(Image container, SecretFile secretFile, SudokuMatrix sudokuKey);
-        SecretFile Decrypt(Image stegocontainer, SudokuMatrix sudokuKey);
+        Bitmap Encrypt(Bitmap container, SecretFile secretFile, SudokuMatrix sudokuKey);
+        SecretFile Decrypt(Bitmap stegocontainer, SudokuMatrix sudokuKey);
     }
 }

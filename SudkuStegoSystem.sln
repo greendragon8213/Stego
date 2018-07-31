@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudkuStegoSystem.DesktopApp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudkuStegoSystem.Tests", "SudkuStegoSystem.Tests\SudkuStegoSystem.Tests.csproj", "{6D692B94-728A-43E2-B92F-803A688992D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{FE4779B5-39C3-40BB-BF15-69BB88D8AEBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6D692B94-728A-43E2-B92F-803A688992D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D692B94-728A-43E2-B92F-803A688992D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D692B94-728A-43E2-B92F-803A688992D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE4779B5-39C3-40BB-BF15-69BB88D8AEBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE4779B5-39C3-40BB-BF15-69BB88D8AEBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE4779B5-39C3-40BB-BF15-69BB88D8AEBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE4779B5-39C3-40BB-BF15-69BB88D8AEBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

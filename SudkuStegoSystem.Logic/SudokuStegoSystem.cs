@@ -64,10 +64,10 @@ namespace SudkuStegoSystem.Logic
 
             #endregion
 
-            Image containerImage;
+            Bitmap containerBitmap;
             try
             {
-                containerImage = Image.FromFile(containerFilePath);
+                containerBitmap = new Bitmap(containerFilePath);
             }
             catch (Exception e)
             {
@@ -87,10 +87,10 @@ namespace SudkuStegoSystem.Logic
             SudokuMatrix sudokuKey;
             sudokuKey = GenerateSudokuKey(key);
 
-            Image stegocontainer;
+            Bitmap stegocontainer;
             try
             {
-                stegocontainer = _sudokuStegoMethod.Encrypt(containerImage, secretFileToEncode, sudokuKey);
+                stegocontainer = _sudokuStegoMethod.Encrypt(containerBitmap, secretFileToEncode, sudokuKey);
             }
             catch (InvalidOperationException)
             {
@@ -143,10 +143,10 @@ namespace SudkuStegoSystem.Logic
 
             #endregion
 
-            Image stegocontainerImage;
+            Bitmap stegocontainerBitmap;
             try
             {
-                stegocontainerImage = Image.FromFile(stegocontainerFilePath);
+                stegocontainerBitmap = new Bitmap(stegocontainerFilePath);
             }
             catch (Exception e)
             {
@@ -158,7 +158,7 @@ namespace SudkuStegoSystem.Logic
             SecretFile secretFile;
             try
             {
-                secretFile = _sudokuStegoMethod.Decrypt(stegocontainerImage, sudokuKey);
+                secretFile = _sudokuStegoMethod.Decrypt(stegocontainerBitmap, sudokuKey);
             }
             catch (Exception e)
             {

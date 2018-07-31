@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 using SudkuStegoSystem.Logic.Helpers;
 using SudkuStegoSystem.Logic.Models;
 using SudkuStegoSystem.Logic.Abstract;
@@ -22,7 +21,7 @@ namespace SudkuStegoSystem.Logic
 
         public int GetExpectedSudokuSize() => 256;
 
-        public Image Encrypt(Image container, SecretFile secretFile, SudokuMatrix sudokuKey)
+        public Bitmap Encrypt(Bitmap container, SecretFile secretFile, SudokuMatrix sudokuKey)
         {
             ValidateSudoku(sudokuKey);
 
@@ -46,32 +45,14 @@ namespace SudkuStegoSystem.Logic
                 throw new InvalidOperationException("Cannot encrypt secret data because container image is too small.");
             }
 
-            #region Embedding secret data into the container
+            EmbedSecretBytesToContainer(coverBytes, secretData, sudokuKey);
             
-            for(int i = 0, secretDataIterator = 0; 
-                i + 1 < coverBytes.Length && secretDataIterator < secretData.Length; 
-                i += 2, secretDataIterator++)
-            {
-                byte currentByte = secretData[secretDataIterator];
-                SudokuCoordinates initialCoordinates = new SudokuCoordinates(coverBytes[i], coverBytes[i + 1]);
-                SudokuCoordinates nearestCoordinates = sudokuKey.FindNearestCoordinates(currentByte, initialCoordinates);
-
-                if(initialCoordinates != nearestCoordinates)
-                {
-                    coverBytes[i] = nearestCoordinates.X;
-                    coverBytes[i + 1] = nearestCoordinates.Y;
-                }
-            }
-            
-            #endregion
-            
-            Marshal.Copy(coverBytes, 0, coverBitmap.Scan0, coverBytes.Length);
-            container.UnlockBits(coverBitmap);
+            container.UpdateBitmapPayloadBytes(coverBytes, coverBitmap);
 
             return container;
         }
 
-        public SecretFile Decrypt(Image stegocontainer, SudokuMatrix sudokuKey)
+        public SecretFile Decrypt(Bitmap stegocontainer, SudokuMatrix sudokuKey)
         {
             ValidateSudoku(sudokuKey);
 
@@ -83,42 +64,10 @@ namespace SudkuStegoSystem.Logic
             Tuple<byte[], BitmapData> stego = stegocontainer.GetByteArrayByImageFile(ImageLockMode.ReadOnly);
             byte[] stegoBytes = stego.Item1;
             BitmapData stegoBitmap = stego.Item2;
-
-            #region Extracting secret data
-
-            //decode file length
-            var fileLengthValueInByteArray = new byte[4];
-            int stegoIterator = 0;
-            for (int i = 0; i < 4; stegoIterator += 2, i++)
-            {
-                fileLengthValueInByteArray[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
-            }
-
-            int secretFilePayloadLength = BitConverter.ToInt32(fileLengthValueInByteArray, 0);
-
-            // decode secret file name length (stored in a 1 byte)
-            int secretFileNameLength = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
-
-            //decode file name
-            byte[] fileNameBytes = new byte[secretFileNameLength];
-
-            stegoIterator += 2;
-            for (int i = 0; i < secretFileNameLength; stegoIterator += 2, i++)
-            {
-                fileNameBytes[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
-            }
-
-            string secretFileName = Encoding.ASCII.GetString(fileNameBytes, 0, fileNameBytes.Length);
-
-            //decode secret file payload
-            byte[] secretFilePayloadBytes = new byte[secretFilePayloadLength];
             
-            for (int i = 0; i < secretFilePayloadLength; stegoIterator += 2, i++)
-            {
-                secretFilePayloadBytes[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
-            }
-
-            #endregion
+            var secretData = ExtractSecretData(stegoBytes, sudokuKey);
+            string secretFileName = secretData.Item1;
+            byte[] secretFilePayloadBytes = secretData.Item2;
 
             stegocontainer.UnlockBits(stegoBitmap);
             return new SecretFile(secretFileName, secretFilePayloadBytes);          
@@ -153,10 +102,63 @@ namespace SudkuStegoSystem.Logic
             Buffer.BlockCopy(fileNameLength, 0, resultBytes, fileLength.Length, fileNameLength.Length);
             Buffer.BlockCopy(fileName, 0, resultBytes, fileLength.Length + fileNameLength.Length, fileName.Length);
             Buffer.BlockCopy(file.Payload, 0, resultBytes, fileLength.Length + fileNameLength.Length + fileName.Length, file.Payload.Length);
-
-            //Marshal.Copy(ditherBmpData.Scan0, ditherBytes, 0, ditherBytes.Length);
-
+            
             return resultBytes;
+        }
+
+        private void EmbedSecretBytesToContainer(byte[] containerBytes, byte[] secretBytes, SudokuMatrix sudokuKey)
+        {
+            for (int i = 0, secretDataIterator = 0;
+                i + 1 < containerBytes.Length && secretDataIterator < secretBytes.Length;
+                i += 2, secretDataIterator++)
+            {
+                byte currentByte = secretBytes[secretDataIterator];
+                SudokuCoordinates initialCoordinates = new SudokuCoordinates(containerBytes[i], containerBytes[i + 1]);
+                SudokuCoordinates nearestCoordinates = sudokuKey.FindNearestCoordinates(currentByte, initialCoordinates);
+
+                if (initialCoordinates != nearestCoordinates)
+                {
+                    containerBytes[i] = nearestCoordinates.X;
+                    containerBytes[i + 1] = nearestCoordinates.Y;
+                }
+            }
+        }
+
+        private Tuple<string, byte[]> ExtractSecretData(byte[] stegoBytes, SudokuMatrix sudokuKey)
+        {
+            //decode file length
+            var fileLengthValueInByteArray = new byte[4];
+            int stegoIterator = 0;
+            for (int i = 0; i < 4; stegoIterator += 2, i++)
+            {
+                fileLengthValueInByteArray[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
+            }
+
+            int secretFilePayloadLength = BitConverter.ToInt32(fileLengthValueInByteArray, 0);
+
+            // decode secret file name length (stored in a 1 byte)
+            int secretFileNameLength = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
+
+            //decode file name
+            byte[] fileNameBytes = new byte[secretFileNameLength];
+
+            stegoIterator += 2;
+            for (int i = 0; i < secretFileNameLength; stegoIterator += 2, i++)
+            {
+                fileNameBytes[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
+            }
+
+            string secretFileName = Encoding.ASCII.GetString(fileNameBytes, 0, fileNameBytes.Length);
+
+            //decode secret file payload
+            byte[] secretFilePayloadBytes = new byte[secretFilePayloadLength];
+
+            for (int i = 0; i < secretFilePayloadLength; stegoIterator += 2, i++)
+            {
+                secretFilePayloadBytes[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
+            }
+            
+            return new Tuple<string, byte[]>(secretFileName, secretFilePayloadBytes);
         }
 
         #endregion

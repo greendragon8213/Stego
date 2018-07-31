@@ -24,6 +24,111 @@ namespace SudkuStegoSystem.Tests
         }
 
         [Test]
+        public void Mono_fox()
+        {
+            //Arrange
+            string outputDirPath = Path.Combine(_tempDirectory, nameof(Mono_fox));
+            Directory.CreateDirectory(outputDirPath);
+
+            string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
+                "mono.bmp");
+
+            string secretPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
+                "4773.jpg");
+
+            string key = "123456";
+
+            IStegoSystem stegoSystem = new SudokuStegoSystem(new SudokuStegoMethod_256(), new SudokuMatrixFactory());
+
+            //Act 
+            string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, key, outputDirPath);
+            string restoredSecretPath = stegoSystem.Decrypt(stegocontainerPath, key, outputDirPath);
+
+            //Assert
+            //restored and initial secrets are equal
+            FileAssert.AreEqual(secretPath, restoredSecretPath);
+        }
+
+
+        [Test]
+        public void AllColors_adv_jpg()
+        {
+            //Arrange
+            string outputDirPath = Path.Combine(_tempDirectory, nameof(AllColors_adv_jpg));
+            Directory.CreateDirectory(outputDirPath);
+
+            string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
+                "allcolors.jpg");
+
+            string secretPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
+                "adv.jpg");
+
+            string key = "123456";
+
+            IStegoSystem stegoSystem = new SudokuStegoSystem(new SudokuStegoMethod_256(), new SudokuMatrixFactory());
+
+            //Act 
+            string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, key, outputDirPath);
+            string restoredSecretPath = stegoSystem.Decrypt(stegocontainerPath, key, outputDirPath);
+
+            //Assert
+            //restored and initial secrets are equal
+            FileAssert.AreEqual(secretPath, restoredSecretPath);
+        }
+
+        [Test]
+        public void AllColors_fox_jpg()
+        {
+            //Arrange
+            string outputDirPath = Path.Combine(_tempDirectory, nameof(AllColors_fox_jpg));
+            Directory.CreateDirectory(outputDirPath);
+
+            string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
+                "allcolors.jpg");
+
+            string secretPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
+                "4773.jpg");
+
+            string key = "123456";
+
+            IStegoSystem stegoSystem = new SudokuStegoSystem(new SudokuStegoMethod_256(), new SudokuMatrixFactory());
+
+            //Act 
+            string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, key, outputDirPath);
+            string restoredSecretPath = stegoSystem.Decrypt(stegocontainerPath, key, outputDirPath);
+
+            //Assert
+            //restored and initial secrets are equal
+            FileAssert.AreEqual(secretPath, restoredSecretPath);
+        }
+
+        [Test]
+        public void Fox_gecko_jpg()
+        {
+            //Arrange
+            string outputDirPath = Path.Combine(_tempDirectory, nameof(Fox_gecko_jpg));
+            Directory.CreateDirectory(outputDirPath);
+
+            string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
+                "4773.jpg");
+
+            string secretPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
+                "gecko_72.jpg");
+
+            string key = "123456";
+
+            IStegoSystem stegoSystem = new SudokuStegoSystem(new SudokuStegoMethod_256(), new SudokuMatrixFactory());
+
+            //Act 
+            string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, key, outputDirPath);
+            string restoredSecretPath = stegoSystem.Decrypt(stegocontainerPath, key, outputDirPath);
+
+            //Assert
+            //restored and initial secrets are equal
+            FileAssert.AreEqual(secretPath, restoredSecretPath);
+        }
+        
+        [Test]
         public void Lebowski_gecko_jpg()
         {
             //Arrange
