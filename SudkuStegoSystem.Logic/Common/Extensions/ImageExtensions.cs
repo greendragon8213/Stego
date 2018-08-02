@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace SudkuStegoSystem.Logic.Helpers
+namespace StegoSystem.GeneralLogic.Common
 {
     public static class ImageExtensions
     {

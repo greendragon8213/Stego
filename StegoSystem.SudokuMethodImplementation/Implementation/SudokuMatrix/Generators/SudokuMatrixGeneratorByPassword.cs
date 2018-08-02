@@ -1,6 +1,7 @@
-﻿namespace SudkuStegoSystem.Logic.SudokuMethod.SudokuMatrix
-{
+﻿using StegoSystem.SudokuMethodImplementation.Abstract;
 
+namespace StegoSystem.SudokuMethodImplementation.Matrix
+{
     public class SudokuMatrixGeneratorByPassword : SudokuMatrixGeneratorInitial, ISudokuMatrixGenerator
     {
         private readonly string _password;

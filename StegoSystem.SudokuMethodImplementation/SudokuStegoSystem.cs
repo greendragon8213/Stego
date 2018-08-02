@@ -1,13 +1,14 @@
-﻿using SudkuStegoSystem.Logic.Abstract;
-using SudkuStegoSystem.Logic.Models;
-using SudkuStegoSystem.Logic.SudokuMethod.SudokuMatrix;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text.RegularExpressions;
+using StegoSystem.GeneralLogic.Abstract;
+using StegoSystem.GeneralLogic.Models;
+using StegoSystem.SudokuMethodImplementation.Abstract;
+using StegoSystem.SudokuMethodImplementation.Matrix;
 
-namespace SudkuStegoSystem.Logic
+namespace StegoSystem.SudokuMethodImplementation
 {
     /// <summary>
     /// Represents adaptation of SudokuStegoMethod to general stegosystems interface

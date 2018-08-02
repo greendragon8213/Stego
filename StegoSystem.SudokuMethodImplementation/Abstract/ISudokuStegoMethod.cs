@@ -1,8 +1,9 @@
 ﻿using System.Drawing;
-using SudkuStegoSystem.Logic.Abstract;
-using SudkuStegoSystem.Logic.Models;
+using StegoSystem.GeneralLogic.Abstract;
+using StegoSystem.GeneralLogic.Models;
+using StegoSystem.SudokuMethodImplementation.Matrix;
 
-namespace SudkuStegoSystem.Logic
+namespace StegoSystem.SudokuMethodImplementation.Abstract
 {
     public interface ISudokuStegoMethod
     {

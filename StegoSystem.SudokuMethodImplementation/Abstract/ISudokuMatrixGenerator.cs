@@ -1,4 +1,4 @@
-﻿namespace SudkuStegoSystem.Logic.SudokuMethod.SudokuMatrix
+﻿namespace StegoSystem.SudokuMethodImplementation.Abstract
 {
     public interface ISudokuMatrixGenerator
     {

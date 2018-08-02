@@ -15,10 +15,11 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using SudkuStegoSystem.DesktopApp.Services;
-using SudkuStegoSystem.Logic;
-using SudkuStegoSystem.Logic.Abstract;
-using SudkuStegoSystem.Logic.SudokuMethod.SudokuMatrix;
+using StegoSystem.GeneralLogic.Abstract;
 using System;
+using StegoSystem.SudokuMethodImplementation.Abstract;
+using StegoSystem.SudokuMethodImplementation;
+using StegoSystem.SudokuMethodImplementation.Matrix;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
@@ -57,7 +58,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
                 DropFileUCVM dropContainerFileVM = new DropFileUCVM(ServiceLocator.Current.GetInstance<IFileDialogService>(),
                     stegoSystem.ContainerFileConstraints)
-                { FileType = (stegoSystem.ContainerFileConstraints.FileType == Logic.FileTypes.Images) ? FileTypes.Image : FileTypes.File };
+                { FileType = (stegoSystem.ContainerFileConstraints.FileType == StegoSystem.GeneralLogic.Common.FileTypes.Images) ? FileTypes.Image : FileTypes.File };
 
                 OutputPathUCVM outputPathVM = OutputPathUCVM;//ServiceLocator.Current.GetInstance<OutputPathUCVM>();
                 PasswordUCVM passwordVM = PasswordUCVM;//ServiceLocator.Current.GetInstance<PasswordUCVM>();
@@ -74,7 +75,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
                 DropFileUCVM dropStegoContainerFileVM = new DropFileUCVM(ServiceLocator.Current.GetInstance<IFileDialogService>(),
                     stegoSystem.StegoContainerFileConstraints)
-                { FileType = (stegoSystem.StegoContainerFileConstraints.FileType == Logic.FileTypes.Images) ? FileTypes.Image : FileTypes.File };
+                { FileType = (stegoSystem.StegoContainerFileConstraints.FileType == StegoSystem.GeneralLogic.Common.FileTypes.Images) ? FileTypes.Image : FileTypes.File };
 
                 OutputPathUCVM outputPathVM = OutputPathUCVM;//ServiceLocator.Current.GetInstance<OutputPathUCVM>();
                 PasswordUCVM passwordVM = PasswordUCVM;//ServiceLocator.Current.GetInstance<PasswordUCVM>();

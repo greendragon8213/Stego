@@ -1,9 +1,10 @@
-﻿using System;
+﻿using StegoSystem.GeneralLogic.Common;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace SudkuStegoSystem.Logic.Abstract
+namespace StegoSystem.GeneralLogic.Abstract
 {
     public abstract class FileTypeConstraints
     {

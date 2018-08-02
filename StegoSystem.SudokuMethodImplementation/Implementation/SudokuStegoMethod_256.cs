@@ -3,12 +3,14 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
-using SudkuStegoSystem.Logic.Helpers;
-using SudkuStegoSystem.Logic.Models;
-using SudkuStegoSystem.Logic.Abstract;
-using SudkuStegoSystem.Logic.SudokuMethod.FileConstraints;
+using StegoSystem.GeneralLogic.Models;
+using StegoSystem.GeneralLogic.Abstract;
+using StegoSystem.GeneralLogic.Common;
+using StegoSystem.SudokuMethodImplementation.Abstract;
+using StegoSystem.SudokuMethodImplementation.FileConstraints;
+using StegoSystem.SudokuMethodImplementation.Matrix;
 
-namespace SudkuStegoSystem.Logic
+namespace StegoSystem.SudokuMethodImplementation
 {
     /// <summary>
     /// Just encrypts and decrypts data

@@ -1,7 +1,6 @@
-﻿using SudkuStegoSystem.Logic.Models;
-using SudkuStegoSystem.Logic.SudokuMethod.SudokuMatrix;
+﻿using StegoSystem.SudokuMethodImplementation.Abstract;
 
-namespace SudkuStegoSystem.Logic
+namespace StegoSystem.SudokuMethodImplementation.Matrix
 {
     /// <summary>
     /// Does actions related to sudoku matrix

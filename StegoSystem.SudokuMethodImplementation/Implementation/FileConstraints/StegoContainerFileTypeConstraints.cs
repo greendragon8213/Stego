@@ -1,6 +1,7 @@
-﻿using SudkuStegoSystem.Logic.Abstract;
+﻿using StegoSystem.GeneralLogic.Abstract;
+using StegoSystem.GeneralLogic.Common;
 
-namespace SudkuStegoSystem.Logic.SudokuMethod.FileConstraints
+namespace StegoSystem.SudokuMethodImplementation.FileConstraints
 {
     public class StegoContainerFileTypeConstraints : FileTypeConstraints
     {

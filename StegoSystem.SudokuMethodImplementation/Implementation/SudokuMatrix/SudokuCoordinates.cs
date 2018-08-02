@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SudkuStegoSystem.Logic.Models
+namespace StegoSystem.SudokuMethodImplementation.Matrix
 {
     public class SudokuCoordinates : IEquatable<SudokuCoordinates>
     {

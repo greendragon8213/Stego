@@ -1,7 +1,7 @@
-﻿using SudkuStegoSystem.Logic.Models;
+﻿using StegoSystem.SudokuMethodImplementation.Abstract;
 using System;
 
-namespace SudkuStegoSystem.Logic
+namespace StegoSystem.SudokuMethodImplementation.Matrix
 {
     public class NearestCoordinatesFinder : INearestCoordinatesFinder
     {

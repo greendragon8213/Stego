@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using SudkuStegoSystem.Logic;
-using SudkuStegoSystem.Logic.Abstract;
-using SudkuStegoSystem.Logic.SudokuMethod.SudokuMatrix;
+using StegoSystem.GeneralLogic.Abstract;
+using StegoSystem.SudokuMethodImplementation;
+using StegoSystem.SudokuMethodImplementation.Matrix;
 using System.Diagnostics;
 using System.IO;
 

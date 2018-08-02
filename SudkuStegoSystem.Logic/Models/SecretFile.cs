@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace SudkuStegoSystem.Logic.Models
+namespace StegoSystem.GeneralLogic.Models
 {
     public class SecretFile
     {

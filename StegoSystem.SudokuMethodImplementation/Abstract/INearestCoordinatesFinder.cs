@@ -1,6 +1,6 @@
-﻿using SudkuStegoSystem.Logic.Models;
+﻿using StegoSystem.SudokuMethodImplementation.Matrix;
 
-namespace SudkuStegoSystem.Logic
+namespace StegoSystem.SudokuMethodImplementation.Abstract
 {
     public interface INearestCoordinatesFinder
     {

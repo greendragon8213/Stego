@@ -1,4 +1,4 @@
-﻿namespace SudkuStegoSystem.Logic.Abstract
+﻿namespace StegoSystem.GeneralLogic.Abstract
 {
     /// <summary>
     /// Represents stego system functionality in general

@@ -2,7 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using GongSolutions.Wpf.DragDrop;
 using SudkuStegoSystem.DesktopApp.Services;
-using SudkuStegoSystem.Logic.Abstract;
+using StegoSystem.GeneralLogic.Abstract;
 using System;
 using System.Linq;
 using System.Windows;

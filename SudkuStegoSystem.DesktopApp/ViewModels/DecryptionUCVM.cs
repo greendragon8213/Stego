@@ -1,6 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using SudkuStegoSystem.Logic.Abstract;
+using StegoSystem.GeneralLogic.Abstract;
 using System;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels

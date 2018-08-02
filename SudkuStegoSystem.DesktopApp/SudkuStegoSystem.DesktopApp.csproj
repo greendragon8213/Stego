@@ -202,9 +202,13 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SudkuStegoSystem.Logic\SudkuStegoSystem.Logic.csproj">
+    <ProjectReference Include="..\StegoSystem.SudokuMethodImplementation\StegoSystem.SudokuMethodImplementation.csproj">
+      <Project>{ABC6EC74-3C4E-4149-BBAB-6A2521C03707}</Project>
+      <Name>StegoSystem.SudokuMethodImplementation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SudkuStegoSystem.Logic\StegoSystem.GeneralLogic.csproj">
       <Project>{9F6798F2-36E3-426B-BB80-4A9B3C4132C5}</Project>
-      <Name>SudkuStegoSystem.Logic</Name>
+      <Name>StegoSystem.GeneralLogic</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

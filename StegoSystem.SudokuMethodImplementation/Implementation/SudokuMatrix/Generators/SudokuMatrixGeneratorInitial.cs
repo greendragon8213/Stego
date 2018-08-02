@@ -1,6 +1,7 @@
-﻿using System;
+﻿using StegoSystem.SudokuMethodImplementation.Abstract;
+using System;
 
-namespace SudkuStegoSystem.Logic.SudokuMethod.SudokuMatrix
+namespace StegoSystem.SudokuMethodImplementation.Matrix
 {
     public class SudokuMatrixGeneratorInitial : ISudokuMatrixGenerator
     {

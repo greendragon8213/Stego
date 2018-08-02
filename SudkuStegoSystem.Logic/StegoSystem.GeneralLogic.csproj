@@ -42,26 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\FileTypeConstraints.cs" />
-    <Compile Include="FileTypes.cs" />
+    <Compile Include="Common\Enums\FileTypes.cs" />
     <Compile Include="Abstract\IStegoSystem.cs" />
-    <Compile Include="SudokuMethod\FileConstraints\ContainerFileTypeConstraints.cs" />
-    <Compile Include="SudokuMethod\FileConstraints\SecretFileTypeConstraints.cs" />
-    <Compile Include="SudokuMethod\FileConstraints\StegoContainerFileTypeConstraints.cs" />
-    <Compile Include="SudokuMethod\Helpers\BitmapExtensions.cs" />
-    <Compile Include="SudokuMethod\Helpers\ImageExtensions.cs" />
-    <Compile Include="SudokuMethod\Abstract\INearestCoordinatesFinder.cs" />
+    <Compile Include="Common\Extensions\BitmapExtensions.cs" />
+    <Compile Include="Common\Extensions\ImageExtensions.cs" />
     <Compile Include="Models\SecretFile.cs" />
-    <Compile Include="SudokuMethod\Abstract\ISudokuStegoMethod.cs" />
-    <Compile Include="SudokuMethod\Models\SudokuCoordinates.cs" />
-    <Compile Include="SudokuMethod\Abstract\ISudokuMatrixGenerator.cs" />
-    <Compile Include="SudokuMethod\SudokuMatrix\CoordinatesFinders\NearestCoordinatesFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SudokuMethod\SudokuMatrix\Generators\SudokuMatrixGeneratorInitial.cs" />
-    <Compile Include="SudokuMethod\SudokuMatrix\Generators\SudokuMatrixGeneratorByPassword.cs" />
-    <Compile Include="SudokuMethod\SudokuMatrix\SudokuMatrixFactory.cs" />
-    <Compile Include="SudokuMethod\SudokuStegoMethod_256.cs" />
-    <Compile Include="SudokuStegoSystem.cs" />
-    <Compile Include="SudokuMethod\SudokuMatrix\SudokuMatrix.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

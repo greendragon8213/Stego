@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace SudkuStegoSystem.Logic.Helpers
+namespace StegoSystem.GeneralLogic.Common
 {
     public static class BitmapExtensions
     {
