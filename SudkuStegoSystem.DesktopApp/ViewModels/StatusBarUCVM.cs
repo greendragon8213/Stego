@@ -34,7 +34,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
         public string Text { get; private set; }
         public string LocalFilePath { get; private set; }
         public bool IsErrorStatus {get; private set;}
-
+        
         public static void UpdateStatus(string text, string localFilePath = "", bool isErrorStatus = false)
         {
             lock (_locker)

@@ -44,5 +44,74 @@
         <Setter Property="Height" Value="150"/>
         <Setter Property="Orientation" Value="Vertical"/>
     </Style>
+     
+    
+    
+    
+    
+    
+    
+    <Style 
+        TargetType="DockPanel" 
+        x:Key="StatusBarDockPanel">
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsErrorStatus}" Value="True">
+                <Setter Property="Background" Value="{DynamicResource CleanWindowCloseButtonBackgroundBrush}"/> <!--ValidationSummaryColor1-->
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsErrorStatus}" Value="False">
+                <Setter Property="Background" Value="{DynamicResource AccentColorBrush}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style 
+        TargetType="StackPanel" 
+        x:Key="StatusBarStackPanel">
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Margin" Value="3"/>
+    </Style>
+
+    <Style 
+        TargetType="TextBlock" 
+        x:Key="StatusBarTextBlock">
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        
+        <Setter Property="Foreground" Value="{DynamicResource ValidationTextBrush}"/>
+
+        <Style.Triggers>
+            <!--<DataTrigger Binding="{Binding IsErrorStatus}" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource ValidationSummaryColor1}"/>                
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsErrorStatus}" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource ValidationTextBrush}"/>
+            </DataTrigger>-->
+
+            <Trigger Property="Text" Value="">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="Text" Value="{x:Null}">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style 
+        TargetType="Hyperlink" 
+        x:Key="StatusBarHyperlink">
+        <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+
+        <Setter Property="Foreground" Value="{DynamicResource ValidationTextBrush}"/>
+        <Style.Triggers>
+            <!--<DataTrigger Binding="{Binding IsErrorStatus}" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource ValidationSummaryColor1}"/>                
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsErrorStatus}" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource ValidationTextBrush}"/>
+            </DataTrigger>-->
+        </Style.Triggers>
+    </Style>
 
 </ResourceDictionary>

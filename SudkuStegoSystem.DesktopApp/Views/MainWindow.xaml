@@ -18,7 +18,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TabControl Grid.Row="0">
             <TabItem Header="Encryption">
@@ -30,7 +30,9 @@
                 </views:DecryptionUC>
             </TabItem>
         </TabControl>
-        <views:StatusBarUC Grid.Row="1" Margin="10  2"  Width="{c:Binding '(ActualWidth)'}" Height="Auto" 
+        
+        <views:StatusBarUC Grid.Row="1" Width="{c:Binding '(ActualWidth)'}" Height="Auto" 
+                           VerticalAlignment="Bottom" 
                            DataContext="{Binding StatusBarUCVM, Source={StaticResource Locator}}">
         </views:StatusBarUC>
     </Grid>

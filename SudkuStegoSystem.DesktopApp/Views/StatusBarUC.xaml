@@ -5,16 +5,38 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SudkuStegoSystem.DesktopApp"
              mc:Ignorable="d" 
-                          
+                         
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:vms="clr-namespace:SudkuStegoSystem.DesktopApp.ViewModels"             
              d:DataContext="{d:DesignInstance vms:StatusBarUCVM, IsDesignTimeCreatable=False}">
 
-    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-        <TextBlock TextWrapping="Wrap" Text="{Binding Path=Text, Mode=OneWay}"></TextBlock>
-        <TextBlock>
-            <Hyperlink Command="{Binding ShowLocalFileInExplorerCommand}" CommandParameter="{Binding}">
-                <TextBlock TextWrapping="Wrap" Text="{Binding Path=LocalFilePath, Mode=OneWay}"/>
-            </Hyperlink>
-        </TextBlock>        
-    </StackPanel>
+    <DockPanel VerticalAlignment="Bottom" Style="{StaticResource StatusBarDockPanel}">
+
+        <!--<StatusBar DockPanel.Dock="Bottom" Style="{StaticResource StatusBar1}">-->
+        <StackPanel DockPanel.Dock="Bottom" Style="{StaticResource StatusBarStackPanel}">
+            <TextBlock Style="{StaticResource StatusBarTextBlock}" Text="{Binding Path=Text, Mode=OneWay}"></TextBlock>
+            <TextBlock>
+                <TextBlock.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding LocalFilePath}" Value="{x:Static sys:String.Empty}">
+                                <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding LocalFilePath}" Value="{x:Null}">
+                                <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+                <Hyperlink Command="{Binding ShowLocalFileInExplorerCommand}" CommandParameter="{Binding}"
+                           Style="{StaticResource StatusBarHyperlink}">
+                    <TextBlock Text="{Binding Path=LocalFilePath, Mode=OneWay}"/>
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+        <!--</StatusBar>-->
+        
+    </DockPanel>
+
 </UserControl>
