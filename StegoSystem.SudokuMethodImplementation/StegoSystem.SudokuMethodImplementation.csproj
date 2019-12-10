@@ -41,6 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IInvariantTransforation.cs" />
+    <Compile Include="Implementation\SudokuMatrix\InvariantTransformations\SwapColumnsInsideVerticalRegionInvariantTransforation.cs" />
+    <Compile Include="Implementation\SudokuMatrix\InvariantTransformations\SwapHorizontalRegionsInvariantTransforation.cs" />
+    <Compile Include="Implementation\SudokuMatrix\InvariantTransformations\SwapRowsInsideHorizontalRegionInvariantTransforation.cs" />
+    <Compile Include="Implementation\SudokuMatrix\InvariantTransformations\SwapVerticalRegionsInvariantTransforation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Abstract\INearestCoordinatesFinder.cs" />
     <Compile Include="Abstract\ISudokuMatrixGenerator.cs" />
@@ -63,5 +68,6 @@
       <Name>StegoSystem.GeneralLogic</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
