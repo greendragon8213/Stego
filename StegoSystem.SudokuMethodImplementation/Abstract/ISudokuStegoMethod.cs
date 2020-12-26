@@ -5,7 +5,7 @@ using StegoSystem.SudokuMethodImplementation.Matrix;
 
 namespace StegoSystem.SudokuMethodImplementation.Abstract
 {
-    public interface ISudokuStegoMethod
+    public interface ISudokuStegoMethod<T>
     {
         FileTypeConstraints ContainerFileConstraints { get; }
         FileTypeConstraints StegoContainerFileConstraints { get; }
@@ -13,7 +13,7 @@ namespace StegoSystem.SudokuMethodImplementation.Abstract
 
         int GetExpectedSudokuSize();
 
-        Bitmap Encrypt(Bitmap container, SecretFile secretFile, SudokuMatrix sudokuKey);
-        SecretFile Decrypt(Bitmap stegocontainer, SudokuMatrix sudokuKey);
+        Bitmap Encrypt(Bitmap container, SecretFile secretFile, SudokuMatrix<T> sudokuKey);
+        SecretFile Decrypt(Bitmap stegocontainer, SudokuMatrix<T> sudokuKey);
     }
 }

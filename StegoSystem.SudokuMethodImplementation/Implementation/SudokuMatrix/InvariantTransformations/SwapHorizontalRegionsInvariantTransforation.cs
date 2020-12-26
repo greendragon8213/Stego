@@ -1,14 +1,9 @@
 ﻿using StegoSystem.SudokuMethodImplementation.Abstract;
-using StegoSystem.SudokuMethodImplementation.Matrix;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StegoSystem.SudokuMethodImplementation.Matrix
 {
-    public class SwapHorizontalRegionsInvariantTransforation : IInvariantTransforation
+    public class SwapHorizontalRegionsInvariantTransforation<T> : IInvariantTransforation<T>
     {
         public int IndexesLength => 2;
 
@@ -18,7 +13,7 @@ namespace StegoSystem.SudokuMethodImplementation.Matrix
         /// </summary>
         /// <param name="matrix"></param>
         /// <param name="indexes"></param>
-        public void Transform(ref SudokuMatrix matrix, params int[] indexes)
+        public void Transform(ref SudokuMatrix<T> matrix, params int[] indexes)
         {
             if (matrix == null || indexes.Length != IndexesLength)
                 throw new ArgumentException();

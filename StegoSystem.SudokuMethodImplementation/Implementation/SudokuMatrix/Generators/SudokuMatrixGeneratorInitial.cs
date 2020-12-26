@@ -3,22 +3,21 @@ using System;
 
 namespace StegoSystem.SudokuMethodImplementation.Matrix
 {
-    public class SudokuMatrixGeneratorInitial : ISudokuMatrixGenerator
+    /// <summary>
+    /// Creates new default (simples) sudoky matrix 
+    /// </summary>
+    /// <typeparam name="T">matrix element type</typeparam>
+    public class SudokuMatrixGeneratorInitial<T> : ISudokuMatrixGenerator<T>
     {
-        public int MatrixSize { get; }
+        private IConverterFromInt<T> _converter = ConverterFactory.GetConverter<T>();
 
-        public SudokuMatrixGeneratorInitial(int size)
+        public virtual T[,] Generate(int size)
         {
-            MatrixSize = size;
-        }
+            T[,] sudokuMatrix = new T[size, size];
+            int smallBlockSize = (int)Math.Sqrt(size);
 
-        public virtual byte[,] Generate()
-        {
-            byte[,] sudokuMatrix = new byte[MatrixSize, MatrixSize];
-            int smallBlockSize = (int)Math.Sqrt(MatrixSize);
-
-            int[] initial = new int[MatrixSize];
-            for (int j = 0; j < MatrixSize; j++)
+            int[] initial = new int[size];
+            for (int j = 0; j < size; j++)
             {
                 initial[j] = j;
             }
@@ -28,15 +27,15 @@ namespace StegoSystem.SudokuMethodImplementation.Matrix
             {
                 int offset = i * smallBlockSize;
 
-                for (int j = 0; j < MatrixSize; j++)
+                for (int j = 0; j < size; j++)
                 {
-                    if (j + offset < MatrixSize)
+                    if (j + offset < size)
                     {
-                        sudokuMatrix[i, j] = (byte)(offset + j);
+                        sudokuMatrix[i, j] = _converter.Convert(offset + j);
                     }
                     else
                     {
-                        sudokuMatrix[i, j] = (byte)(-MatrixSize + (offset + j));
+                        sudokuMatrix[i, j] = _converter.Convert(-size + (offset + j));
                     }
                 }
             }
@@ -44,15 +43,15 @@ namespace StegoSystem.SudokuMethodImplementation.Matrix
             //fill by offset
             for (int k = 1; k < smallBlockSize; k++)
             {
-                for (int i = 0; i < MatrixSize; i++)
+                for (int i = 0; i < size; i++)
                 {
                     int offset = k * smallBlockSize;
 
                     for (int j = 0; j < smallBlockSize; j++)
                     {
-                        if (j + offset < MatrixSize)
+                        if (j + offset < size)
                         {
-                            if (i + 1 < MatrixSize)
+                            if (i + 1 < size)
                             {
                                 sudokuMatrix[j + offset, i] = sudokuMatrix[j + offset - smallBlockSize, i + 1];
                             }

@@ -2,8 +2,8 @@
 
 namespace StegoSystem.SudokuMethodImplementation.Abstract
 {
-    public interface INearestCoordinatesFinder
+    public interface INearestCoordinatesFinder<T>
     {
-        SudokuCoordinates Find(int valueToFind, SudokuCoordinates initialCoordinates, byte[,] sudokuMatrix);
+        SudokuCoordinates Find(T valueToFind, SudokuCoordinates initialCoordinates, T[,] sudokuMatrix);
     }
 }

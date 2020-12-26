@@ -13,17 +13,17 @@ namespace StegoSystem.SudokuMethodImplementation
     /// <summary>
     /// Represents adaptation of SudokuStegoMethod to general stegosystems interface
     /// </summary>
-    public class SudokuStegoSystem : IStegoSystem
+    public class SudokuStegoSystem<T> : IStegoSystem
     {
         private const string KeyRegex = "[a-zA-Z0-9]{6,18}";
-        private readonly ISudokuStegoMethod _sudokuStegoMethod;
-        private readonly SudokuMatrixFactory _sudokuMatrixFactory;
+        private readonly ISudokuStegoMethod<T> _sudokuStegoMethod;
+        private readonly SudokuMatrixFactory<T> _sudokuMatrixFactory;
         
         public FileTypeConstraints ContainerFileConstraints => _sudokuStegoMethod.ContainerFileConstraints;
         public FileTypeConstraints StegoContainerFileConstraints => _sudokuStegoMethod.StegoContainerFileConstraints;
         public FileTypeConstraints SecretFileConstraints => _sudokuStegoMethod.SecretFileConstraints;
 
-        public SudokuStegoSystem(ISudokuStegoMethod sudokuStegoMethod, SudokuMatrixFactory sudokuMatrixFactory)
+        public SudokuStegoSystem(ISudokuStegoMethod<T> sudokuStegoMethod, SudokuMatrixFactory<T> sudokuMatrixFactory)
         {
             _sudokuStegoMethod = sudokuStegoMethod;
             _sudokuMatrixFactory = sudokuMatrixFactory;
@@ -85,7 +85,7 @@ namespace StegoSystem.SudokuMethodImplementation
                 throw new Exception("Cannot open secret file.", e);
             }
 
-            SudokuMatrix sudokuKey;
+            SudokuMatrix<T> sudokuKey;
             sudokuKey = GenerateSudokuKey(key);
 
             Bitmap stegocontainer;
@@ -154,7 +154,7 @@ namespace StegoSystem.SudokuMethodImplementation
                 throw new Exception("Cannot open stegocontainer file.", e);
             }
 
-            SudokuMatrix sudokuKey = GenerateSudokuKey(key);
+            SudokuMatrix<T> sudokuKey = GenerateSudokuKey(key);
 
             SecretFile secretFile;
             try
@@ -178,7 +178,7 @@ namespace StegoSystem.SudokuMethodImplementation
         
         #region Private methods
 
-        private SudokuMatrix GenerateSudokuKey(string password)
+        private SudokuMatrix<T> GenerateSudokuKey(string password)
         {
             return _sudokuMatrixFactory.GetByPassword(_sudokuStegoMethod.GetExpectedSudokuSize(), password);
         }        

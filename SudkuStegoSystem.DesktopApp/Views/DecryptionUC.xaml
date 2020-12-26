@@ -39,6 +39,6 @@
                           DataContext="{Binding PasswordVM}">
         </views:PasswordUC>
 
-        <Button Command="{Binding DecryptCommand}" Style="{StaticResource AccentedSquareButtonStyle}" Content="Decrypt" HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Bottom" Width="75" Grid.Row="3"/>
+        <Button Command="{Binding DecryptCommand}" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="Decrypt" HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Bottom" Width="75" Grid.Row="3"/>
     </Grid>
 </UserControl>

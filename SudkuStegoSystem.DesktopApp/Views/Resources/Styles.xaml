@@ -8,10 +8,10 @@
        x:Key="DropFileRectangle">
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsFilePathProvided}" Value="True">
-                <Setter Property="Fill" Value="{DynamicResource AccentColorBrush}"/>
+                <Setter Property="Fill" Value="{DynamicResource MahApps.Brushes.Accent}"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding IsFilePathProvided}" Value="False">
-                <Setter Property="Fill" Value="{DynamicResource ControlBorderBrush}"/>
+                <Setter Property="Fill" Value="{DynamicResource MahApps.Brushes.Control.Border}"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>
@@ -24,17 +24,37 @@
         <Setter Property="AllowDrop" Value="true"/>
         <Setter Property="Background" Value="Transparent"></Setter>
         <Setter Property="BorderThickness" Value="1"></Setter>
-        <Setter Property="BorderBrush">        
-            <Setter.Value>
-                <VisualBrush>
-                    <VisualBrush.Visual>
-                        <Rectangle StrokeDashArray="4 2" Stroke="{DynamicResource ControlBorderBrush}" 
+        
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsFilePathProvided}" Value="True">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <VisualBrush>
+                            <VisualBrush.Visual>
+                                <Rectangle StrokeDashArray="4 2" Stroke="{DynamicResource MahApps.Brushes.Accent}" 
                                    StrokeThickness="1" Width="100" Height="100">
-                        </Rectangle>
-                    </VisualBrush.Visual>
-                </VisualBrush>
-            </Setter.Value>
-        </Setter>
+                                </Rectangle>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsFilePathProvided}" Value="False">
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <VisualBrush>
+                            <VisualBrush.Visual>
+                                <Rectangle StrokeDashArray="4 2" Stroke="{DynamicResource MahApps.Brushes.Control.Border}" 
+                                   StrokeThickness="1" Width="100" Height="100">
+                                </Rectangle>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Control.Border}"></Setter>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style 
@@ -44,23 +64,17 @@
         <Setter Property="Height" Value="150"/>
         <Setter Property="Orientation" Value="Vertical"/>
     </Style>
-     
-    
-    
-    
-    
-    
-    
+
     <Style 
         TargetType="DockPanel" 
         x:Key="StatusBarDockPanel">
 
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsErrorStatus}" Value="True">
-                <Setter Property="Background" Value="{DynamicResource CleanWindowCloseButtonBackgroundBrush}"/> <!--ValidationSummaryColor1-->
+                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Button.CleanWindow.Close.Background.MouseOver}"/> <!--ValidationSummaryColor1-->
             </DataTrigger>
             <DataTrigger Binding="{Binding IsErrorStatus}" Value="False">
-                <Setter Property="Background" Value="{DynamicResource AccentColorBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>
@@ -79,14 +93,14 @@
         x:Key="StatusBarTextBlock">
         <Setter Property="TextWrapping" Value="Wrap"/>
         
-        <Setter Property="Foreground" Value="{DynamicResource ValidationTextBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text.Validation}"/>
 
         <Style.Triggers>
             <!--<DataTrigger Binding="{Binding IsErrorStatus}" Value="True">
                 <Setter Property="Foreground" Value="{DynamicResource ValidationSummaryColor1}"/>                
             </DataTrigger>
             <DataTrigger Binding="{Binding IsErrorStatus}" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource ValidationTextBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text.Validation}"/>
             </DataTrigger>-->
 
             <Trigger Property="Text" Value="">
@@ -103,13 +117,13 @@
         x:Key="StatusBarHyperlink">
         <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
 
-        <Setter Property="Foreground" Value="{DynamicResource ValidationTextBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text.Validation}"/>
         <Style.Triggers>
             <!--<DataTrigger Binding="{Binding IsErrorStatus}" Value="True">
                 <Setter Property="Foreground" Value="{DynamicResource ValidationSummaryColor1}"/>                
             </DataTrigger>
             <DataTrigger Binding="{Binding IsErrorStatus}" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource ValidationTextBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text.Validation}"/>
             </DataTrigger>-->
         </Style.Triggers>
     </Style>

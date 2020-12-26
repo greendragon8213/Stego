@@ -71,6 +71,6 @@
                           DataContext="{Binding PasswordVM}">
         </views:PasswordUC>
 
-        <Button Command="{Binding EncryptCommand}" Style="{StaticResource AccentedSquareButtonStyle}" Content="Encrypt" HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Bottom" Width="75" Grid.Row="3"/>
+        <Button Command="{Binding EncryptCommand}" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="Encrypt" HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Bottom" Width="75" Grid.Row="3"/>
     </Grid>
 </UserControl>

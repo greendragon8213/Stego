@@ -41,9 +41,9 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             SimpleIoc.Default.Register<IFileDialogService, FileDialogService>();
             SimpleIoc.Default.Register<IFolderDialogService, FolderDialogService>();
 
-            SimpleIoc.Default.Register<ISudokuStegoMethod, SudokuStegoMethod_256>();
-            SimpleIoc.Default.Register<SudokuMatrixFactory>();
-            SimpleIoc.Default.Register<IStegoSystem, SudokuStegoSystem>();
+            SimpleIoc.Default.Register<ISudokuStegoMethod<byte>, SudokuStegoMethod_256>();
+            SimpleIoc.Default.Register<SudokuMatrixFactory<byte>>();
+            SimpleIoc.Default.Register<IStegoSystem, SudokuStegoSystem<byte>>();
         }
 
         public EncryptionUCVM EncryptionUCVM

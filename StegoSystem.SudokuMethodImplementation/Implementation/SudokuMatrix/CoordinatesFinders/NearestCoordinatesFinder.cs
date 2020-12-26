@@ -3,14 +3,14 @@ using System;
 
 namespace StegoSystem.SudokuMethodImplementation.Matrix
 {
-    public class NearestCoordinatesFinder : INearestCoordinatesFinder
+    public class NearestCoordinatesFinder<T> : INearestCoordinatesFinder<T>
     {
-        public SudokuCoordinates Find(int valueToFind, SudokuCoordinates initialCoordinates, byte[,] sudokuMatrix)
+        public SudokuCoordinates Find(T valueToFind, SudokuCoordinates initialCoordinates, T[,] sudokuMatrix)
         {
-            int sudokoSize = sudokuMatrix.GetLength(1);
+            int sudokoSize = sudokuMatrix.GetLength(0);
 
-            if (!(valueToFind >= 0 && valueToFind < sudokoSize
-                 && initialCoordinates.X >= 0 && initialCoordinates.X < sudokoSize
+            if (!(//valueToFind >= 0 && valueToFind < sudokoSize &&
+                 initialCoordinates.X >= 0 && initialCoordinates.X < sudokoSize
                  && initialCoordinates.Y >= 0 && initialCoordinates.Y < sudokoSize))
             {
                 throw new ArgumentException("Wrong initialCoordinates or valueToFind");
@@ -63,14 +63,14 @@ namespace StegoSystem.SudokuMethodImplementation.Matrix
             throw new Exception($"Cannot find requested value: {valueToFind} in the sudoku matrix.");
         }
 
-        private bool CheckValue(int x, int y, int valueToFind, int sudokoSize, byte[,] sudokuMatrix)
+        private bool CheckValue(int x, int y, T valueToFind, int sudokoSize, T[,] sudokuMatrix)
         {
             if (x < 0 || x >= sudokoSize || y < 0 || y >= sudokoSize)
             {
                 return false;
             }
             
-            if (sudokuMatrix[x, y] == valueToFind)
+            if (sudokuMatrix[x, y].Equals(valueToFind))//ToDo check if works!
             {
                 return true;
             }

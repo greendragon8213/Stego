@@ -31,7 +31,8 @@
             </TabItem>
         </TabControl>
         
-        <views:StatusBarUC Grid.Row="1" Width="{c:Binding '(ActualWidth)'}" Height="Auto" 
+        <!--<views:StatusBarUC Grid.Row="1" Width="{c:Binding '(ActualWidth)'}" Height="Auto"ToDo:should I fix width????-->
+        <views:StatusBarUC Grid.Row="1" Width="Auto" Height="Auto" 
                            VerticalAlignment="Bottom" 
                            DataContext="{Binding StatusBarUCVM, Source={StaticResource Locator}}">
         </views:StatusBarUC>

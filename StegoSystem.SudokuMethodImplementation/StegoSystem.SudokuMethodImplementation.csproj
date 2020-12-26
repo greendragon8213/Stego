@@ -42,6 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IInvariantTransforation.cs" />
+    <Compile Include="Implementation\SudokuMatrix\Generators\Helpers\ConverterFactory.cs" />
+    <Compile Include="Implementation\SudokuMatrix\Generators\Helpers\Converters\ConverterFromIntToByte.cs" />
+    <Compile Include="Implementation\SudokuMatrix\Generators\Helpers\IConverterFromInt.cs" />
     <Compile Include="Implementation\SudokuMatrix\InvariantTransformations\SwapColumnsInsideVerticalRegionInvariantTransforation.cs" />
     <Compile Include="Implementation\SudokuMatrix\InvariantTransformations\SwapHorizontalRegionsInvariantTransforation.cs" />
     <Compile Include="Implementation\SudokuMatrix\InvariantTransformations\SwapRowsInsideHorizontalRegionInvariantTransforation.cs" />
@@ -55,7 +58,7 @@
     <Compile Include="Implementation\FileConstraints\StegoContainerFileTypeConstraints.cs" />
     <Compile Include="Implementation\SudokuMatrix\SudokuCoordinates.cs" />
     <Compile Include="Implementation\SudokuMatrix\CoordinatesFinders\NearestCoordinatesFinder.cs" />
-    <Compile Include="Implementation\SudokuMatrix\Generators\SudokuMatrixGeneratorByPassword.cs" />
+    <Compile Include="Implementation\SudokuMatrix\Generators\SudokuMatrixInitializerByPassword.cs" />
     <Compile Include="Implementation\SudokuMatrix\Generators\SudokuMatrixGeneratorInitial.cs" />
     <Compile Include="Implementation\SudokuMatrix\SudokuMatrix.cs" />
     <Compile Include="Implementation\SudokuMatrix\SudokuMatrixFactory.cs" />

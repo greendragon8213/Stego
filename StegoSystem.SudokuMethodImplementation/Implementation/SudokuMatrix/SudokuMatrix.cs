@@ -6,27 +6,30 @@ namespace StegoSystem.SudokuMethodImplementation.Matrix
     /// <summary>
     /// Does actions related to sudoku matrix
     /// </summary>
-    public class SudokuMatrix
+    public class SudokuMatrix<T>
     {
         //ToDo optimize!
-        private readonly byte[,] _sudokyMatrix;
-        private readonly INearestCoordinatesFinder _nearestCoordinatesFinder;
-        public int SudokuSize => _sudokyMatrix.GetLength(1);
+        private readonly T[,] _sudokuMatrix;
+        private readonly INearestCoordinatesFinder<T> _nearestCoordinatesFinder;
+        public int SudokuSize => _sudokuMatrix.GetLength(0);
         public int BlockSize => (int)Math.Sqrt(SudokuSize);
         public int RegionsCount => SudokuSize / BlockSize;
 
-        public SudokuMatrix(ISudokuMatrixGenerator sudokuMatrixGenerator, INearestCoordinatesFinder nearestCoordinatesFinder)
+        //public SudokuMatrix(ISudokuMatrixGenerator sudokuMatrixGenerator, INearestCoordinatesFinder nearestCoordinatesFinder)
+        public SudokuMatrix(INearestCoordinatesFinder<T> nearestCoordinatesFinder, int matrixSize)
         {
-            _sudokyMatrix = sudokuMatrixGenerator.Generate();
             _nearestCoordinatesFinder = nearestCoordinatesFinder;
+
+            ISudokuMatrixGenerator<T> defaultSudokuMatrixGenerator = new SudokuMatrixGeneratorInitial<T>();
+            _sudokuMatrix = defaultSudokuMatrixGenerator.Generate(matrixSize);
         }
 
         //or by Coordinates
-        public byte this[int x, int y] => _sudokyMatrix[x, y];
+        public T this[int x, int y] => _sudokuMatrix[x, y];
 
-        public SudokuCoordinates FindNearestCoordinates(int valueToFind, SudokuCoordinates initialCoordinates)
+        public SudokuCoordinates FindNearestCoordinates(T valueToFind, SudokuCoordinates initialCoordinates)
         {
-            return _nearestCoordinatesFinder.Find(valueToFind, initialCoordinates, _sudokyMatrix);
+            return _nearestCoordinatesFinder.Find(valueToFind, initialCoordinates, _sudokuMatrix);
         }
         
         /// <summary>
@@ -36,12 +39,15 @@ namespace StegoSystem.SudokuMethodImplementation.Matrix
         /// <param name="index2"></param>
         public void SwapRows(int index1, int index2)
         {
-            byte temp;
-            for(int i=0; i < _sudokyMatrix.GetLength(1); i++)
+            if (index1 == index2)
+                return;
+
+            T temp;
+            for(int i=0; i < _sudokuMatrix.GetLength(0); i++)
             {
-                temp = _sudokyMatrix[index1, i];
-                _sudokyMatrix[index1, i] = _sudokyMatrix[index2, i];
-                _sudokyMatrix[index2, i] = temp;
+                temp = _sudokuMatrix[index1, i];
+                _sudokuMatrix[index1, i] = _sudokuMatrix[index2, i];
+                _sudokuMatrix[index2, i] = temp;
             }
         }
 
@@ -52,12 +58,15 @@ namespace StegoSystem.SudokuMethodImplementation.Matrix
         /// <param name="index2"></param>
         public void SwapColumns(int index1, int index2)
         {
-            byte temp;
-            for (int i = 0; i < _sudokyMatrix.GetLength(2); i++)
+            if (index1 == index2)
+                return;
+
+            T temp;
+            for (int i = 0; i < _sudokuMatrix.GetLength(1); i++)
             {
-                temp = _sudokyMatrix[i, index1];
-                _sudokyMatrix[i, index1] = _sudokyMatrix[i, index2];
-                _sudokyMatrix[i, index2] = temp;
+                temp = _sudokuMatrix[i, index1];
+                _sudokuMatrix[i, index1] = _sudokuMatrix[i, index2];
+                _sudokuMatrix[i, index2] = temp;
             }
         }
     }

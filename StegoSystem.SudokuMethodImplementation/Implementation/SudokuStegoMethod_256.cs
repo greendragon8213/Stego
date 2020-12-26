@@ -15,7 +15,7 @@ namespace StegoSystem.SudokuMethodImplementation
     /// <summary>
     /// Just encrypts and decrypts data
     /// </summary>
-    public class SudokuStegoMethod_256 : ISudokuStegoMethod
+    public class SudokuStegoMethod_256 : ISudokuStegoMethod<byte>
     {
         public FileTypeConstraints ContainerFileConstraints => new ContainerFileTypeConstraints();
         public FileTypeConstraints StegoContainerFileConstraints => new StegoContainerFileTypeConstraints();
@@ -23,7 +23,7 @@ namespace StegoSystem.SudokuMethodImplementation
 
         public int GetExpectedSudokuSize() => 256;
 
-        public Bitmap Encrypt(Bitmap container, SecretFile secretFile, SudokuMatrix sudokuKey)
+        public Bitmap Encrypt(Bitmap container, SecretFile secretFile, SudokuMatrix<byte> sudokuKey)
         {
             ValidateSudoku(sudokuKey);
 
@@ -54,7 +54,7 @@ namespace StegoSystem.SudokuMethodImplementation
             return container;
         }
 
-        public SecretFile Decrypt(Bitmap stegocontainer, SudokuMatrix sudokuKey)
+        public SecretFile Decrypt(Bitmap stegocontainer, SudokuMatrix<byte> sudokuKey)
         {
             ValidateSudoku(sudokuKey);
 
@@ -77,7 +77,7 @@ namespace StegoSystem.SudokuMethodImplementation
 
         #region Private methods
 
-        private void ValidateSudoku(SudokuMatrix sudokuKey)
+        private void ValidateSudoku(SudokuMatrix<byte> sudokuKey)
         {
             if (sudokuKey.SudokuSize != GetExpectedSudokuSize())
             {
@@ -108,7 +108,7 @@ namespace StegoSystem.SudokuMethodImplementation
             return resultBytes;
         }
 
-        private void EmbedSecretBytesToContainer(byte[] containerBytes, byte[] secretBytes, SudokuMatrix sudokuKey)
+        private void EmbedSecretBytesToContainer(byte[] containerBytes, byte[] secretBytes, SudokuMatrix<byte> sudokuKey)
         {
             for (int i = 0, secretDataIterator = 0;
                 i + 1 < containerBytes.Length && secretDataIterator < secretBytes.Length;
@@ -126,7 +126,7 @@ namespace StegoSystem.SudokuMethodImplementation
             }
         }
 
-        private Tuple<string, byte[]> ExtractSecretData(byte[] stegoBytes, SudokuMatrix sudokuKey)
+        private Tuple<string, byte[]> ExtractSecretData(byte[] stegoBytes, SudokuMatrix<byte> sudokuKey)
         {
             //decode file length
             var fileLengthValueInByteArray = new byte[4];

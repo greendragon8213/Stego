@@ -28,6 +28,6 @@
     <StackPanel  Orientation="Horizontal" HorizontalAlignment="Center">
         <Label>Output path</Label>
         <TextBox Controls:TextBoxHelper.AutoWatermark="True" Width="500" Text="{Binding Path=Path, Mode=TwoWay}"/>
-        <Button Style="{StaticResource MetroFlatButton}" Content="..." Command="{Binding Path=OpenCommand}" />
+        <Button Style="{StaticResource MahApps.Styles.Button.Flat}" Content="..." Command="{Binding Path=OpenCommand}" />
     </StackPanel>
 </UserControl>

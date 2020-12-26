@@ -1,7 +1,7 @@
 ﻿namespace StegoSystem.SudokuMethodImplementation.Abstract
 {
-    public interface ISudokuMatrixGenerator
+    public interface ISudokuMatrixGenerator<T>
     {
-        byte[,] Generate();
+        T[,] Generate(int size);
     }
 }
