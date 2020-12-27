@@ -34,6 +34,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Matrix\Generators\Helpers\PrimeNumbersGenerator.cs" />
     <Compile Include="Matrix\InvariantTransformations\IInvariantTransforation.cs" />
     <Compile Include="Matrix\Generators\Helpers\Converters\ConverterFactory.cs" />
     <Compile Include="Matrix\Generators\Helpers\Converters\Implementation\ConverterFromIntToByte.cs" />
@@ -50,6 +52,7 @@
     <Compile Include="Matrix\InvariantTransformations\Implementation\SwapHorizontalRegionsInvariantTransforation.cs" />
     <Compile Include="Matrix\InvariantTransformations\Implementation\SwapRowsInsideHorizontalRegionInvariantTransforation.cs" />
     <Compile Include="Matrix\InvariantTransformations\Implementation\SwapVerticalRegionsInvariantTransforation.cs" />
+    <Compile Include="Matrix\TestHelpers\MatrixHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Matrix\CoordinateFinders\INearestCoordinatesFinder.cs" />
     <Compile Include="Matrix\Generators\ISudokuMatrixGenerator.cs" />

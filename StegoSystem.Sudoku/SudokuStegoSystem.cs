@@ -13,7 +13,9 @@ namespace StegoSystem.Sudoku
     /// </summary>
     public class SudokuStegoSystem<T> : IStegoSystem
     {
-        private const string KeyRegex = "[a-zA-Z0-9]{6,18}";
+        private const string KeyRegex = "^[a-zA-Z0-9]{6,30}$";
+        private const string RegexDescription = "Key can consist of numbers and letters, its length must be in range of 6-30.";
+
         private readonly ISudokuStegoMethod<T> _sudokuStegoMethod;
         private readonly SudokuMatrixFactory<T> _sudokuMatrixFactory;
 
@@ -58,7 +60,7 @@ namespace StegoSystem.Sudoku
 
             if (string.IsNullOrEmpty(key) || !Regex.Match(key, KeyRegex).Success)
             {
-                throw new ArgumentException("Wrong key format.");
+                throw new ArgumentException($"Wrong key format. {RegexDescription}");
             }
 
             #endregion

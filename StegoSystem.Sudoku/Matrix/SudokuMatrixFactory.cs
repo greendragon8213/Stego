@@ -14,6 +14,15 @@ namespace StegoSystem.Sudoku.Matrix
             var matrixInitializer = new SudokuMatrixInitializerByPassword<T>();
             matrixInitializer.Initialize(ref matrix, password);
 
+#if DEBUG
+            var result = Test.MatrixHelpers
+                .CalculateMatrixesDifference(new SudokuMatrix<T>(nearestCoordinatesFinder, matrixSize), matrix);
+
+            System.Console.WriteLine($"Matrix by password is similar to default by {result.Item1}%");
+            System.Console.WriteLine($"Identical items count = {result.Item2}");
+            System.Console.WriteLine();
+#endif
+
             return matrix;
         }
     }
