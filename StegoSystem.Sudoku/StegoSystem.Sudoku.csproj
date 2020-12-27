@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ABC6EC74-3C4E-4149-BBAB-6A2521C03707}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>StegoSystem.Sudoku</RootNamespace>
+    <AssemblyName>StegoSystem.Sudoku</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Matrix\InvariantTransformations\IInvariantTransforation.cs" />
+    <Compile Include="Matrix\Generators\Helpers\Converters\ConverterFactory.cs" />
+    <Compile Include="Matrix\Generators\Helpers\Converters\Implementation\ConverterFromIntToByte.cs" />
+    <Compile Include="Matrix\Generators\Helpers\Converters\IConverterFromInt.cs" />
+    <Compile Include="Matrix\InvariantTransformations\Implementation\SwapColumnsInsideVerticalRegionInvariantTransforation.cs" />
+    <Compile Include="Matrix\InvariantTransformations\Implementation\SwapHorizontalRegionsInvariantTransforation.cs" />
+    <Compile Include="Matrix\InvariantTransformations\Implementation\SwapRowsInsideHorizontalRegionInvariantTransforation.cs" />
+    <Compile Include="Matrix\InvariantTransformations\Implementation\SwapVerticalRegionsInvariantTransforation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Matrix\CoordinateFinders\INearestCoordinatesFinder.cs" />
+    <Compile Include="Matrix\Generators\ISudokuMatrixGenerator.cs" />
+    <Compile Include="Methods\ISudokuStegoMethod.cs" />
+    <Compile Include="FileConstraints\ContainerFileTypeConstraints.cs" />
+    <Compile Include="FileConstraints\SecretFileTypeConstraints.cs" />
+    <Compile Include="FileConstraints\StegoContainerFileTypeConstraints.cs" />
+    <Compile Include="Matrix\SudokuCoordinates.cs" />
+    <Compile Include="Matrix\CoordinateFinders\NearestCoordinatesFinder.cs" />
+    <Compile Include="Matrix\Generators\Implementation\SudokuMatrixInitializerByPassword.cs" />
+    <Compile Include="Matrix\Generators\Implementation\SudokuMatrixGeneratorInitial.cs" />
+    <Compile Include="Matrix\SudokuMatrix.cs" />
+    <Compile Include="Matrix\SudokuMatrixFactory.cs" />
+    <Compile Include="SudokuStegoSystem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StegoSystem\StegoSystem.csproj">
+      <Project>{9f6798f2-36e3-426b-bb80-4a9b3c4132c5}</Project>
+      <Name>StegoSystem</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudkuStegoSystem.Tests", "SudkuStegoSystem.Tests\SudkuStegoSystem.Tests.csproj", "{6D692B94-728A-43E2-B92F-803A688992D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{FE4779B5-39C3-40BB-BF15-69BB88D8AEBB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{1CC04C39-CE20-4224-8F7C-55E60ED51302}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sudoku", "Sudoku", "{E6D8649B-2D99-45AE-B9E0-4392FE6224B8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Methods", "Methods", "{EA788A8F-2FB4-485C-AEDF-7D7397E44485}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StegoSystem.Sudoku.Method256", "StegoSystem.Sudoku.Method256\StegoSystem.Sudoku.Method256.csproj", "{0AF40CE5-59A4-44C4-B4B1-7ADAE75ACBD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StegoSystem.Sudoku", "StegoSystem.Sudoku\StegoSystem.Sudoku.csproj", "{ABC6EC74-3C4E-4149-BBAB-6A2521C03707}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StegoSystem", "StegoSystem\StegoSystem.csproj", "{9F6798F2-36E3-426B-BB80-4A9B3C4132C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StegoSystem.DesktopApp", "StegoSystem.DesktopApp\StegoSystem.DesktopApp.csproj", "{48194485-07F9-4DBF-A1DB-211F7F65453E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6D692B94-728A-43E2-B92F-803A688992D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D692B94-728A-43E2-B92F-803A688992D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D692B94-728A-43E2-B92F-803A688992D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D692B94-728A-43E2-B92F-803A688992D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE4779B5-39C3-40BB-BF15-69BB88D8AEBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE4779B5-39C3-40BB-BF15-69BB88D8AEBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE4779B5-39C3-40BB-BF15-69BB88D8AEBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE4779B5-39C3-40BB-BF15-69BB88D8AEBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AF40CE5-59A4-44C4-B4B1-7ADAE75ACBD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AF40CE5-59A4-44C4-B4B1-7ADAE75ACBD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AF40CE5-59A4-44C4-B4B1-7ADAE75ACBD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AF40CE5-59A4-44C4-B4B1-7ADAE75ACBD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABC6EC74-3C4E-4149-BBAB-6A2521C03707}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABC6EC74-3C4E-4149-BBAB-6A2521C03707}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABC6EC74-3C4E-4149-BBAB-6A2521C03707}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABC6EC74-3C4E-4149-BBAB-6A2521C03707}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F6798F2-36E3-426B-BB80-4A9B3C4132C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F6798F2-36E3-426B-BB80-4A9B3C4132C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F6798F2-36E3-426B-BB80-4A9B3C4132C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F6798F2-36E3-426B-BB80-4A9B3C4132C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48194485-07F9-4DBF-A1DB-211F7F65453E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48194485-07F9-4DBF-A1DB-211F7F65453E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48194485-07F9-4DBF-A1DB-211F7F65453E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48194485-07F9-4DBF-A1DB-211F7F65453E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E6D8649B-2D99-45AE-B9E0-4392FE6224B8} = {1CC04C39-CE20-4224-8F7C-55E60ED51302}
+		{EA788A8F-2FB4-485C-AEDF-7D7397E44485} = {E6D8649B-2D99-45AE-B9E0-4392FE6224B8}
+		{0AF40CE5-59A4-44C4-B4B1-7ADAE75ACBD7} = {EA788A8F-2FB4-485C-AEDF-7D7397E44485}
+		{ABC6EC74-3C4E-4149-BBAB-6A2521C03707} = {E6D8649B-2D99-45AE-B9E0-4392FE6224B8}
+		{9F6798F2-36E3-426B-BB80-4A9B3C4132C5} = {1CC04C39-CE20-4224-8F7C-55E60ED51302}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45
+		SolutionGuid = {D0A4603C-2BBC-4873-BD19-235C90565EC7}
+	EndGlobalSection
+EndGlobal
