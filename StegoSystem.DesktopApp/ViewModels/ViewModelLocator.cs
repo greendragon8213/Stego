@@ -15,6 +15,7 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using StegoSystem;
+using StegoSystem.DesktopApp.Models;
 using StegoSystem.Sudoku;
 using StegoSystem.Sudoku.Matrix;
 using StegoSystem.Sudoku.Method256;
@@ -44,6 +45,9 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             SimpleIoc.Default.Register<ISudokuStegoMethod<byte>, SudokuStegoMethod256>();
             SimpleIoc.Default.Register<SudokuMatrixFactory<byte>>();
             SimpleIoc.Default.Register<IStegoSystem, SudokuStegoSystem<byte>>();
+
+            SimpleIoc.Default.Register<Encryption>();
+            SimpleIoc.Default.Register<Decryption>();
         }
 
         public EncryptionUCVM EncryptionUCVM
@@ -63,7 +67,9 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
                 OutputPathUCVM outputPathVM = OutputPathUCVM;//ServiceLocator.Current.GetInstance<OutputPathUCVM>();
                 PasswordUCVM passwordVM = PasswordUCVM;//ServiceLocator.Current.GetInstance<PasswordUCVM>();
 
-                return new EncryptionUCVM(stegoSystem, dropSecretFileVM, dropContainerFileVM, outputPathVM, passwordVM);
+                Encryption enc = ServiceLocator.Current.GetInstance<Encryption>();
+
+                return new EncryptionUCVM(enc, dropSecretFileVM, dropContainerFileVM, outputPathVM, passwordVM);
             }
         }
 
@@ -80,7 +86,9 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
                 OutputPathUCVM outputPathVM = OutputPathUCVM;//ServiceLocator.Current.GetInstance<OutputPathUCVM>();
                 PasswordUCVM passwordVM = PasswordUCVM;//ServiceLocator.Current.GetInstance<PasswordUCVM>();
 
-                return new DecryptionUCVM(stegoSystem, dropStegoContainerFileVM, outputPathVM, passwordVM);
+                Decryption decr = ServiceLocator.Current.GetInstance<Decryption>();
+
+                return new DecryptionUCVM(decr, dropStegoContainerFileVM, outputPathVM, passwordVM);
             }
         }
 

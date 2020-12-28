@@ -101,6 +101,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Decryption.cs" />
+    <Compile Include="Models\Encryption.cs" />
     <Compile Include="Services\Abstract\IFolderDialogService.cs" />
     <Compile Include="Services\FileDialogService.cs" />
     <Compile Include="Services\Abstract\IFileDialogService.cs" />
@@ -115,7 +117,7 @@
     <Compile Include="ViewModels\Common\StatusBarUCVM.cs" />
     <Compile Include="ViewModels\Common\IValidatable.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
-    <Compile Include="Views\DropFileUC.xaml.cs">
+    <Compile Include="Views\CommonUC\DropFileUC.xaml.cs">
       <DependentUpon>DropFileUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DecryptionUC.xaml.cs">
@@ -126,16 +128,16 @@
     </Compile>
     <Compile Include="Views\Helpers\DropFileAssistant.cs" />
     <Compile Include="Views\Helpers\PasswordBoxAssistant.cs" />
-    <Compile Include="Views\OutputPathUC.xaml.cs">
+    <Compile Include="Views\CommonUC\OutputPathUC.xaml.cs">
       <DependentUpon>OutputPathUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PasswordUC.xaml.cs">
+    <Compile Include="Views\CommonUC\PasswordUC.xaml.cs">
       <DependentUpon>PasswordUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StatusBarUC.xaml.cs">
+    <Compile Include="Views\CommonUC\StatusBarUC.xaml.cs">
       <DependentUpon>StatusBarUC.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\DropFileUC.xaml">
+    <Page Include="Views\CommonUC\DropFileUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -147,7 +149,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PasswordUC.xaml">
+    <Page Include="Views\CommonUC\PasswordUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -167,7 +169,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\OutputPathUC.xaml">
+    <Page Include="Views\CommonUC\OutputPathUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -187,7 +189,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StatusBarUC.xaml">
+    <Page Include="Views\CommonUC\StatusBarUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -222,7 +224,6 @@
   <ItemGroup>
     <Folder Include="Controls\" />
     <Folder Include="Localization\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StegoSystem.Sudoku.Method256\StegoSystem.Sudoku.Method256.csproj">

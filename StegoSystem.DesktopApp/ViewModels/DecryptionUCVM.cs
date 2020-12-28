@@ -1,19 +1,19 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using StegoSystem;
+using StegoSystem.DesktopApp.Models;
 using System;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
     public class DecryptionUCVM : ViewModelBase
     {
-        private readonly IStegoSystem _stegoSystem;
+        private readonly Decryption _decryption;
                 
-        public DecryptionUCVM(IStegoSystem stegoSystem,
+        public DecryptionUCVM(Decryption decryption,
             DropFileUCVM dropStegoContainerFileVM, 
             OutputPathUCVM outputPathVM, PasswordUCVM passwordVM)
         {
-            _stegoSystem = stegoSystem;
+            _decryption = decryption;
             DropStegoContainerFileVM = dropStegoContainerFileVM;
             OutputPathVM = outputPathVM;
             PasswordVM = passwordVM;
@@ -31,7 +31,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
         {
             try
             {
-                string filePath = _stegoSystem.Decrypt(DropStegoContainerFileVM.FilePath, PasswordVM.Password,
+                string filePath = _decryption.Decrypt(DropStegoContainerFileVM.FilePath, PasswordVM.Password,
                     OutputPathVM.Path);
 
                 StatusBarUCVM.UpdateStatus(text: "Decryption has been successfully done. Secret file is located: ", 
