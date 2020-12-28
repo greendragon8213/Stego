@@ -38,11 +38,24 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
                 StatusBarUCVM.UpdateStatus(text: "Encryption has been successfully done. Stegocontainer is located: ",
                         localFilePath: filePath, isErrorStatus: false);
+
+                DropContainerFileVM.IsErrorStatus = false;
+                DropSecretFileVM.IsErrorStatus = false;
+                PasswordVM.IsErrorStatus = false;
+                OutputPathVM.IsErrorStatus = false;
             }
-            catch (Exception e)
+            catch (Exception e)//ToDo KeyException
             {
+                DropContainerFileVM.IsErrorStatus = true;
+                DropSecretFileVM.IsErrorStatus = true;
+                PasswordVM.IsErrorStatus = true;
+                OutputPathVM.IsErrorStatus = true;
                 StatusBarUCVM.UpdateStatus(text: e.Message, isErrorStatus: true);
             }
+            //catch (Exception e)
+            //{
+            //    StatusBarUCVM.UpdateStatus(text: e.Message, isErrorStatus: true);
+            //}
         }
     }
 }

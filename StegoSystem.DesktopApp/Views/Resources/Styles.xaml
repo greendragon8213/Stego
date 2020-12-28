@@ -13,18 +13,29 @@
             <DataTrigger Binding="{Binding IsFilePathProvided}" Value="False">
                 <Setter Property="Fill" Value="{DynamicResource MahApps.Brushes.Control.Border}"/>
             </DataTrigger>
+            <DataTrigger Binding="{Binding IsMouseOver, ElementName=ContainerFile}" Value="True">
+                <Setter Property="Fill" Value="{DynamicResource MahApps.Brushes.Gray.MouseOver}"/>
+            </DataTrigger>
         </Style.Triggers>
+    </Style>
+    
+    <Style 
+       TargetType="TextBlock"
+       x:Key="DropFileText">
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
 
     <Style 
        TargetType="Button"
        x:Key="DropFile">
-        <Setter Property="Padding" Value="10"/>
-        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Margin" Value="5"/>
         <Setter Property="AllowDrop" Value="true"/>
         <Setter Property="Background" Value="Transparent"></Setter>
         <Setter Property="BorderThickness" Value="1"></Setter>
-        
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsFilePathProvided}" Value="True">
                 <Setter Property="BorderBrush">
@@ -54,6 +65,10 @@
                 </Setter>
                 <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Control.Border}"></Setter>
             </DataTrigger>
+            <DataTrigger Binding="{Binding IsMouseOver, ElementName=ContainerFile}" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray.MouseOver}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Gray.MouseOver}"/>
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 
@@ -71,10 +86,34 @@
 
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsErrorStatus}" Value="True">
-                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Button.CleanWindow.Close.Background.MouseOver}"/> <!--ValidationSummaryColor1-->
+                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Control.Validation}"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding IsErrorStatus}" Value="False">
                 <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style 
+        TargetType="StackPanel" 
+        x:Key="PasswordStackPanel">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <Style 
+        TargetType="Border" 
+        x:Key="ValidatioState">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsErrorStatus}" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Control.Validation}"/>
+                
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsErrorStatus}" Value="False">
+                <Setter Property="BorderBrush" Value="Transparent"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>

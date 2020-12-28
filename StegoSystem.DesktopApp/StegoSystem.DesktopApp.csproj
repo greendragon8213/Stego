@@ -113,6 +113,7 @@
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="ViewModels\PasswordUCVM.cs" />
     <Compile Include="ViewModels\StatusBarUCVM.cs" />
+    <Compile Include="ViewModels\IValidatableUCVM.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

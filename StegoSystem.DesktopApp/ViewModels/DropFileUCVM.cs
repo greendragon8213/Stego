@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using GongSolutions.Wpf.DragDrop;
 using StegoSystem;
+using StegoSystem.DesktopApp.ViewModels;
 using SudkuStegoSystem.DesktopApp.Services;
 using System;
 using System.Linq;
@@ -9,10 +10,11 @@ using System.Windows;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
-    public class DropFileUCVM : ViewModelBase, IDropTarget
+    public class DropFileUCVM : ViewModelBase, IDropTarget, IValidatableUCVM
     {
         private readonly IFileDialogService _fileDialogService;
         private string _filePath;
+        private bool _isErrorStatus;
 
         private FileTypes _fileType;
         private readonly FileTypeConstraints _fileTypeConstraints;
@@ -56,6 +58,16 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
                 }
 
                 throw new InvalidOperationException("wrong file type!");
+            }
+        }
+
+        public bool IsErrorStatus
+        {
+            get => _isErrorStatus;
+            set
+            {
+                _isErrorStatus = value;
+                RaisePropertyChanged(nameof(IsErrorStatus));
             }
         }
 

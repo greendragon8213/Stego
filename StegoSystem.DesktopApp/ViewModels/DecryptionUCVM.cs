@@ -36,11 +36,22 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
                 StatusBarUCVM.UpdateStatus(text: "Decryption has been successfully done. Secret file is located: ", 
                     localFilePath: filePath, isErrorStatus: false);
+                
+                DropStegoContainerFileVM.IsErrorStatus = false;
+                PasswordVM.IsErrorStatus = false;
+                OutputPathVM.IsErrorStatus = false;
             }
-            catch (Exception e)
+            catch (Exception e)//ToDo KeyException
             {
+                DropStegoContainerFileVM.IsErrorStatus = true;
+                PasswordVM.IsErrorStatus = true;
+                OutputPathVM.IsErrorStatus = true;
                 StatusBarUCVM.UpdateStatus(text: e.Message, isErrorStatus: true);
             }
+            //catch (Exception e)
+            //{
+            //    StatusBarUCVM.UpdateStatus(text: e.Message, isErrorStatus: true);
+            //}
         }
     }
 }

@@ -13,40 +13,41 @@
              d:DataContext="{d:DesignInstance vms:DropFileUCVM, IsDesignTimeCreatable=False}"
                           
              ff:DropFileAssistant.Content="Drop file here">
-
-    <Button Name="ContainerFile" Style="{StaticResource DropFile}"
+    
+    <Border Style="{StaticResource ValidatioState}">
+        <Button Name="ContainerFile" Style="{StaticResource DropFile}"
          dd:DragDrop.IsDropTarget="True"
          dd:DragDrop.DropHandler="{Binding}"
          Command="{Binding OpenFileCommand}">
 
-        <StackPanel Style="{StaticResource DropFileStackPanel}">
-            <TextBlock Width="100" Margin="10" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center"                       
-                       Text="{Binding Path=(ff:DropFileAssistant.Content), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">                                    
-            </TextBlock>
+            <StackPanel Style="{StaticResource DropFileStackPanel}">
+                <TextBlock Style="{StaticResource DropFileText}"
+                       Text="{Binding Path=(ff:DropFileAssistant.Content), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
+                </TextBlock>
 
-            <Rectangle Visibility="{c:Binding '(FileType==local:FileTypes.SecretFile)', FalseToVisibility=Collapsed}" 
+                <Rectangle Visibility="{c:Binding '(FileType==local:FileTypes.SecretFile)', FalseToVisibility=Collapsed}" 
                        Width="80" Height="95"  
                        Style="{StaticResource DropFileRectangle}">
-                <Rectangle.OpacityMask>
-                    <VisualBrush Visual="{StaticResource SecretFileIcon}" Stretch="Fill" />
-                </Rectangle.OpacityMask>
-            </Rectangle>
-            <Rectangle Visibility="{c:Binding '(FileType==local:FileTypes.Image)', FalseToVisibility=Collapsed}" 
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Visual="{StaticResource SecretFileIcon}" Stretch="Fill" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+                <Rectangle Visibility="{c:Binding '(FileType==local:FileTypes.Image)', FalseToVisibility=Collapsed}" 
                        Width="100" Height="80" 
                        Style="{StaticResource DropFileRectangle}">
-                <Rectangle.OpacityMask>
-                    <VisualBrush Visual="{StaticResource ImageIcon}" Stretch="Fill" />
-                </Rectangle.OpacityMask>
-            </Rectangle>
-            <Rectangle Visibility="{c:Binding '(FileType==local:FileTypes.File)', FalseToVisibility=Collapsed}" 
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Visual="{StaticResource ImageIcon}" Stretch="Fill" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+                <Rectangle Visibility="{c:Binding '(FileType==local:FileTypes.File)', FalseToVisibility=Collapsed}" 
                        Width="65" Height="80" 
                        Style="{StaticResource DropFileRectangle}">
-                <Rectangle.OpacityMask>
-                    <VisualBrush Visual="{StaticResource FileIcon}" Stretch="Fill" />
-                </Rectangle.OpacityMask>
-            </Rectangle>
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Visual="{StaticResource FileIcon}" Stretch="Fill" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
 
-        </StackPanel>
-    </Button>
-
+            </StackPanel>
+        </Button>
+    </Border>
 </UserControl>
