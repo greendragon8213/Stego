@@ -3,10 +3,10 @@ using StegoSystem.DesktopApp.ViewModels;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
-    public class PasswordUCVM : ViewModelBase, IValidatableUCVM
+    public class PasswordUCVM : ViewModelBase, IValidatable
     {
         private string _password;
-        private bool _isErrorStatus;
+        private bool _isValid = true;
 
         public string Password
         {
@@ -19,13 +19,13 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             }
         }
 
-        public bool IsErrorStatus
+        public bool IsValid
         {
-            get => _isErrorStatus;
+            get => _isValid;
             set
             {
-                _isErrorStatus = value;
-                RaisePropertyChanged(nameof(IsErrorStatus));
+                _isValid = value;
+                RaisePropertyChanged(nameof(IsValid));
             }
         }
     }

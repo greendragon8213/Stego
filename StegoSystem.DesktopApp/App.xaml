@@ -29,14 +29,16 @@
         </ResourceDictionary>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TabControl.xaml"/>
 
-        <ResourceDictionary Source="Views/Resources/Styles.xaml">
-        </ResourceDictionary>
-        <ResourceDictionary Source="Views/Resources/Icons.xaml">
-        </ResourceDictionary>
+        <ResourceDictionary Source="Views/Resources/Styles/ControlValidation.xaml"/>
+        <ResourceDictionary Source="Views/Resources/Styles/StatusBar.xaml"/>
+        <ResourceDictionary Source="Views/Resources/Styles/DropFile.xaml"/>
+        <ResourceDictionary Source="Views/Resources/Styles/Password.xaml"/>
+        <ResourceDictionary Source="Views/Resources/Icons.xaml"/>
+        
         <ResourceDictionary>
-          <vm1:ViewModelLocator xmlns:vm="clr-namespace:SudkuStegoSystem.DesktopApp" x:Key="Locator" d:IsDataSource="True" />
-          <!--<vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:SudkuStegoSystem.DesktopApp.ViewModel" />??????-->
+            <vm1:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
         </ResourceDictionary>
+            
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Application.Resources>

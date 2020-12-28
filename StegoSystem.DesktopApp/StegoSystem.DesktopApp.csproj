@@ -105,15 +105,15 @@
     <Compile Include="Services\FileDialogService.cs" />
     <Compile Include="Services\Abstract\IFileDialogService.cs" />
     <Compile Include="Services\FolderDialogService.cs" />
-    <Compile Include="ViewModels\DropFileUCVM.cs" />
+    <Compile Include="ViewModels\Common\DropFileUCVM.cs" />
     <Compile Include="ViewModels\DecryptionUCVM.cs" />
     <Compile Include="ViewModels\EncryptionUCVM.cs" />
-    <Compile Include="ViewModels\FileTypes.cs" />
-    <Compile Include="ViewModels\OutputPathUCVM.cs" />
+    <Compile Include="ViewModels\Common\FileTypes.cs" />
+    <Compile Include="ViewModels\Common\OutputPathUCVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
-    <Compile Include="ViewModels\PasswordUCVM.cs" />
-    <Compile Include="ViewModels\StatusBarUCVM.cs" />
-    <Compile Include="ViewModels\IValidatableUCVM.cs" />
+    <Compile Include="ViewModels\Common\PasswordUCVM.cs" />
+    <Compile Include="ViewModels\Common\StatusBarUCVM.cs" />
+    <Compile Include="ViewModels\Common\IValidatable.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\DropFileUC.xaml.cs">
       <DependentUpon>DropFileUC.xaml</DependentUpon>
@@ -167,11 +167,23 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Resources\Styles.xaml">
+    <Page Include="Views\OutputPathUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\OutputPathUC.xaml">
+    <Page Include="Views\Resources\Styles\ControlValidation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\Styles\DropFile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\Styles\Password.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\Styles\StatusBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

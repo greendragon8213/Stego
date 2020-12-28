@@ -1,0 +1,47 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:StegoSystem.DesktopApp">
+    <Style 
+        TargetType="StackPanel" 
+        x:Key="StatusBarStackPanel">
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Margin" Value="3"/>
+    </Style>
+
+    <Style 
+        TargetType="DockPanel" 
+        x:Key="StatusBarDockPanel">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsErrorStatus}" Value="True">
+                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Control.Validation}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsErrorStatus}" Value="False">
+                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style 
+        TargetType="TextBlock" 
+        x:Key="StatusBarTextBlock">
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text.Validation}"/>
+        <Style.Triggers>
+            <Trigger Property="Text" Value="">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="Text" Value="{x:Null}">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style 
+        TargetType="Hyperlink" 
+        x:Key="StatusBarHyperlink">
+        <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text.Validation}"/>
+    </Style>
+</ResourceDictionary>

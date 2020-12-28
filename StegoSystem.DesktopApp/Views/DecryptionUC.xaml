@@ -7,13 +7,12 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
-                      xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
                       xmlns:views="clr-namespace:SudkuStegoSystem.DesktopApp"
                       mc:Ignorable="d"
                       xmlns:ff="clr-namespace:SudkuStegoSystem.DesktopApp"
-              xmlns:vms="clr-namespace:SudkuStegoSystem.DesktopApp.ViewModels"
              
-             d:DataContext="{d:DesignInstance vms:DecryptionUCVM, IsDesignTimeCreatable=False}">
+        xmlns:vms="clr-namespace:SudkuStegoSystem.DesktopApp.ViewModels"
+        d:DataContext="{d:DesignInstance vms:DecryptionUCVM, IsDesignTimeCreatable=False}">
     
     <Grid VerticalAlignment="Center">
         <Grid.RowDefinitions>
@@ -38,6 +37,7 @@
                           DataContext="{Binding PasswordVM}">
         </views:PasswordUC>
 
-        <Button Command="{Binding DecryptCommand}" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="Decrypt" HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Bottom" Width="75" Grid.Row="3"/>
+        <Button Command="{Binding DecryptCommand}" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="Decrypt" 
+                HorizontalAlignment="Right" Margin="10"  VerticalAlignment="Bottom" Width="75" Grid.Row="3"/>
     </Grid>
 </UserControl>

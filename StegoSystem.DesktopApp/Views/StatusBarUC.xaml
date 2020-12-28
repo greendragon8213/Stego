@@ -4,10 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SudkuStegoSystem.DesktopApp"
-             mc:Ignorable="d" 
-                         
+             mc:Ignorable="d"                          
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+             
              xmlns:vms="clr-namespace:SudkuStegoSystem.DesktopApp.ViewModels"             
              d:DataContext="{d:DesignInstance vms:StatusBarUCVM, IsDesignTimeCreatable=False}">
 

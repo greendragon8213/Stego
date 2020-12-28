@@ -11,7 +11,7 @@
                       xmlns:views="clr-namespace:SudkuStegoSystem.DesktopApp"
                       mc:Ignorable="d"
                       xmlns:ff="clr-namespace:SudkuStegoSystem.DesktopApp"
-        Title="MainWindow" SizeToContent="Height" Width="800" MinWidth="700" MinHeight="450"
+        Title="{Binding Title}" SizeToContent="Height" Width="800" MinWidth="700" MinHeight="450"
         DataContext="{Binding MainVM, Source={StaticResource Locator}}"
         WindowTransitionsEnabled="False"
         WindowStartupLocation="CenterScreen">

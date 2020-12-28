@@ -5,11 +5,11 @@ using SudkuStegoSystem.DesktopApp.Services;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
-    public class OutputPathUCVM : ViewModelBase, IValidatableUCVM
+    public class OutputPathUCVM : ViewModelBase, IValidatable
     {
         private readonly IFolderDialogService _folderDialogService;
         private string _path;
-        private bool _isErrorStatus;
+        private bool _isValid = true;
 
         public OutputPathUCVM(string defaultPath, IFolderDialogService folderDialogService)
         {
@@ -29,13 +29,13 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             }
         }
 
-        public bool IsErrorStatus
+        public bool IsValid
         {
-            get => _isErrorStatus;
+            get => _isValid;
             set
             {
-                _isErrorStatus = value;
-                RaisePropertyChanged(nameof(IsErrorStatus));
+                _isValid = value;
+                RaisePropertyChanged(nameof(IsValid));
             }
         }
 

@@ -10,8 +10,7 @@
              xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
              xmlns:ff="clr-namespace:SudkuStegoSystem.DesktopApp"
              
-             d:DataContext="{d:DesignInstance vms:DropFileUCVM, IsDesignTimeCreatable=False}"
-                          
+             d:DataContext="{d:DesignInstance vms:DropFileUCVM, IsDesignTimeCreatable=False}"                          
              ff:DropFileAssistant.Content="Drop file here">
     
     <Border Style="{StaticResource ValidatioState}">

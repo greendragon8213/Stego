@@ -10,11 +10,11 @@ using System.Windows;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
-    public class DropFileUCVM : ViewModelBase, IDropTarget, IValidatableUCVM
+    public class DropFileUCVM : ViewModelBase, IDropTarget, IValidatable
     {
         private readonly IFileDialogService _fileDialogService;
         private string _filePath;
-        private bool _isErrorStatus;
+        private bool _isValid = true;
 
         private FileTypes _fileType;
         private readonly FileTypeConstraints _fileTypeConstraints;
@@ -61,13 +61,13 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             }
         }
 
-        public bool IsErrorStatus
+        public bool IsValid
         {
-            get => _isErrorStatus;
+            get => _isValid;
             set
             {
-                _isErrorStatus = value;
-                RaisePropertyChanged(nameof(IsErrorStatus));
+                _isValid = value;
+                RaisePropertyChanged(nameof(IsValid));
             }
         }
 

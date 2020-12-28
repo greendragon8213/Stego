@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:SudkuStegoSystem.DesktopApp">
+
+    <Style 
+        TargetType="Border" 
+        x:Key="ValidatioState">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsValid}" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Control.Validation}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsValid}" Value="True">
+                <Setter Property="BorderBrush" Value="Transparent"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

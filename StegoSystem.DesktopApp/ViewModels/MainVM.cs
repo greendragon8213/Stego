@@ -36,5 +36,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
         
         public EncryptionUCVM EncryptionUCVM { get; }
         public DecryptionUCVM DecryptionUCVM { get; }
+
+        public string Title => "SudoStego";
     }
 }
