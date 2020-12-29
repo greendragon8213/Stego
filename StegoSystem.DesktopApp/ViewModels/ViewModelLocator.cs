@@ -30,78 +30,104 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
     /// </summary>
     public class ViewModelLocator
     {
-        private readonly string _defaultPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private static readonly string _defaultPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+        private const string DropSecretFileKey = "DropSecretFile";
+        private const string DropContainerFileKey = "DropContainerFile";
+        private const string DropStegoContainerFileKey = "DropStegoContainerFile";
+
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
         /// </summary>
         public ViewModelLocator()
         {
-            //all this things are singletons.
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            SimpleIoc.Default.Register<IFileDialogService, FileDialogService>();
-            SimpleIoc.Default.Register<IFolderDialogService, FolderDialogService>();
+            RegisterDomainServices();
 
-            SimpleIoc.Default.Register<ISudokuStegoMethod<byte>, SudokuStegoMethod256>();
-            SimpleIoc.Default.Register<SudokuMatrixFactory<byte>>();
-            SimpleIoc.Default.Register<IStegoSystem, SudokuStegoSystem<byte>>();
-
-            SimpleIoc.Default.Register<Encryption>();
-            SimpleIoc.Default.Register<Decryption>();
+            RegisterAppServices();
         }
 
-        public EncryptionUCVM EncryptionUCVM
+        //for data binding
+        public StatusBarUCVM StatusBarUCVM => ServiceLocator.Current.GetInstance<StatusBarUCVM>();
+        public MainVM MainVM => ServiceLocator.Current.GetInstance<MainVM>();
+
+        public static void Cleanup()
+        {
+            // TODO Clear the ViewModels
+        }
+
+        #region Private methods
+
+        private static void RegisterAppServices()
+        {
+            //Models
+            SimpleIoc.Default.Register<Encryption>();
+            SimpleIoc.Default.Register<Decryption>();
+
+            //UI
+            SimpleIoc.Default.Register<IFileDialogService, FileDialogService>(true); //single instance per app is ok
+            SimpleIoc.Default.Register<IFolderDialogService, FolderDialogService>(); //single instance per app is ok
+
+            //UI VMs (every time requested - new instance created)
+            var stegoSystem = ServiceLocator.Current.GetInstance<IStegoSystem>();
+            SimpleIoc.Default.Register(() => CreateDropFileUCVM(stegoSystem.SecretFileConstraints, FileTypes.SecretFile), DropSecretFileKey);
+            SimpleIoc.Default.Register(() => CreateDropFileUCVM(stegoSystem.ContainerFileConstraints), DropContainerFileKey);
+            SimpleIoc.Default.Register(() => CreateDropFileUCVM(stegoSystem.StegoContainerFileConstraints), DropStegoContainerFileKey);
+
+            SimpleIoc.Default.Register(() => new PasswordUCVM());
+            SimpleIoc.Default.Register(() => new OutputPathUCVM(_defaultPath, SimpleIoc.Default.GetInstance<IFolderDialogService>()));
+
+            SimpleIoc.Default.Register(() => CreateEncryptionUCVM);
+            SimpleIoc.Default.Register(() => CreateDecryptionUCVM);
+
+            SimpleIoc.Default.Register(() => StatusBarUCVM.GetInstance());
+            SimpleIoc.Default.Register(() => new MainVM(SimpleIoc.Default.GetInstance<EncryptionUCVM>(),
+            SimpleIoc.Default.GetInstance<DecryptionUCVM>()));
+        }
+
+        private static void RegisterDomainServices()
+        {
+            SimpleIoc.Default.Register<ISudokuStegoMethod<byte>, SudokuStegoMethod256>(true);
+            SimpleIoc.Default.Register<SudokuMatrixFactory<byte>>(true);
+            SimpleIoc.Default.Register<IStegoSystem, SudokuStegoSystem<byte>>(true);
+        }
+
+        private static EncryptionUCVM CreateEncryptionUCVM
         {
             get
             {
-                IStegoSystem stegoSystem = ServiceLocator.Current.GetInstance<IStegoSystem>();
-
-                DropFileUCVM dropSecretFileVM = new DropFileUCVM(ServiceLocator.Current.GetInstance<IFileDialogService>(),
-                    stegoSystem.SecretFileConstraints)
-                { FileType = FileTypes.SecretFile };
-
-                DropFileUCVM dropContainerFileVM = new DropFileUCVM(ServiceLocator.Current.GetInstance<IFileDialogService>(),
-                    stegoSystem.ContainerFileConstraints)
-                { FileType = (stegoSystem.ContainerFileConstraints.FileType == StegoSystem.FileTypes.Images) ? FileTypes.Image : FileTypes.File };
-
-                OutputPathUCVM outputPathVM = OutputPathUCVM;//ServiceLocator.Current.GetInstance<OutputPathUCVM>();
-                PasswordUCVM passwordVM = PasswordUCVM;//ServiceLocator.Current.GetInstance<PasswordUCVM>();
-
+                DropFileUCVM dropSecretFileVM = ServiceLocator.Current.GetInstance<DropFileUCVM>(DropSecretFileKey);
+                DropFileUCVM dropContainerFileVM = ServiceLocator.Current.GetInstance<DropFileUCVM>(DropContainerFileKey);
+                OutputPathUCVM outputPathVM = ServiceLocator.Current.GetInstance<OutputPathUCVM>();
+                PasswordUCVM passwordVM = ServiceLocator.Current.GetInstance<PasswordUCVM>();
                 Encryption enc = ServiceLocator.Current.GetInstance<Encryption>();
 
                 return new EncryptionUCVM(enc, dropSecretFileVM, dropContainerFileVM, outputPathVM, passwordVM);
             }
         }
 
-        public DecryptionUCVM DecryptionUCVM
+        private static DecryptionUCVM CreateDecryptionUCVM
         {
             get
             {
-                IStegoSystem stegoSystem = ServiceLocator.Current.GetInstance<IStegoSystem>();
-
-                DropFileUCVM dropStegoContainerFileVM = new DropFileUCVM(ServiceLocator.Current.GetInstance<IFileDialogService>(),
-                    stegoSystem.StegoContainerFileConstraints)
-                { FileType = (stegoSystem.StegoContainerFileConstraints.FileType == StegoSystem.FileTypes.Images) ? FileTypes.Image : FileTypes.File };
-
-                OutputPathUCVM outputPathVM = OutputPathUCVM;//ServiceLocator.Current.GetInstance<OutputPathUCVM>();
-                PasswordUCVM passwordVM = PasswordUCVM;//ServiceLocator.Current.GetInstance<PasswordUCVM>();
-
+                DropFileUCVM dropStegoContainerFileVM = ServiceLocator.Current.GetInstance<DropFileUCVM>(DropStegoContainerFileKey);
+                OutputPathUCVM outputPathVM = ServiceLocator.Current.GetInstance<OutputPathUCVM>();
+                PasswordUCVM passwordVM = ServiceLocator.Current.GetInstance<PasswordUCVM>();
                 Decryption decr = ServiceLocator.Current.GetInstance<Decryption>();
 
                 return new DecryptionUCVM(decr, dropStegoContainerFileVM, outputPathVM, passwordVM);
             }
         }
 
-        public StatusBarUCVM StatusBarUCVM => StatusBarUCVM.GetInstance();
-
-        public PasswordUCVM PasswordUCVM => new PasswordUCVM();
-        public OutputPathUCVM OutputPathUCVM => new OutputPathUCVM(_defaultPath, SimpleIoc.Default.GetInstance<IFolderDialogService>());
-
-        public MainVM MainVM => new MainVM(EncryptionUCVM, DecryptionUCVM);
-
-        public static void Cleanup()
+        private static DropFileUCVM CreateDropFileUCVM(FileTypeConstraints fileTypeConstraints, FileTypes? fileType = null)
         {
-            // TODO Clear the ViewModels
+            FileTypes fileTypeFilled = (fileType != null) ? (FileTypes)fileType :
+                (fileTypeConstraints.FileType == StegoSystem.FileTypes.Images) ? FileTypes.Image : FileTypes.File;
+
+            return new DropFileUCVM(ServiceLocator.Current.GetInstance<IFileDialogService>(), fileTypeConstraints, fileTypeFilled);
         }
+
+        #endregion
     }
 }

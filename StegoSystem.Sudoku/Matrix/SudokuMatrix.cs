@@ -9,14 +9,12 @@ namespace StegoSystem.Sudoku.Matrix
     /// </summary>
     public class SudokuMatrix<T>
     {
-        //ToDo optimize!
         private readonly T[,] _sudokuMatrix;
         private readonly INearestCoordinatesFinder<T> _nearestCoordinatesFinder;
         public int SudokuSize => _sudokuMatrix.GetLength(0);
         public int BlockSize => (int)Math.Sqrt(SudokuSize);
         public int RegionsCount => SudokuSize / BlockSize;
 
-        //public SudokuMatrix(ISudokuMatrixGenerator sudokuMatrixGenerator, INearestCoordinatesFinder nearestCoordinatesFinder)
         public SudokuMatrix(INearestCoordinatesFinder<T> nearestCoordinatesFinder, int matrixSize)
         {
             _nearestCoordinatesFinder = nearestCoordinatesFinder;

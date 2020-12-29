@@ -9,9 +9,12 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
     {
         private readonly Encryption _encryption;
 
-        public EncryptionUCVM(Encryption encryption,
-            DropFileUCVM dropSecretFileVM, DropFileUCVM dropContainerFileVM,
-            OutputPathUCVM outputPathVM, PasswordUCVM passwordVM)
+        public EncryptionUCVM(
+            Encryption encryption,
+            DropFileUCVM dropSecretFileVM,
+            DropFileUCVM dropContainerFileVM,
+            OutputPathUCVM outputPathVM,
+            PasswordUCVM passwordVM)
         {
             _encryption = encryption;
             DropSecretFileVM = dropSecretFileVM;

@@ -14,7 +14,7 @@ namespace StegoSystem.Sudoku
     public class SudokuStegoSystem<T> : IStegoSystem
     {
         private const string KeyRegex = "^[a-zA-Z0-9]{6,30}$";
-        private const string RegexDescription = "Key can consist of numbers and letters, its length must be in range of 6-30.";
+        private const string RegexDescription = "Key can consist of numbers and letters. Key length must be in range of 6-30.";
 
         private readonly ISudokuStegoMethod<T> _sudokuStegoMethod;
         private readonly SudokuMatrixFactory<T> _sudokuMatrixFactory;
@@ -180,7 +180,7 @@ namespace StegoSystem.Sudoku
 
         private SudokuMatrix<T> GenerateSudokuKey(string password)
         {
-            return _sudokuMatrixFactory.GetByPassword(_sudokuStegoMethod.GetExpectedSudokuSize(), password);
+            return _sudokuMatrixFactory.CreateByPassword(_sudokuStegoMethod.GetExpectedSudokuSize(), password);
         }
 
         #endregion

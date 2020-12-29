@@ -6,7 +6,6 @@ namespace StegoSystem.Sudoku.Matrix.Test
     {
         public static Tuple<double, int> CalculateMatrixesDifference<T>(SudokuMatrix<T> m1, SudokuMatrix<T> m2)
         {
-            double similarityPercentage = 0.0;
             int identicalElementsCount = 0;
 
             if (m1.SudokuSize != m2.SudokuSize || m1.SudokuSize == 0)
@@ -23,7 +22,7 @@ namespace StegoSystem.Sudoku.Matrix.Test
                 }
             }
 
-            similarityPercentage = 100.0 * identicalElementsCount / (m1.SudokuSize * m1.SudokuSize);
+            var similarityPercentage = 100.0 * identicalElementsCount / (m1.SudokuSize * m1.SudokuSize);
 
             return new Tuple<double, int>(similarityPercentage, identicalElementsCount);
         }

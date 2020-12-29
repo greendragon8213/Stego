@@ -19,23 +19,16 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
         private FileTypes _fileType;
         private readonly FileTypeConstraints _fileTypeConstraints;
         
-        public DropFileUCVM(IFileDialogService fileDialogService, FileTypeConstraints fileTypeConstraints)
+        public DropFileUCVM(IFileDialogService fileDialogService, FileTypeConstraints fileTypeConstraints, 
+            FileTypes fileType = FileTypes.File)
         {
             _fileTypeConstraints = fileTypeConstraints;
             _fileDialogService = fileDialogService;
+            _fileType = fileType;
             OpenFileCommand = new RelayCommand(OpenFile);
         }
 
-        public FileTypes FileType
-        {
-            get => _fileType;
-
-            set
-            {
-                _fileType = value;
-                RaisePropertyChanged(nameof(FileType));
-            }
-        }
+        public FileTypes FileType => _fileType;
 
         public bool IsFilePathProvided => !string.IsNullOrEmpty(FilePath);
 

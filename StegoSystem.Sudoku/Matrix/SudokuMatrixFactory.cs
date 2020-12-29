@@ -5,7 +5,7 @@ namespace StegoSystem.Sudoku.Matrix
 {
     public class SudokuMatrixFactory<T>
     {
-        public SudokuMatrix<T> GetByPassword(int matrixSize, string password)
+        public SudokuMatrix<T> CreateByPassword(int matrixSize, string password)
         {
             INearestCoordinatesFinder<T> nearestCoordinatesFinder = new NearestCoordinatesFinder<T>();
 
