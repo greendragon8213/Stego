@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StegoSystem", "StegoSystem\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StegoSystem.DesktopApp", "StegoSystem.DesktopApp\StegoSystem.DesktopApp.csproj", "{48194485-07F9-4DBF-A1DB-211F7F65453E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StegoSystem.Common", "StegoSystem.Common\StegoSystem.Common.csproj", "{1445EC44-878E-4140-B225-54ABD919AF9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{48194485-07F9-4DBF-A1DB-211F7F65453E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48194485-07F9-4DBF-A1DB-211F7F65453E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48194485-07F9-4DBF-A1DB-211F7F65453E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1445EC44-878E-4140-B225-54ABD919AF9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1445EC44-878E-4140-B225-54ABD919AF9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1445EC44-878E-4140-B225-54ABD919AF9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1445EC44-878E-4140-B225-54ABD919AF9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

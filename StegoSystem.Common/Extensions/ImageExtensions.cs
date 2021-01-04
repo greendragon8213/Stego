@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace StegoSystem.Extensions
+namespace StegoSystem.Common.Extensions
 {
     public static class ImageExtensions
     {

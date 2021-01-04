@@ -46,6 +46,10 @@
     <Compile Include="SudokuStegoMethod256.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\StegoSystem.Common\StegoSystem.Common.csproj">
+      <Project>{1445ec44-878e-4140-b225-54abd919af9d}</Project>
+      <Name>StegoSystem.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StegoSystem.Sudoku\StegoSystem.Sudoku.csproj">
       <Project>{abc6ec74-3c4e-4149-bbab-6a2521c03707}</Project>
       <Name>StegoSystem.Sudoku</Name>

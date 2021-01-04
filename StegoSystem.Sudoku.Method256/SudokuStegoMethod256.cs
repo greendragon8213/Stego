@@ -1,4 +1,4 @@
-﻿using StegoSystem.Extensions;
+﻿using StegoSystem.Common.Extensions;
 using StegoSystem.Models;
 using StegoSystem.Sudoku.FileConstraints;
 using StegoSystem.Sudoku.Matrix;
