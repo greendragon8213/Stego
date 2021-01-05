@@ -59,6 +59,13 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
         #region Private methods
 
+        private static void RegisterDomainServices()
+        {
+            SimpleIoc.Default.Register<ISudokuStegoMethod<byte>, SudokuStegoMethod256>(true);
+            SimpleIoc.Default.Register<ISudokuMatrixFactory<byte, string>, SudokuByPasswordMatrixFactory<byte>>(true);
+            SimpleIoc.Default.Register<IStegoSystem<string>, SudokuStegoSystem<byte, string>>(true);
+        }
+
         private static void RegisterAppServices()
         {
             //Models
@@ -70,7 +77,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             SimpleIoc.Default.Register<IFolderDialogService, FolderDialogService>(); //single instance per app is ok
 
             //UI VMs (every time requested - new instance created)
-            var stegoSystem = ServiceLocator.Current.GetInstance<IStegoSystem>();
+            var stegoSystem = ServiceLocator.Current.GetInstance<IStegoSystem<string>>();
             SimpleIoc.Default.Register(() => CreateDropFileUCVM(stegoSystem.SecretFileConstraints, FileTypes.SecretFile), DropSecretFileKey);
             SimpleIoc.Default.Register(() => CreateDropFileUCVM(stegoSystem.ContainerFileConstraints), DropContainerFileKey);
             SimpleIoc.Default.Register(() => CreateDropFileUCVM(stegoSystem.StegoContainerFileConstraints), DropStegoContainerFileKey);
@@ -83,14 +90,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
             SimpleIoc.Default.Register(() => StatusBarUCVM.GetInstance());
             SimpleIoc.Default.Register(() => new MainVM(SimpleIoc.Default.GetInstance<EncryptionUCVM>(),
-            SimpleIoc.Default.GetInstance<DecryptionUCVM>()));
-        }
-
-        private static void RegisterDomainServices()
-        {
-            SimpleIoc.Default.Register<ISudokuStegoMethod<byte>, SudokuStegoMethod256>(true);
-            SimpleIoc.Default.Register<SudokuMatrixFactory<byte>>(true);
-            SimpleIoc.Default.Register<IStegoSystem, SudokuStegoSystem<byte>>(true);
+                SimpleIoc.Default.GetInstance<DecryptionUCVM>()));
         }
 
         private static EncryptionUCVM CreateEncryptionUCVM

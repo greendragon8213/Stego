@@ -9,7 +9,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
     {
         private readonly IFolderDialogService _folderDialogService;
         private string _path;
-        private bool _isValid = true;
+        private bool? _isValid = null;
 
         public OutputPathUCVM(string defaultPath, IFolderDialogService folderDialogService)
         {
@@ -23,13 +23,13 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             get { return _path; }
             set
             {
-                //ToDo path validation
                 _path = value;
                 RaisePropertyChanged(nameof(Path));
+                IsValid = null;
             }
         }
 
-        public bool IsValid
+        public bool? IsValid
         {
             get => _isValid;
             set

@@ -14,7 +14,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
     {
         private readonly IFileDialogService _fileDialogService;
         private string _filePath;
-        private bool _isValid = true;
+        private bool? _isValid = null;
 
         private FileTypes _fileType;
         private readonly FileTypeConstraints _fileTypeConstraints;
@@ -47,6 +47,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
                 {
                     _filePath = value;
                     RaisePropertyChanged(nameof(IsFilePathProvided));
+                    IsValid = null;
                     return;
                 }
 
@@ -54,7 +55,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             }
         }
 
-        public bool IsValid
+        public bool? IsValid
         {
             get => _isValid;
             set

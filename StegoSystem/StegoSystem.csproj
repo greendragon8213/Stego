@@ -45,6 +45,7 @@
     <Compile Include="FileTypes\FileTypeConstraints.cs" />
     <Compile Include="FileTypes\FileTypes.cs" />
     <Compile Include="IStegoSystem.cs" />
+    <Compile Include="Models\IKey.cs" />
     <Compile Include="Models\SecretFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

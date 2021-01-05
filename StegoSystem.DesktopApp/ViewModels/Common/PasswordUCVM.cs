@@ -6,20 +6,20 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
     public class PasswordUCVM : ViewModelBase, IValidatable
     {
         private string _password;
-        private bool _isValid = true;
+        private bool? _isValid = null;
 
         public string Password
         {
             get => _password;
             set
             {
-                //ToDo validation
                 _password = value;
                 RaisePropertyChanged(nameof(Password));
+                IsValid = null;
             }
         }
 
-        public bool IsValid
+        public bool? IsValid
         {
             get => _isValid;
             set

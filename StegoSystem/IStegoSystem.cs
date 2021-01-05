@@ -1,9 +1,11 @@
-﻿namespace StegoSystem
+﻿using StegoSystem.Models;
+
+namespace StegoSystem
 {
     /// <summary>
     /// Represents stego system functionality in general
     /// </summary>
-    public interface IStegoSystem
+    public interface IStegoSystem<T>
     {
         FileTypeConstraints ContainerFileConstraints { get; }
         FileTypeConstraints StegoContainerFileConstraints { get; }
@@ -16,7 +18,7 @@
         /// <param name="secretDataFilePath"></param>
         /// <param name="key"></param>
         /// <returns>Path to stogocontainer</returns>
-        string Encrypt(string containerFilePath, string secretDataFilePath, string key, string stegocontainerFilePath = null);
+        string Encrypt(string containerFilePath, string secretDataFilePath, IKey<T> key, string stegocontainerFilePath = null);
 
         /// <summary>
         /// Restores secret data from stegocontainer with key
@@ -24,6 +26,6 @@
         /// <param name="stegocontainer"></param>
         /// <param name="key"></param>
         /// <returns>Path to restored data</returns>
-        string Decrypt(string stegocontainerFilePath, string key, string restoredSecretFilePath = null);
+        string Decrypt(string stegocontainerFilePath, IKey<T> key, string restoredSecretFilePath = null);
     }
 }

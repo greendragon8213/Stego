@@ -15,7 +15,10 @@
             <DataTrigger Binding="{Binding IsValid}" Value="True">
                 <Setter Property="BorderBrush" Value="Transparent"/>
             </DataTrigger>
-        </Style.Triggers>
+			<DataTrigger Binding="{Binding IsValid}" Value="Null">
+				<Setter Property="BorderBrush" Value="Transparent"/>
+			</DataTrigger>
+		</Style.Triggers>
     </Style>
 
 </ResourceDictionary>

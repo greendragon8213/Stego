@@ -2,6 +2,6 @@
 {
     interface IValidatable
     {
-        bool IsValid { get; set; }
+        bool? IsValid { get; set; }
     }
 }

@@ -42,7 +42,7 @@ namespace StegoSystem.Sudoku.Method256
 
             if (secretData.Length * 2 >= coverBytes.Length)
             {
-                throw new InvalidOperationException("Cannot encrypt secret data because container image is too small.");
+                throw new InvalidOperationException("Cannot encrypt secret data because container image is too small");
             }
 
             EmbedSecretBytesToContainer(coverBytes, secretData, sudokuKey);
@@ -136,29 +136,47 @@ namespace StegoSystem.Sudoku.Method256
 
             int secretFilePayloadLength = BitConverter.ToInt32(fileLengthValueInByteArray, 0);
 
+            if(secretFilePayloadLength <= 0)
+            {
+                throw new InvalidOperationException("Unable to extract secret data");
+            }
+
             // decode secret file name length (stored in a 1 byte)
             int secretFileNameLength = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
+
+            if (secretFileNameLength <= 0)
+            {
+                throw new InvalidOperationException("Unable to extract secret data");
+            }
 
             //decode file name
             byte[] fileNameBytes = new byte[secretFileNameLength];
 
             stegoIterator += 2;
-            for (int i = 0; i < secretFileNameLength; stegoIterator += 2, i++)
+
+            try
             {
-                fileNameBytes[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
+                for (int i = 0; i < secretFileNameLength; stegoIterator += 2, i++)
+                {
+                    fileNameBytes[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
+                }
+
+                string secretFileName = Encoding.ASCII.GetString(fileNameBytes, 0, fileNameBytes.Length);
+
+                //decode secret file payload
+                byte[] secretFilePayloadBytes = new byte[secretFilePayloadLength];
+
+                for (int i = 0; i < secretFilePayloadLength; stegoIterator += 2, i++)
+                {
+                    secretFilePayloadBytes[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
+                }
+
+                return new Tuple<string, byte[]>(secretFileName, secretFilePayloadBytes);
             }
-
-            string secretFileName = Encoding.ASCII.GetString(fileNameBytes, 0, fileNameBytes.Length);
-
-            //decode secret file payload
-            byte[] secretFilePayloadBytes = new byte[secretFilePayloadLength];
-
-            for (int i = 0; i < secretFilePayloadLength; stegoIterator += 2, i++)
+            catch
             {
-                secretFilePayloadBytes[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
+                throw new InvalidOperationException("Unable to extract secret data");
             }
-
-            return new Tuple<string, byte[]>(secretFileName, secretFilePayloadBytes);
         }
 
         #endregion
