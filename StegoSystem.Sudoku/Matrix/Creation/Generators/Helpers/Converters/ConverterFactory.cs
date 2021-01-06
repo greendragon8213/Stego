@@ -4,7 +4,7 @@ namespace StegoSystem.Sudoku.Matrix.Generators.Helpers
 {
     internal static class ConverterFactory
     {
-        internal static IConverterFromInt<T> GetConverter<T>()
+        internal static IConverterFromInt<T> CreateConverter<T>()
         {
             if (typeof(T) == typeof(byte))
             {

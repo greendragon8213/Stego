@@ -9,7 +9,7 @@ namespace StegoSystem.Sudoku.Matrix.Generators
     /// <typeparam name="T">matrix element type</typeparam>
     public class SudokuMatrixGeneratorInitial<T> : ISudokuMatrixGenerator<T>
     {
-        private IConverterFromInt<T> _converter = ConverterFactory.GetConverter<T>();
+        private IConverterFromInt<T> _converter = ConverterFactory.CreateConverter<T>();
 
         public virtual T[,] Generate(int size)
         {
