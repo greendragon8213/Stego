@@ -3,7 +3,6 @@ using GalaSoft.MvvmLight.Command;
 using StegoSystem.DesktopApp.Models;
 using System;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {

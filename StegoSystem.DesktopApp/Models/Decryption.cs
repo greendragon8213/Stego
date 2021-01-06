@@ -1,5 +1,4 @@
 ﻿using StegoSystem.Models;
-using StegoSystem.Sudoku.Keys;
 using System.Threading.Tasks;
 
 namespace StegoSystem.DesktopApp.Models
