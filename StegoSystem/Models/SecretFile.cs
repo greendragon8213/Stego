@@ -23,9 +23,7 @@ namespace StegoSystem.Models
 
         public string Save(string destinationPath)
         {
-            string filePath = Path.Combine(destinationPath, FileName);
-            File.WriteAllBytes(filePath, Payload);
-            return filePath;
+            return Common.Extensions.File.SaveAllBytesToFile(destinationPath, FileName, Payload);
         }
     }
 }

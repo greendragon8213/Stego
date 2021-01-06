@@ -4,6 +4,8 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using StegoSystem.Common.Extensions;
+using System.Threading;
 
 namespace StegoSystem.Sudoku
 {
@@ -29,7 +31,7 @@ namespace StegoSystem.Sudoku
         {
             #region checking arguments
 
-            if (!File.Exists(containerFilePath))
+            if (!System.IO.File.Exists(containerFilePath))
             {
                 throw new ArgumentException("Container file does not exist");
             }
@@ -39,7 +41,7 @@ namespace StegoSystem.Sudoku
                 throw new ArgumentException($"This steganography system does not allow to use as container file with extension \"{Path.GetExtension(containerFilePath)}\"");
             }
 
-            if (!File.Exists(secretDataFilePath))
+            if (!System.IO.File.Exists(secretDataFilePath))
             {
                 throw new ArgumentException("Secret data file does not exist");
             }
@@ -96,13 +98,7 @@ namespace StegoSystem.Sudoku
 
             try
             {
-                string stegocontainerFilePath = Path.Combine(pathToStegocontainer, new FileInfo(containerFilePath).Name);
-                ImageFormat stegoContainerFormat = ImageFormat.Bmp;
-
-                stegocontainerFilePath = Path.ChangeExtension(stegocontainerFilePath, stegoContainerFormat.ToString().ToLower());
-                stegocontainer.Save(stegocontainerFilePath, stegoContainerFormat);
-
-                return stegocontainerFilePath;
+                return stegocontainer.Save(pathToStegocontainer, containerFilePath, ImageFormat.Bmp);
             }
             catch (Exception e)
             {
@@ -114,7 +110,7 @@ namespace StegoSystem.Sudoku
         {
             #region checking arguments
 
-            if (!File.Exists(stegocontainerFilePath))
+            if (!System.IO.File.Exists(stegocontainerFilePath))
             {
                 throw new ArgumentException("Container file does not exist.");
             }

@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using StegoSystem.DesktopApp.Models;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
@@ -30,7 +31,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
         public RelayCommand DecryptCommand { get; set; }
 
-        private void Decrypt()
+        private async void Decrypt()
         {
             #region Validation
 
@@ -38,14 +39,14 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             if (!File.Exists(stegoContainerFilePath))
             {
                 DropStegoContainerFileVM.IsValid = false;
-                StatusBarUCVM.UpdateStatus(text: "Stegocontainer file does not exist", isErrorStatus: true);
+                StatusBarUCVM.UpdateState(text: "Stegocontainer file does not exist", state: AppState.Error);
                 return;
             }
 
             if (!_decryption.IsStegocontainerExtensionAllowed(stegoContainerFilePath))
             {
                 DropStegoContainerFileVM.IsValid = false;
-                StatusBarUCVM.UpdateStatus(text: "Wrong stegocontainer file extension", isErrorStatus: true);
+                StatusBarUCVM.UpdateState(text: "Wrong stegocontainer file extension", state: AppState.Error);
                 return;
             }
 
@@ -53,7 +54,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             if (!Directory.Exists(outputPath))
             {
                 OutputPathVM.IsValid = false;
-                StatusBarUCVM.UpdateStatus(text: "Output directory does not exist", isErrorStatus: true);
+                StatusBarUCVM.UpdateState(text: "Output directory does not exist", state: AppState.Error);
                 return;
             }
 
@@ -61,18 +62,20 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             if (!password.IsValid())
             {
                 PasswordVM.IsValid = false;
-                StatusBarUCVM.UpdateStatus(text: password.ValidationDescription, isErrorStatus: true);
+                StatusBarUCVM.UpdateState(text: password.ValidationDescription, state: AppState.Error);
                 return;
             }
 
             #endregion
 
+            StatusBarUCVM.UpdateState(state: AppState.Working);
+
             try
             {
-                string filePath = _decryption.Decrypt(stegoContainerFilePath, password, outputPath);
+                string filePath = await _decryption.Decrypt(stegoContainerFilePath, password, outputPath);
 
-                StatusBarUCVM.UpdateStatus(text: "Decryption has been successfully done. Secret file is located: ",
-                    localFilePath: filePath, isErrorStatus: false);
+                StatusBarUCVM.UpdateState(text: "Decryption has been successfully done. Secret file is located: ",
+                    localFilePath: filePath, state: AppState.Neutral);
 
                 DropStegoContainerFileVM.IsValid = true;
                 PasswordVM.IsValid = true;
@@ -80,11 +83,11 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             }
             catch (Exception e) when (e is InvalidOperationException || e is ArgumentException)
             {
-                StatusBarUCVM.UpdateStatus(text: e.Message, isErrorStatus: true);
+                StatusBarUCVM.UpdateState(text: e.Message, state: AppState.Error);
             }
             catch (Exception e)
             {
-                StatusBarUCVM.UpdateStatus(text: "Something went wrong. Try again", isErrorStatus: true);
+                StatusBarUCVM.UpdateState(text: "Something went wrong. Try again", state: AppState.Error);
             }
         }
     }

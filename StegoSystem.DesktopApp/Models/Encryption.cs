@@ -1,9 +1,10 @@
 ﻿using StegoSystem.Models;
 using StegoSystem.Sudoku.Keys;
+using System.Threading.Tasks;
 
 namespace StegoSystem.DesktopApp.Models
 {
-    public class Encryption
+    public class Encryption : PasswordBasedSystem
     {
         private readonly IStegoSystem<string> _stegoSystem;
 
@@ -20,17 +21,12 @@ namespace StegoSystem.DesktopApp.Models
         public bool IsSecretExtensionAllowed(string path)
         {
             return _stegoSystem.SecretFileConstraints.IsFileExtensionAllowedByPath(path);
-        }
-
-        public IKey<string> CreatePassword(string password)
-        {
-            return new PasswordKey(password);
         } 
 
-        public string Encrypt(string containerFilePath, string secretDataFilePath, IKey<string> passwordKey, string stegocontainerFilePath)
+        public async Task<string> Encrypt(string containerFilePath, string secretDataFilePath, IKey<string> passwordKey, string stegocontainerFilePath)
         {
-            return _stegoSystem.Encrypt(containerFilePath, secretDataFilePath, passwordKey,
-                    stegocontainerFilePath);
+            return await Task.Run(() => _stegoSystem.Encrypt(containerFilePath, secretDataFilePath, passwordKey,
+                    stegocontainerFilePath));
         }
     }
 }

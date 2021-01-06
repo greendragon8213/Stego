@@ -103,6 +103,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\Decryption.cs" />
     <Compile Include="Models\Encryption.cs" />
+    <Compile Include="Models\PasswordBasedSystem.cs" />
     <Compile Include="Services\Abstract\IFolderDialogService.cs" />
     <Compile Include="Services\FileDialogService.cs" />
     <Compile Include="Services\Abstract\IFileDialogService.cs" />

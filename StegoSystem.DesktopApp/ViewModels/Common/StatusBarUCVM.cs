@@ -4,6 +4,13 @@ using System.IO;
 
 namespace SudkuStegoSystem.DesktopApp.ViewModels
 {
+    public enum AppState
+    {
+        Neutral,
+        Error,
+        Working
+    }
+
     //Should be like monostate, but some issues with binding to static
     public class StatusBarUCVM : ViewModelBase
     {
@@ -26,7 +33,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
                         _instance = new StatusBarUCVM();
                     }
                 }
-            }
+            } 
 
             return _instance;
         }
@@ -34,20 +41,29 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
         public string Text { get; private set; }
         public string LocalFilePath { get; private set; }
 
-        //ToDo use enum
-        public bool IsErrorStatus {get; private set;}
+        public AppState State {get; private set;}
         
-        public static void UpdateStatus(string text, string localFilePath = "", bool isErrorStatus = false)
+        public static void UpdateState(string text = "", string localFilePath = "", AppState state = AppState.Neutral)
         {
+            if (_instance == null)
+            {
+                GetInstance();
+            }
+
             lock (_locker)
             {
+                if(state == AppState.Working && string.IsNullOrEmpty(text))
+                {
+                    text = "Working...";
+                }
+
                 _instance.Text = text;
                 _instance.LocalFilePath = localFilePath;
-                _instance.IsErrorStatus = isErrorStatus;
+                _instance.State = state;
 
                 _instance.RaisePropertyChanged(nameof(Text));
                 _instance.RaisePropertyChanged(nameof(LocalFilePath));
-                _instance.RaisePropertyChanged(nameof(IsErrorStatus));
+                _instance.RaisePropertyChanged(nameof(State));
             }
         }
 

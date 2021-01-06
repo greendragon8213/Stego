@@ -49,6 +49,11 @@
     <Compile Include="Models\SecretFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\StegoSystem.Common\StegoSystem.Common.csproj">
+      <Project>{1445ec44-878e-4140-b225-54abd919af9d}</Project>
+      <Name>StegoSystem.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

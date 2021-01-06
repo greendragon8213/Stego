@@ -33,7 +33,7 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
         public RelayCommand EncryptCommand { get; set; }
 
-        private void Encrypt()
+        private async void Encrypt()
         {
             #region Validation
 
@@ -41,14 +41,14 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             if (!File.Exists(containerFilePath))
             {
                 DropContainerFileVM.IsValid = false;
-                StatusBarUCVM.UpdateStatus(text: "Container file does not exist", isErrorStatus: true);
+                StatusBarUCVM.UpdateState(text: "Container file does not exist", state: AppState.Error);
                 return;
             }
 
             if (!_encryption.IsContainerExtensionAllowed(containerFilePath))
             {
                 DropContainerFileVM.IsValid = false;
-                StatusBarUCVM.UpdateStatus(text: "Wrong container file extension", isErrorStatus: true);
+                StatusBarUCVM.UpdateState(text: "Wrong container file extension", state: AppState.Error);
                 return;
             }
             
@@ -56,14 +56,14 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             if (!File.Exists(secretFilePath))
             {
                 DropSecretFileVM.IsValid = false;
-                StatusBarUCVM.UpdateStatus(text: "Secret file does not exist", isErrorStatus: true);
+                StatusBarUCVM.UpdateState(text: "Secret file does not exist", state: AppState.Error);
                 return;
             }
 
             if (!_encryption.IsSecretExtensionAllowed(secretFilePath))
             {
                 DropSecretFileVM.IsValid = false;
-                StatusBarUCVM.UpdateStatus(text: "Wrong secret file extension", isErrorStatus: true);
+                StatusBarUCVM.UpdateState(text: "Wrong secret file extension", state: AppState.Error);
                 return;
             }
 
@@ -71,26 +71,28 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             if (!Directory.Exists(outputPath))
             {
                 OutputPathVM.IsValid = false;
-                StatusBarUCVM.UpdateStatus(text: "Output directory does not exist", isErrorStatus: true);
+                StatusBarUCVM.UpdateState(text: "Output directory does not exist", state: AppState.Error);
                 return;
             }
 
-            var password =_encryption.CreatePassword(PasswordVM.Password);
+            var password = _encryption.CreatePassword(PasswordVM.Password);
             if (!password.IsValid())
             {
                 PasswordVM.IsValid = false;
-                StatusBarUCVM.UpdateStatus(text: password.ValidationDescription, isErrorStatus: true);
+                StatusBarUCVM.UpdateState(text: password.ValidationDescription, state: AppState.Error);
                 return;
             }
 
             #endregion
 
+            StatusBarUCVM.UpdateState(state: AppState.Working);
+
             try
             {
-                string filePath = _encryption.Encrypt(containerFilePath, secretFilePath, password, outputPath);
+                string filePath = await _encryption.Encrypt(containerFilePath, secretFilePath, password, outputPath);
 
-                StatusBarUCVM.UpdateStatus(text: "Encryption has been successfully done. Stegocontainer is located: ",
-                        localFilePath: filePath, isErrorStatus: false);
+                StatusBarUCVM.UpdateState(text: "Encryption has been successfully done. Stegocontainer is located: ",
+                        localFilePath: filePath, state: AppState.Neutral);
 
                 DropContainerFileVM.IsValid = true;
                 DropSecretFileVM.IsValid = true;
@@ -99,11 +101,11 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             }
             catch (Exception e) when (e is InvalidOperationException || e is ArgumentException)
             {
-                StatusBarUCVM.UpdateStatus(text: e.Message, isErrorStatus: true);
+                StatusBarUCVM.UpdateState(text: e.Message, state: AppState.Error);
             }
             catch (Exception e)
             {
-                StatusBarUCVM.UpdateStatus(text: "Something went wrong. Try again", isErrorStatus: true);
+                StatusBarUCVM.UpdateState(text: "Something went wrong. Try again", state: AppState.Error);
             }
         }
     }

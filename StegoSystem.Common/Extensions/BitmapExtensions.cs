@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace StegoSystem.Common.Extensions
@@ -84,6 +85,25 @@ namespace StegoSystem.Common.Extensions
 
             // Unlock the bits.
             bitmap.UnlockBits(bitmapData);
+        }
+
+        public static string Save(this Bitmap bitmap, string destinationPath, string fileName, ImageFormat imageFormat)
+        {
+            string fileExtension = imageFormat.ToString().ToLower();
+            string baseFileName = Path.GetFileNameWithoutExtension(fileName);
+
+            int i = 0;
+            string path = Path.Combine(destinationPath, new FileInfo(Path.ChangeExtension(fileName, fileExtension)).Name);
+            
+            while (System.IO.File.Exists(path))
+            {
+                i++;
+                string newFileName = $"{baseFileName}_{i}.{fileExtension}";
+                path = Path.Combine(destinationPath, newFileName);
+            }
+
+            bitmap.Save(path, imageFormat);
+            return path;
         }
 
         private static void CheckIfDepthIsSupported(int depth)

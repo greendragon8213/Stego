@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\BitmapExtensions.cs" />
+    <Compile Include="Extensions\File.cs" />
     <Compile Include="Extensions\ImageExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -3,19 +3,37 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SudkuStegoSystem.DesktopApp"
+             xmlns:local="clr-namespace:SudkuStegoSystem.DesktopApp.ViewModels"
              mc:Ignorable="d"                          
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              
-             xmlns:vms="clr-namespace:SudkuStegoSystem.DesktopApp.ViewModels"             
-             d:DataContext="{d:DesignInstance vms:StatusBarUCVM, IsDesignTimeCreatable=False}">
+             xmlns:vms="clr-namespace:SudkuStegoSystem.DesktopApp.ViewModels" xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+			 d:DataContext="{d:DesignInstance vms:StatusBarUCVM, IsDesignTimeCreatable=False}">
 
     <DockPanel VerticalAlignment="Bottom" Style="{StaticResource StatusBarDockPanel}">
 
         <!--<StatusBar DockPanel.Dock="Bottom" Style="{StaticResource StatusBar1}">-->
         <StackPanel DockPanel.Dock="Bottom" Style="{StaticResource StatusBarStackPanel}">
             <TextBlock Style="{StaticResource StatusBarTextBlock}" Text="{Binding Path=Text, Mode=OneWay}"></TextBlock>
-            <TextBlock>
+			<!--ToDo: implement cool loader in future:-->
+			<!--<mah:MetroProgressBar MinWidth="700" HorizontalAlignment="Stretch" Margin="4" IsIndeterminate="True">
+				<mah:MetroProgressBar.Style>
+					<Style>
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding State}" Value="{x:Static local:AppState.Error}">
+								<Setter Property="mah:MetroProgressBar.Visibility" Value="Collapsed" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding State}" Value="{x:Static local:AppState.Neutral}">
+								<Setter Property="mah:MetroProgressBar.Visibility" Value="Collapsed" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding State}" Value="{x:Static local:AppState.Working}">
+								<Setter Property="mah:MetroProgressBar.Visibility" Value="Visible" />
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</mah:MetroProgressBar.Style>
+			</mah:MetroProgressBar>-->
+			<TextBlock>
                 <TextBlock.Style>
                     <Style>
                         <Style.Triggers>
