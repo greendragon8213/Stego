@@ -86,7 +86,7 @@ namespace StegoSystem.Sudoku.Method256
         }
 
         /// <summary>
-        /// Gets bytes to encode by file. FL = 4byte, FNL = 1byte, FN = computed, Payload = computed 
+        /// Gets bytes to encode by file. FL = 4 bytes, FNL = 4 bytes, FN = computed, Payload = computed 
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
@@ -94,10 +94,10 @@ namespace StegoSystem.Sudoku.Method256
         {
             byte[] fileLength = BitConverter.GetBytes(file.Payload.Length);//4 bytes
 
-            byte[] fileNameLength = new byte[1] { BitConverter.GetBytes(file.FileName.Length).First() };//1 byte should be enought
-            byte[] fileName = Encoding.ASCII.GetBytes(file.FileName);
+            byte[] fileName = Encoding.UTF8.GetBytes(file.FileName);
+            byte[] fileNameLength = BitConverter.GetBytes(fileName.Length);//length of file name (in bytes) is stored in 4 byte
 
-            byte[] resultBytes = new byte[4 + 1 + fileName.Length + file.Payload.Length];
+            byte[] resultBytes = new byte[4 + 4 + fileName.Length + file.Payload.Length];
             Buffer.BlockCopy(fileLength, 0, resultBytes, 0, fileLength.Length);
             Buffer.BlockCopy(fileNameLength, 0, resultBytes, fileLength.Length, fileNameLength.Length);
             Buffer.BlockCopy(fileName, 0, resultBytes, fileLength.Length + fileNameLength.Length, fileName.Length);
@@ -136,23 +136,27 @@ namespace StegoSystem.Sudoku.Method256
 
             int secretFilePayloadLength = BitConverter.ToInt32(fileLengthValueInByteArray, 0);
 
-            if(secretFilePayloadLength <= 0)
+            if(secretFilePayloadLength <= 0 || secretFilePayloadLength >= stegoBytes.Length)
             {
                 throw new InvalidOperationException("Unable to extract secret data");
             }
 
-            // decode secret file name length (stored in a 1 byte)
-            int secretFileNameLength = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
+            //decode secret file name (in bytes) length (number is stored in a 4 bytes)
+            var fileNameLengthValueInByteArray = new byte[4];            
+            for (int i = 0; i < 4; stegoIterator += 2, i++)
+            {
+                fileNameLengthValueInByteArray[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
+            }
 
-            if (secretFileNameLength <= 0)
+            int secretFileNameLength = BitConverter.ToInt32(fileNameLengthValueInByteArray, 0);
+
+            if (secretFileNameLength <= 0 || secretFileNameLength >= stegoBytes.Length)
             {
                 throw new InvalidOperationException("Unable to extract secret data");
             }
 
             //decode file name
             byte[] fileNameBytes = new byte[secretFileNameLength];
-
-            stegoIterator += 2;
 
             try
             {
@@ -161,7 +165,7 @@ namespace StegoSystem.Sudoku.Method256
                     fileNameBytes[i] = sudokuKey[stegoBytes[stegoIterator], stegoBytes[stegoIterator + 1]];
                 }
 
-                string secretFileName = Encoding.ASCII.GetString(fileNameBytes, 0, fileNameBytes.Length);
+                string secretFileName = Encoding.UTF8.GetString(fileNameBytes, 0, fileNameBytes.Length);
 
                 //decode secret file payload
                 byte[] secretFilePayloadBytes = new byte[secretFilePayloadLength];
