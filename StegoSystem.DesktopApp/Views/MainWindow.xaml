@@ -15,11 +15,13 @@
         DataContext="{Binding MainVM, Source={StaticResource Locator}}"
         WindowTransitionsEnabled="False"
         WindowStartupLocation="CenterScreen">
-    <Grid>
+	
+	<Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+		
         <TabControl Grid.Row="0">
             <TabItem Header="Encryption">
                 <views:EncryptionUC DataContext="{Binding EncryptionUCVM}">                    
@@ -32,7 +34,7 @@
         </TabControl>
         
         <!--<views:StatusBarUC Grid.Row="1" Width="{c:Binding '(ActualWidth)'}" Height="Auto"ToDo:should I fix width????-->
-        <views:StatusBarUC Grid.Row="1" Width="Auto" Height="Auto" 
+        <views:StatusBarUC Grid.Row="1" Width="Auto" Height="Auto"
                            VerticalAlignment="Bottom" 
                            DataContext="{Binding StatusBarUCVM, Source={StaticResource Locator}}">
         </views:StatusBarUC>

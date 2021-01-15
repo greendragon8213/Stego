@@ -12,8 +12,8 @@
              
              d:DataContext="{d:DesignInstance vms:DropFileUCVM, IsDesignTimeCreatable=False}"                          
              ff:DropFileAssistant.Content="Drop file here">
-    
-    <Border Style="{StaticResource ValidatioState}">
+
+	<Border Style="{StaticResource ValidatioState}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Button Name="ContainerFile" Style="{StaticResource DropFile}"
          dd:DragDrop.IsDropTarget="True"
          dd:DragDrop.DropHandler="{Binding}"
@@ -25,7 +25,7 @@
                 </TextBlock>
 
                 <Rectangle Visibility="{c:Binding '(FileType==local:FileTypes.SecretFile)', FalseToVisibility=Collapsed}" 
-                       Width="80" Height="95"  
+                       Width="80" Height="95" Margin="0 17 0 0"
                        Style="{StaticResource DropFileRectangle}">
                     <Rectangle.OpacityMask>
                         <VisualBrush Visual="{StaticResource SecretFileIcon}" Stretch="Fill" />
