@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudkuStegoSystem.Tests", "SudkuStegoSystem.Tests\SudkuStegoSystem.Tests.csproj", "{6D692B94-728A-43E2-B92F-803A688992D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StegoSystem.Sudoku.Tests", "SudkuStegoSystem.Tests\StegoSystem.Sudoku.Tests.csproj", "{6D692B94-728A-43E2-B92F-803A688992D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{FE4779B5-39C3-40BB-BF15-69BB88D8AEBB}"
 EndProject
@@ -69,7 +69,7 @@ Global
 		{9F6798F2-36E3-426B-BB80-4A9B3C4132C5} = {1CC04C39-CE20-4224-8F7C-55E60ED51302}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45
 		SolutionGuid = {D0A4603C-2BBC-4873-BD19-235C90565EC7}
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45
 	EndGlobalSection
 EndGlobal

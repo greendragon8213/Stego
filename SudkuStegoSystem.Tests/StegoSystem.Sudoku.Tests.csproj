@@ -9,12 +9,13 @@
     <ProjectGuid>{6D692B94-728A-43E2-B92F-803A688992D4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SudkuStegoSystem.Tests</RootNamespace>
-    <AssemblyName>SudkuStegoSystem.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>StegoSystem.Sudoku.Tests</RootNamespace>
+    <AssemblyName>StegoSystem.Sudoku.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SudokuStegoSystemLogicTests.cs" />
+    <Compile Include="SudokuStegoSystemTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestData\Containers\158x200_24.bmp">
@@ -89,17 +90,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StegoSystem.SudokuMethodImplementation\StegoSystem.SudokuMethodImplementation.csproj">
-      <Project>{ABC6EC74-3C4E-4149-BBAB-6A2521C03707}</Project>
-      <Name>StegoSystem.SudokuMethodImplementation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SudkuStegoSystem.Logic\StegoSystem.GeneralLogic.csproj">
-      <Project>{9f6798f2-36e3-426b-bb80-4a9b3c4132c5}</Project>
-      <Name>StegoSystem.GeneralLogic</Name>
-    </ProjectReference>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+    <ProjectReference Include="..\StegoSystem.Sudoku.Method256\StegoSystem.Sudoku.Method256.csproj">
+      <Project>{0af40ce5-59a4-44c4-b4b1-7adae75acbd7}</Project>
+      <Name>StegoSystem.Sudoku.Method256</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StegoSystem.Sudoku\StegoSystem.Sudoku.csproj">
+      <Project>{abc6ec74-3c4e-4149-bbab-6a2521c03707}</Project>
+      <Name>StegoSystem.Sudoku</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StegoSystem\StegoSystem.csproj">
+      <Project>{9f6798f2-36e3-426b-bb80-4a9b3c4132c5}</Project>
+      <Name>StegoSystem</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
