@@ -1,18 +1,12 @@
-﻿using StegoSystem.Models;
-using StegoSystem.Sudoku.Matrix;
-using System.Drawing;
+﻿using StegoSystem.Sudoku.Matrix;
 
 namespace StegoSystem.Sudoku
 {
     public interface ISudokuStegoMethod<T>
     {
-        FileTypeConstraints ContainerFileConstraints { get; }
-        FileTypeConstraints StegoContainerFileConstraints { get; }
-        FileTypeConstraints SecretFileConstraints { get; }
-
         int GetExpectedSudokuSize();
 
-        Bitmap Encrypt(Bitmap container, SecretFile secretFile, SudokuMatrix<T> sudokuKey);
-        SecretFile Decrypt(Bitmap stegocontainer, SudokuMatrix<T> sudokuKey);
+        void EmbedSecretData(byte[] containerBytes, byte[] secretBytes, SudokuMatrix<T> sudokuKey);
+        byte[] ExtractSecretData(int bytesAmountToExtract, ref int stegocontainerOffset, byte[] stegocontainerBytes, SudokuMatrix<T> sudokuKey);
     }
 }
