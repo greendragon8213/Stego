@@ -8,7 +8,7 @@ namespace StegoSystem.Common.Extensions
 {
     public static class BitmapExtensions
     {
-        public static Tuple<byte[], BitmapData> GetByteArrayByImageFile(this Bitmap bitmap, ImageLockMode imageLockMode = ImageLockMode.ReadOnly)
+        public static (byte[] PayloadBytes, BitmapData Bitmap) GetByteArrayByImageFile(this Bitmap bitmap, ImageLockMode imageLockMode = ImageLockMode.ReadOnly)
         {
             if (bitmap == null)
             {
@@ -41,7 +41,7 @@ namespace StegoSystem.Common.Extensions
                 ptr += bitmapData.Stride;
             }
 
-            return new Tuple<byte[], BitmapData>(payloadValues, bitmapData);
+            return (payloadValues, bitmapData);
         }
 
         public static void UpdateBitmapPayloadBytes(this Bitmap bitmap, byte[] bytes, BitmapData bitmapData)

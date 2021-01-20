@@ -70,14 +70,12 @@ namespace StegoSystem.Sudoku
 
             try
             {
-                Tuple<byte[], BitmapData> cover = containerBitmap.GetByteArrayByImageFile(ImageLockMode.ReadWrite);
-                byte[] coverBytes = cover.Item1;
-                BitmapData coverBitmap = cover.Item2;
+                var cover = containerBitmap.GetByteArrayByImageFile(ImageLockMode.ReadWrite);
                 byte[] secretBytes = GetSecretBytesToEncode(secret);
 
-                _sudokuStegoMethod.EmbedSecretData(coverBytes, secretBytes, sudokuKey);
+                _sudokuStegoMethod.EmbedSecretData(cover.PayloadBytes, secretBytes, sudokuKey);
 
-                containerBitmap.UpdateBitmapPayloadBytes(coverBytes, coverBitmap);
+                containerBitmap.UpdateBitmapPayloadBytes(cover.PayloadBytes, cover.Bitmap);
             }
             catch (InvalidOperationException)
             {
@@ -155,14 +153,12 @@ namespace StegoSystem.Sudoku
 
             try
             {
-                Tuple<byte[], BitmapData> cover = containerBitmap.GetByteArrayByImageFile(ImageLockMode.ReadWrite);
-                byte[] coverBytes = cover.Item1;
-                BitmapData coverBitmap = cover.Item2;
+                var cover = containerBitmap.GetByteArrayByImageFile(ImageLockMode.ReadWrite);
                 byte[] secretData = GetSecretBytesToEncode(secretFileToEncode);
 
-                _sudokuStegoMethod.EmbedSecretData(coverBytes, secretData, sudokuKey);
+                _sudokuStegoMethod.EmbedSecretData(cover.PayloadBytes, secretData, sudokuKey);
 
-                containerBitmap.UpdateBitmapPayloadBytes(coverBytes, coverBitmap);
+                containerBitmap.UpdateBitmapPayloadBytes(cover.PayloadBytes, cover.Bitmap);
             }
             catch (InvalidOperationException)
             {
@@ -221,15 +217,11 @@ namespace StegoSystem.Sudoku
             SecretFile secretFile;
             try
             {
-                //secretFile = _sudokuStegoMethod.Decrypt(stegocontainerBitmap, sudokuKey);
+                var stego = stegocontainerBitmap.GetByteArrayByImageFile(ImageLockMode.ReadOnly);
 
-                Tuple<byte[], BitmapData> stego = stegocontainerBitmap.GetByteArrayByImageFile(ImageLockMode.ReadOnly);
-                byte[] stegoBytes = stego.Item1;
-                BitmapData stegoBitmap = stego.Item2;
+                secretFile = ExtractSecretFile(stego.PayloadBytes, sudokuKey);
 
-                secretFile = ExtractSecretFile(stegoBytes, sudokuKey);
-
-                stegocontainerBitmap.UnlockBits(stegoBitmap);
+                stegocontainerBitmap.UnlockBits(stego.Bitmap);
             }
             catch (InvalidOperationException e)
             {
@@ -283,13 +275,11 @@ namespace StegoSystem.Sudoku
             byte[] secret;
             try
             {
-                Tuple<byte[], BitmapData> stego = stegocontainerBitmap.GetByteArrayByImageFile(ImageLockMode.ReadOnly);
-                byte[] stegoBytes = stego.Item1;
-                BitmapData stegoBitmap = stego.Item2;
+                var stego = stegocontainerBitmap.GetByteArrayByImageFile(ImageLockMode.ReadOnly);
 
-                secret = ExtractSecretBytes(stegoBytes, sudokuKey);
+                secret = ExtractSecretBytes(stego.PayloadBytes, sudokuKey);
 
-                stegocontainerBitmap.UnlockBits(stegoBitmap);
+                stegocontainerBitmap.UnlockBits(stego.Bitmap);
             }
             catch (InvalidOperationException e)
             {
