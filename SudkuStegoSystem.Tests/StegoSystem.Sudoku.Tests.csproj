@@ -49,13 +49,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SudokuStegoSystemTests.cs" />
+    <Compile Include="SudokuImageStegoSystemTests - positive.cs" />
+    <Compile Include="SudokuImageStegoSystemTests - negative.cs" />
+    <Compile Include="SudokuImageStegoSystemTests - wrong depth.cs" />
+    <Compile Include="SudokuImageStegoSystemTests - init.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestData\Containers\158x200_24.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Containers\160x200_24.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Containers\254x256_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Containers\300x255_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Containers\300x255_24.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Containers\300x255_8_4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Containers\320x235_8.bmp">
@@ -65,9 +80,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Containers\490x364_32.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestData\Containers\533x235_8.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Containers\650x1050.jpg">

@@ -6,90 +6,19 @@ using StegoSystem.Sudoku.Keys;
 using StegoSystem.Sudoku.Matrix;
 using StegoSystem.Sudoku.Method256;
 using StegoSystem.Sudoku.Method256.Constraints;
-using System.Diagnostics;
 using System.IO;
 
 namespace SudkuStegoSystem.Tests
 {
     [TestFixture]
-    public class SudokuStegoSystemTests
+    public partial class SudokuImageStegoSystemTests
     {
-        private string _tempDirectory;
-
-        [OneTimeSetUp]
-        public void CreateTempDirectory()
-        {
-            _tempDirectory = Path.Combine(Path.GetTempPath(), "StegoSystemTesting");
-            Debug.WriteLine(_tempDirectory);
-            Directory.CreateDirectory(_tempDirectory);
-        }
-
         #region bmp
-
-        #region 8bpp
-
-        [Test]
-        public void Given_ContainerWithPaddingBytesAnd8bppBmp_SecretIsGeconImg_UsedCapacityIsHigh_ExpectedDecryptedEqualInitialSecret()
-        {
-            //Arrange
-            string outputDirPath = Path.Combine(_tempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Directory.CreateDirectory(outputDirPath);
-
-            string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
-                "533x235_8.bmp");
-
-            string secretPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
-                "gecon.jpg");
-
-            var key = new PasswordKey("123456");
-
-            IStegoSystem<string, ImageStegoConstraints> stegoSystem = 
-                new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(), 
-                new Method256ImageStegoConstraints());
-
-            //Act 
-            string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, key, outputDirPath);
-            string restoredSecretPath = stegoSystem.Decrypt(stegocontainerPath, key, outputDirPath);
-
-            //Assert
-            //restored and initial secrets are equal
-            FileAssert.AreEqual(secretPath, restoredSecretPath);
-        }
-
-        [Test]
-        public void Given_ContainerNoPaddingBytesAnd8bppBmp_SecretIsLemurImg_UsedCapacityIsHigh_ExpectedDecryptedEqualInitialSecret()
-        {
-            //Arrange
-            string outputDirPath = Path.Combine(_tempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Directory.CreateDirectory(outputDirPath);
-
-            string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
-                "320x235_8.bmp");
-
-            string secretPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
-                "lemur.jpg");
-
-            var key = new PasswordKey("123456");
-
-            IStegoSystem<string, ImageStegoConstraints> stegoSystem = 
-                new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
-                new Method256ImageStegoConstraints());
-
-            //Act 
-            string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, key, outputDirPath);
-            string restoredSecretPath = stegoSystem.Decrypt(stegocontainerPath, key, outputDirPath);
-
-            //Assert
-            //restored and initial secrets are equal
-            FileAssert.AreEqual(secretPath, restoredSecretPath);
-        }
-
-        #endregion
 
         #region 24bpp
 
         [Test]
-        public void Given_ContainerWithPaddingBytesAnd24bppBmp_SecretIsLemurImg_UsedCapacityIsHigh_ExpectedDecryptedEqualInitialSecret()
+        public void Given_ContainerWithPaddingBytesAnd24bppBmp_UsedCapacityIsHigh_ExpectedDecryptedEqualsInitialSecret()
         {
             //Arrange
             string outputDirPath = Path.Combine(_tempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
@@ -117,7 +46,7 @@ namespace SudkuStegoSystem.Tests
         }
 
         [Test]
-        public void Given_ContainerNoPaddingBytesAnd24bppBmp_SecretIsGeconImg_UsedCapacityIsHigh_ExpectedDecryptedEqualInitialSecret()
+        public void Given_ContainerNoPaddingBytesAnd24bppBmp_UsedCapacityIsHigh_ExpectedDecryptedEqualsInitialSecret()
         {
             //Arrange
             string outputDirPath = Path.Combine(_tempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
@@ -129,7 +58,7 @@ namespace SudkuStegoSystem.Tests
             string secretPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
                 "gecon.jpg");
 
-            var key = new PasswordKey("123456");
+            var key = new PasswordKey("f5Wi5xOss");
 
             IStegoSystem<string, ImageStegoConstraints> stegoSystem =
                 new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
@@ -149,7 +78,7 @@ namespace SudkuStegoSystem.Tests
         #region 32bpp
 
         [Test]
-        public void Given_ContainerNoPaddingBytesAnd32bppBmp_SecretIsFoxImg_UsedCapacityIsLow_ExpectedDecryptedEqualInitialSecret()
+        public void Given_ContainerNoPaddingBytesAnd32bppBmp_UsedCapacityIsLow_ExpectedDecryptedEqualsInitialSecret()
         {
             //Arrange
             string outputDirPath = Path.Combine(_tempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
@@ -161,7 +90,7 @@ namespace SudkuStegoSystem.Tests
             string secretPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
                 "fox.jpg");
 
-            var key = new PasswordKey("123456");
+            var key = new PasswordKey("gNoerXq");
 
             IStegoSystem<string, ImageStegoConstraints> stegoSystem =
                 new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
@@ -182,8 +111,10 @@ namespace SudkuStegoSystem.Tests
 
         #region jpg
 
+        #region 24bpp
+
         [Test]
-        public void Given_ContainerJpg650x1050_SecretIsFoxImg_ExpectedDecryptedEqualInitialSecret()
+        public void Given_ContainerLandscape24bppJpg_UsedCapacityIsLow_ExpectedDecryptedEqualsInitialSecret()
         {
             //Arrange
             string outputDirPath = Path.Combine(_tempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
@@ -195,7 +126,7 @@ namespace SudkuStegoSystem.Tests
             string secretPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
                 "fox.jpg");
 
-            var key = new PasswordKey("123456");
+            var key = new PasswordKey("lMf83wP");
 
             IStegoSystem<string, ImageStegoConstraints> stegoSystem =
                 new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
@@ -211,7 +142,7 @@ namespace SudkuStegoSystem.Tests
         }
 
         [Test]
-        public void Given_ContainerJpg814x556_SecretIsFoxImg_ExpectedDecryptedEqualInitialSecret()
+        public void Given_ContainerPortrait24bppJpg_UsedCapacityIsLow_ExpectedDecryptedEqualsInitialSecret()
         {
             //Arrange
             string outputDirPath = Path.Combine(_tempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
@@ -223,7 +154,7 @@ namespace SudkuStegoSystem.Tests
             string secretPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
                 "fox.jpg");
 
-            var key = new PasswordKey("123456");
+            var key = new PasswordKey("950042");
 
             IStegoSystem<string, ImageStegoConstraints> stegoSystem =
                 new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
@@ -240,10 +171,42 @@ namespace SudkuStegoSystem.Tests
 
         #endregion
 
-        [OneTimeTearDown]
-        public void CleanTempData()
+        #endregion
+
+        #region png
+
+        #region 16bpp
+
+        [Test]
+        public void Given_Container16bppPng_UsedCapacityIsLow_ExpectedDecryptedEqualsInitialSecret()
         {
-            Directory.Delete(_tempDirectory, recursive: true);
+            //Arrange
+            string outputDirPath = Path.Combine(_tempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            Directory.CreateDirectory(outputDirPath);
+
+            string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
+                "254x256_16.png");
+
+            string secretPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
+                "gecon.jpg");
+
+            var key = new PasswordKey("aaaaaa");
+
+            IStegoSystem<string, ImageStegoConstraints> stegoSystem =
+                new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
+                new Method256ImageStegoConstraints());
+
+            //Act 
+            string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, key, outputDirPath);
+            string restoredSecretPath = stegoSystem.Decrypt(stegocontainerPath, key, outputDirPath);
+
+            //Assert
+            //restored and initial secrets are equal
+            FileAssert.AreEqual(secretPath, restoredSecretPath);
         }
+
+        #endregion
+
+        #endregion
     }
 }

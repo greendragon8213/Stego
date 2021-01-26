@@ -105,26 +105,12 @@ namespace StegoSystem.Sudoku
             #endregion
 
             Bitmap stegocontainerBitmap = OpenBitmap(stegocontainerFilePath, "stegocontainer");
+            var stegoBitmapParts = GetStegoBitmapParts(stegocontainerBitmap);
 
             SudokuMatrix<T> sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
 
-            byte[] secret;
-            try
-            {
-                var stego = stegocontainerBitmap.GetBitmapParts(ImageLockMode.ReadOnly);
-
-                secret = ExtractSecretBytes(stego.PayloadBytes, sudokuKey);
-
-                stegocontainerBitmap.UnlockBits(stego.Bitmap);
-            }
-            catch (InvalidOperationException e)
-            {
-                throw new InvalidOperationException($"{e.Message}. Either the {key.GetKeyName.ToLower()} is wrong or there is no secret data at all", e);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Something went wrong. Try again", e);
-            }
+            byte[] secret = ExtractSecret(() => ExtractSecretBytes(stegoBitmapParts.PayloadBytes, sudokuKey),
+                stegocontainerBitmap, stegoBitmapParts.Bitmap, key.GetKeyName);
 
             return secret;
         }
@@ -145,30 +131,16 @@ namespace StegoSystem.Sudoku
             #endregion
 
             Bitmap stegocontainerBitmap = OpenBitmap(stegocontainerFilePath, "stegocontainer");
+            var stegoBitmapParts = GetStegoBitmapParts(stegocontainerBitmap);
 
             SudokuMatrix<T> sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
 
-            SecretFile secretFile;
-            try
-            {
-                var stego = stegocontainerBitmap.GetBitmapParts(ImageLockMode.ReadOnly);
-
-                secretFile = ExtractSecretFile(stego.PayloadBytes, sudokuKey);
-
-                stegocontainerBitmap.UnlockBits(stego.Bitmap);
-            }
-            catch (InvalidOperationException e)
-            {
-                throw new InvalidOperationException($"{e.Message}. Either the {key.GetKeyName.ToLower()} is wrong or there is no secret data at all", e);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Something went wrong. Try again", e);
-            }
+            SecretFile secret = ExtractSecret(() => ExtractSecretFile(stegoBitmapParts.PayloadBytes, sudokuKey),
+                stegocontainerBitmap, stegoBitmapParts.Bitmap, key.GetKeyName);
 
             try
             {
-                return secretFile.Save(pathToRestoreFile);
+                return secret.Save(pathToRestoreFile);
             }
             catch (Exception e)
             {
@@ -232,6 +204,26 @@ namespace StegoSystem.Sudoku
             }
         }
 
+        private (byte[] PayloadBytes, BitmapData Bitmap, int Depth) GetStegoBitmapParts(Bitmap stegocontainerBitmap)
+        {
+            (byte[] PayloadBytes, BitmapData Bitmap, int Depth) stego;
+            try
+            {
+                stego = stegocontainerBitmap.GetBitmapParts(ImageLockMode.ReadOnly);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Something went wrong. Try again", e);
+            }
+
+            if (!StegoConstraints.StegoContainerFileConstraints.IsDepthAllowed(stego.Depth))
+            {
+                throw new ArgumentException($"{stego.Depth} bpp image is not allowed to use as stegocontainer");
+            }
+
+            return stego;
+        }
+
         /// <summary>
         /// Gets bytes to encode by file. FL = 4 bytes, FNL = 4 bytes, FN = computed, Payload = computed 
         /// </summary>
@@ -279,7 +271,7 @@ namespace StegoSystem.Sudoku
                 throw new Exception("Something went wrong. Try again", e);
             }
 
-            if (!Array.Exists(StegoConstraints.ContainerFileConstraints.AllowedDepth, d => d == cover.Depth))
+            if(!StegoConstraints.ContainerFileConstraints.IsDepthAllowed(cover.Depth))
             {
                 throw new ArgumentException($"{cover.Depth} bpp image is not allowed to use as container");
             }
@@ -372,6 +364,27 @@ namespace StegoSystem.Sudoku
             catch
             {
                 throw new InvalidOperationException("Unable to extract secret data");
+            }
+        }
+
+        private TSecretResult ExtractSecret<TSecretResult>(Func<TSecretResult> extractionDelegate,
+            Bitmap stegoBitmap, BitmapData stegoBitmapData, string keyName)
+        {
+            try
+            {
+                var secret = extractionDelegate();
+
+                stegoBitmap.UnlockBits(stegoBitmapData);
+
+                return secret;
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new InvalidOperationException($"{e.Message}. Either the {keyName.ToLower()} is wrong or there is no secret data at all", e);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Something went wrong. Try again", e);
             }
         }
 

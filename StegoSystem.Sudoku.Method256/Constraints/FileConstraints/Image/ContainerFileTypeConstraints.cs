@@ -4,6 +4,6 @@
     {
         public override FileTypes FileType => FileTypes.Images;
         public override string[] AllowedExtensions => new string[] { "bmp", "jpeg", "jpg", "png"};
-        public override int[] AllowedDepth => new int[] { 24, 32 };
+        public override int[] AllowedDepth => new int[] { 16, 24, 32 };
     }
 }
