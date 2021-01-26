@@ -48,7 +48,7 @@ namespace StegoSystem.Sudoku
 
             Bitmap containerBitmap = OpenBitmap(containerFilePath, "container");
 
-            byte[] secretData = GetSecretBytesToEncode(secret);
+            byte[] secretData = GetSecretBytesToEmbed(secret);
 
             EmbedSecret(containerBitmap, secretData, key);
 
@@ -82,7 +82,7 @@ namespace StegoSystem.Sudoku
             byte[] secretData;
             try
             {
-                secretData = GetSecretBytesToEncode(new SecretFile(secretDataFilePath));
+                secretData = GetSecretBytesToEmbed(new SecretFile(secretDataFilePath));
             }
             catch (Exception e)
             {
@@ -105,7 +105,7 @@ namespace StegoSystem.Sudoku
             #endregion
 
             Bitmap stegocontainerBitmap = OpenBitmap(stegocontainerFilePath, "stegocontainer");
-            var stegoBitmapParts = GetStegoBitmapParts(stegocontainerBitmap);
+            var stegoBitmapParts = GetBitmapParts(stegocontainerBitmap, StegoConstraints.StegoContainerFileConstraints, "stegocontainer");
 
             SudokuMatrix<T> sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
 
@@ -131,7 +131,7 @@ namespace StegoSystem.Sudoku
             #endregion
 
             Bitmap stegocontainerBitmap = OpenBitmap(stegocontainerFilePath, "stegocontainer");
-            var stegoBitmapParts = GetStegoBitmapParts(stegocontainerBitmap);
+            var stegoBitmapParts = GetBitmapParts(stegocontainerBitmap, StegoConstraints.StegoContainerFileConstraints, "stegocontainer");
 
             SudokuMatrix<T> sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
 
@@ -204,32 +204,35 @@ namespace StegoSystem.Sudoku
             }
         }
 
-        private (byte[] PayloadBytes, BitmapData Bitmap, int Depth) GetStegoBitmapParts(Bitmap stegocontainerBitmap)
+        private (byte[] PayloadBytes, BitmapData Bitmap, int Depth) GetBitmapParts(Bitmap bitmap, 
+            ImageFileTypeConstraints constraints, string bitmapName)
         {
-            (byte[] PayloadBytes, BitmapData Bitmap, int Depth) stego;
+            (byte[] PayloadBytes, BitmapData Bitmap, int Depth) bitmapParts;
             try
             {
-                stego = stegocontainerBitmap.GetBitmapParts(ImageLockMode.ReadOnly);
+                bitmapParts = bitmap.GetBitmapParts(ImageLockMode.ReadOnly);
             }
             catch (Exception e)
             {
                 throw new Exception("Something went wrong. Try again", e);
             }
 
-            if (!StegoConstraints.StegoContainerFileConstraints.IsDepthAllowed(stego.Depth))
+            if (!constraints.IsDepthAllowed(bitmapParts.Depth))
             {
-                throw new ArgumentException($"{stego.Depth} bpp image is not allowed to use as stegocontainer");
+                throw new ArgumentException($"{bitmapParts.Depth} bpp image is not allowed to use as {bitmapName}");
             }
 
-            return stego;
+            return bitmapParts;
         }
+
+        #region Encryption
 
         /// <summary>
         /// Gets bytes to encode by file. FL = 4 bytes, FNL = 4 bytes, FN = computed, Payload = computed 
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        private byte[] GetSecretBytesToEncode(SecretFile file)
+        private byte[] GetSecretBytesToEmbed(SecretFile file)
         {
             byte[] fileLength = BitConverter.GetBytes(file.Payload.Length);//4 bytes
 
@@ -245,7 +248,7 @@ namespace StegoSystem.Sudoku
             return resultBytes;
         }
         
-        private byte[] GetSecretBytesToEncode(byte[] secretBytes)
+        private byte[] GetSecretBytesToEmbed(byte[] secretBytes)
         {
             byte[] secretBytesLength = BitConverter.GetBytes(secretBytes.Length);//4 bytes
 
@@ -259,28 +262,15 @@ namespace StegoSystem.Sudoku
 
         private void EmbedSecret(Bitmap containerBitmap, byte[] secretData, IKey<TKey> key)
         {
+            var containerBitmapParts = GetBitmapParts(containerBitmap, StegoConstraints.ContainerFileConstraints, "container");
+
             SudokuMatrix<T> sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
 
-            (byte[] PayloadBytes, BitmapData Bitmap, int Depth) cover;
             try
             {
-                cover = containerBitmap.GetBitmapParts(ImageLockMode.ReadWrite);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Something went wrong. Try again", e);
-            }
+                _sudokuStegoMethod.EmbedSecretData(containerBitmapParts.PayloadBytes, secretData, sudokuKey);
 
-            if(!StegoConstraints.ContainerFileConstraints.IsDepthAllowed(cover.Depth))
-            {
-                throw new ArgumentException($"{cover.Depth} bpp image is not allowed to use as container");
-            }
-
-            try
-            {
-                _sudokuStegoMethod.EmbedSecretData(cover.PayloadBytes, secretData, sudokuKey);
-
-                containerBitmap.UpdateBitmapPayloadBytes(cover.PayloadBytes, cover.Bitmap);
+                containerBitmap.UpdateBitmapPayloadBytes(containerBitmapParts.PayloadBytes, containerBitmapParts.Bitmap);
             }
             catch (InvalidOperationException)
             {
@@ -303,6 +293,10 @@ namespace StegoSystem.Sudoku
                 throw new InvalidOperationException("Cannot save encrypted file. Try again", e);
             }
         }
+
+        #endregion
+
+        #region Decryption
 
         private SecretFile ExtractSecretFile(byte[] stegoBytes, SudokuMatrix<T> sudokuKey)
         {
@@ -387,6 +381,8 @@ namespace StegoSystem.Sudoku
                 throw new Exception("Something went wrong. Try again", e);
             }
         }
+
+        #endregion
 
         #endregion
     }
