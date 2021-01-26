@@ -5,195 +5,137 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using StegoSystem.Common.Extensions;
-using StegoSystem.Sudoku.FileConstraints;
 using System.Text;
+using StegoSystem.Constraints;
 
 namespace StegoSystem.Sudoku
 {
     /// <summary>
     /// Represents adaptation of SudokuStegoMethod to general stegosystems interface
     /// </summary>
-    public class SudokuStegoSystem<T, TKey> : IStegoSystem<TKey>
+    public class SudokuImageStegoSystem<T, TKey> : IStegoSystem<TKey, ImageStegoConstraints>
     {
         private readonly ISudokuStegoMethod<T> _sudokuStegoMethod;
         private readonly ISudokuMatrixFactory<T, TKey> _sudokuMatrixFactory;
-
-        public FileTypeConstraints ContainerFileConstraints => new ContainerFileTypeConstraints();
-        public FileTypeConstraints StegoContainerFileConstraints => new StegoContainerFileTypeConstraints();
-        public FileTypeConstraints SecretFileConstraints => new SecretFileTypeConstraints();
-
-        public SudokuStegoSystem(ISudokuStegoMethod<T> sudokuStegoMethod, ISudokuMatrixFactory<T, TKey> sudokuMatrixFactory)
+        
+        public SudokuImageStegoSystem(ISudokuStegoMethod<T> sudokuStegoMethod, 
+            ISudokuMatrixFactory<T, TKey> sudokuMatrixFactory, 
+            ImageStegoConstraints stegoConstraints)
         {
             _sudokuStegoMethod = sudokuStegoMethod;
             _sudokuMatrixFactory = sudokuMatrixFactory;
+            StegoConstraints = stegoConstraints;
         }
 
-        public string Encrypt(string containerFilePath, byte[] secret, IKey<TKey> key, string pathToStegocontainer = null)
+        public ImageStegoConstraints StegoConstraints { get; }
+
+        public string Encrypt(string containerFilePath, byte[] secret, IKey<TKey> key, string pathToStegocontainer)
         {
             #region checking arguments
 
-            if (!System.IO.File.Exists(containerFilePath))
-            {
-                throw new ArgumentException("Container file does not exist");
-            }
-
-            if (!ContainerFileConstraints.IsFileExtensionAllowedByPath(containerFilePath))
-            {
-                throw new ArgumentException($"This steganography system does not allow to use as container file with extension \"{Path.GetExtension(containerFilePath)}\"");
-            }
+            ValidateContainer(containerFilePath);
 
             if (secret == null || secret.Length == 0)
             {
-                throw new ArgumentException("No secret data");
+                throw new ArgumentException("No secret data provided");
             }
 
-            if (!string.IsNullOrEmpty(pathToStegocontainer) && !Directory.Exists(pathToStegocontainer))
-            {
-                throw new ArgumentException("Stegocontainer (output) directory does not exist");
-            }
+            ValidateStegocontainerPath(pathToStegocontainer);
 
             ValidateKey(key);
 
             #endregion
 
-            Bitmap containerBitmap;
-            try
-            {
-                containerBitmap = new Bitmap(containerFilePath);
-            }
-            catch (Exception e)
-            {
-                throw new InvalidOperationException("Cannot open container file", e);
-            }
+            Bitmap containerBitmap = OpenBitmap(containerFilePath, "container");
 
-            SudokuMatrix<T> sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
+            byte[] secretData = GetSecretBytesToEncode(secret);
 
-            try
-            {
-                var cover = containerBitmap.GetByteArrayByImageFile(ImageLockMode.ReadWrite);
-                byte[] secretBytes = GetSecretBytesToEncode(secret);
+            EmbedSecret(containerBitmap, secretData, key);
 
-                _sudokuStegoMethod.EmbedSecretData(cover.PayloadBytes, secretBytes, sudokuKey);
-
-                containerBitmap.UpdateBitmapPayloadBytes(cover.PayloadBytes, cover.Bitmap);
-            }
-            catch (InvalidOperationException)
-            {
-                throw;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Something went wrong. Try again", e);
-            }
-
-            try
-            {
-                return containerBitmap.Save(pathToStegocontainer, containerFilePath, ImageFormat.Bmp);
-            }
-            catch (Exception e)
-            {
-                throw new InvalidOperationException("Cannot save encrypted file. Try again", e);
-            }
+            return SaveStegocontainerFile(containerFilePath, pathToStegocontainer, containerBitmap);
         }
 
-        public string Encrypt(string containerFilePath, string secretDataFilePath, IKey<TKey> key, string pathToStegocontainer = null)
+        public string Encrypt(string containerFilePath, string secretDataFilePath, IKey<TKey> key, string pathToStegocontainer)
         {
             #region checking arguments
 
-            if (!System.IO.File.Exists(containerFilePath))
-            {
-                throw new ArgumentException("Container file does not exist");
-            }
-
-            if (!ContainerFileConstraints.IsFileExtensionAllowedByPath(containerFilePath))
-            {
-                throw new ArgumentException($"This steganography system does not allow to use as container file with extension \"{Path.GetExtension(containerFilePath)}\"");
-            }
+            ValidateContainer(containerFilePath);
 
             if (!System.IO.File.Exists(secretDataFilePath))
             {
                 throw new ArgumentException("Secret data file does not exist");
             }
 
-            if (!SecretFileConstraints.IsFileExtensionAllowedByPath(secretDataFilePath))
+            if (!StegoConstraints.SecretFileConstraints.IsFileExtensionAllowedByPath(secretDataFilePath))
             {
                 throw new ArgumentException($"This steganography system does not allow to use as secret file with extension \"{Path.GetExtension(secretDataFilePath)}\"");
             }
 
-            if (!string.IsNullOrEmpty(pathToStegocontainer) && !Directory.Exists(pathToStegocontainer))
-            {
-                throw new ArgumentException("Stegocontainer (output) directory does not exist");
-            }
+            ValidateStegocontainerPath(pathToStegocontainer);
 
             ValidateKey(key);
 
             #endregion
 
-            Bitmap containerBitmap;
+            Bitmap containerBitmap = OpenBitmap(containerFilePath, "container");
+
+            byte[] secretData;
             try
             {
-                containerBitmap = new Bitmap(containerFilePath);
+                secretData = GetSecretBytesToEncode(new SecretFile(secretDataFilePath));
             }
             catch (Exception e)
             {
-                throw new InvalidOperationException("Cannot open container file", e);
+                throw new InvalidOperationException("Cannot open secret file and get secret data", e);
             }
 
-            SecretFile secretFileToEncode;
-            try
-            {
-                secretFileToEncode = new SecretFile(secretDataFilePath);
-            }
-            catch (Exception e)
-            {
-                throw new InvalidOperationException("Cannot open secret file", e);
-            }
+            EmbedSecret(containerBitmap, secretData, key);
+
+            return SaveStegocontainerFile(containerFilePath, pathToStegocontainer, containerBitmap);
+        }
+
+        public byte[] Decrypt(string stegocontainerFilePath, IKey<TKey> key)
+        {
+            #region checking arguments
+
+            ValidateStegocontainer(stegocontainerFilePath);
+
+            ValidateKey(key);
+
+            #endregion
+
+            Bitmap stegocontainerBitmap = OpenBitmap(stegocontainerFilePath, "stegocontainer");
 
             SudokuMatrix<T> sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
 
+            byte[] secret;
             try
             {
-                var cover = containerBitmap.GetByteArrayByImageFile(ImageLockMode.ReadWrite);
-                byte[] secretData = GetSecretBytesToEncode(secretFileToEncode);
+                var stego = stegocontainerBitmap.GetBitmapParts(ImageLockMode.ReadOnly);
 
-                _sudokuStegoMethod.EmbedSecretData(cover.PayloadBytes, secretData, sudokuKey);
+                secret = ExtractSecretBytes(stego.PayloadBytes, sudokuKey);
 
-                containerBitmap.UpdateBitmapPayloadBytes(cover.PayloadBytes, cover.Bitmap);
+                stegocontainerBitmap.UnlockBits(stego.Bitmap);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException e)
             {
-                throw;
+                throw new InvalidOperationException($"{e.Message}. Either the {key.GetKeyName.ToLower()} is wrong or there is no secret data at all", e);
             }
             catch (Exception e)
             {
                 throw new Exception("Something went wrong. Try again", e);
             }
 
-            try
-            {
-                return containerBitmap.Save(pathToStegocontainer, containerFilePath, ImageFormat.Bmp);
-            }
-            catch (Exception e)
-            {
-                throw new InvalidOperationException("Cannot save encrypted file. Try again", e);
-            }
+            return secret;
         }
 
-        public string Decrypt(string stegocontainerFilePath, IKey<TKey> key, string pathToRestoreFile = null)
+        public string Decrypt(string stegocontainerFilePath, IKey<TKey> key, string pathToRestoreFile)
         {
             #region checking arguments
 
-            if (!System.IO.File.Exists(stegocontainerFilePath))
-            {
-                throw new ArgumentException("Container file does not exist.");
-            }
+            ValidateStegocontainer(stegocontainerFilePath);
 
-            if (!StegoContainerFileConstraints.IsFileExtensionAllowedByPath(stegocontainerFilePath))
-            {
-                throw new ArgumentException($"This steganography system does not allow to use as stegocontainer file with extension \"{Path.GetExtension(stegocontainerFilePath)}\".");
-            }
-
-            if (!string.IsNullOrEmpty(pathToRestoreFile) && !Directory.Exists(pathToRestoreFile))
+            if (!Directory.Exists(pathToRestoreFile))
             {
                 throw new ArgumentException("Output directory (to restore secret file) does not exist.");
             }
@@ -202,22 +144,14 @@ namespace StegoSystem.Sudoku
 
             #endregion
 
-            Bitmap stegocontainerBitmap;
-            try
-            {
-                stegocontainerBitmap = new Bitmap(stegocontainerFilePath);
-            }
-            catch (Exception e)
-            {
-                throw new InvalidOperationException("Cannot open stegocontainer file", e);
-            }
+            Bitmap stegocontainerBitmap = OpenBitmap(stegocontainerFilePath, "stegocontainer");
 
             SudokuMatrix<T> sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
 
             SecretFile secretFile;
             try
             {
-                var stego = stegocontainerBitmap.GetByteArrayByImageFile(ImageLockMode.ReadOnly);
+                var stego = stegocontainerBitmap.GetBitmapParts(ImageLockMode.ReadOnly);
 
                 secretFile = ExtractSecretFile(stego.PayloadBytes, sudokuKey);
 
@@ -242,64 +176,59 @@ namespace StegoSystem.Sudoku
             }
         }
 
-        public byte[] Decrypt(string stegocontainerFilePath, IKey<TKey> key)
-        {
-            #region checking arguments
+        #region Private methods
 
+        private void ValidateContainer(string containerFilePath)
+        {
+            if (!System.IO.File.Exists(containerFilePath))
+            {
+                throw new ArgumentException("Container file does not exist");
+            }
+
+            if (!StegoConstraints.ContainerFileConstraints.IsFileExtensionAllowedByPath(containerFilePath))
+            {
+                throw new ArgumentException($"This steganography system does not allow to use as container file with extension \"{Path.GetExtension(containerFilePath)}\"");
+            }
+        }
+
+        private static void ValidateStegocontainerPath(string pathToStegocontainer)
+        {
+            if (!Directory.Exists(pathToStegocontainer))
+            {
+                throw new ArgumentException("Stegocontainer (output) directory does not exist");
+            }
+        }
+
+        private void ValidateStegocontainer(string stegocontainerFilePath)
+        {
             if (!System.IO.File.Exists(stegocontainerFilePath))
             {
                 throw new ArgumentException("Container file does not exist.");
             }
 
-            if (!StegoContainerFileConstraints.IsFileExtensionAllowedByPath(stegocontainerFilePath))
+            if (!StegoConstraints.StegoContainerFileConstraints.IsFileExtensionAllowedByPath(stegocontainerFilePath))
             {
                 throw new ArgumentException($"This steganography system does not allow to use as stegocontainer file with extension \"{Path.GetExtension(stegocontainerFilePath)}\".");
             }
-
-            ValidateKey(key);
-
-            #endregion
-
-            Bitmap stegocontainerBitmap;
-            try
-            {
-                stegocontainerBitmap = new Bitmap(stegocontainerFilePath);
-            }
-            catch (Exception e)
-            {
-                throw new InvalidOperationException("Cannot open stegocontainer file", e);
-            }
-
-            SudokuMatrix<T> sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
-
-            byte[] secret;
-            try
-            {
-                var stego = stegocontainerBitmap.GetByteArrayByImageFile(ImageLockMode.ReadOnly);
-
-                secret = ExtractSecretBytes(stego.PayloadBytes, sudokuKey);
-
-                stegocontainerBitmap.UnlockBits(stego.Bitmap);
-            }
-            catch (InvalidOperationException e)
-            {
-                throw new InvalidOperationException($"{e.Message}. Either the {key.GetKeyName.ToLower()} is wrong or there is no secret data at all", e);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Something went wrong. Try again", e);
-            }
-
-            return secret;
         }
-
-        #region Private methods
 
         private void ValidateKey(IKey<TKey> key)
         {
             if (!key.IsValid())
             {
                 throw new ArgumentException($"Wrong {key.GetKeyName.ToLower()} format. {key.ValidationDescription}");
+            }
+        }
+
+        private Bitmap OpenBitmap(string containerFilePath, string bitmapName)
+        {
+            try
+            {
+                return new Bitmap(containerFilePath);
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Cannot open {bitmapName} file", e);
             }
         }
 
@@ -334,6 +263,53 @@ namespace StegoSystem.Sudoku
             Buffer.BlockCopy(secretBytes, 0, resultBytes, secretBytesLength.Length, secretBytes.Length);
             
             return resultBytes;
+        }
+
+        private void EmbedSecret(Bitmap containerBitmap, byte[] secretData, IKey<TKey> key)
+        {
+            SudokuMatrix<T> sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
+
+            (byte[] PayloadBytes, BitmapData Bitmap, int Depth) cover;
+            try
+            {
+                cover = containerBitmap.GetBitmapParts(ImageLockMode.ReadWrite);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Something went wrong. Try again", e);
+            }
+
+            if (!Array.Exists(StegoConstraints.ContainerFileConstraints.AllowedDepth, d => d == cover.Depth))
+            {
+                throw new ArgumentException($"{cover.Depth} bpp image is not allowed to use as container");
+            }
+
+            try
+            {
+                _sudokuStegoMethod.EmbedSecretData(cover.PayloadBytes, secretData, sudokuKey);
+
+                containerBitmap.UpdateBitmapPayloadBytes(cover.PayloadBytes, cover.Bitmap);
+            }
+            catch (InvalidOperationException)
+            {
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Something went wrong. Try again", e);
+            }
+        }
+
+        private string SaveStegocontainerFile(string containerFilePath, string pathToStegocontainer, Bitmap containerBitmap)
+        {
+            try
+            {
+                return containerBitmap.Save(pathToStegocontainer, containerFilePath, ImageFormat.Bmp);
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException("Cannot save encrypted file. Try again", e);
+            }
         }
 
         private SecretFile ExtractSecretFile(byte[] stegoBytes, SudokuMatrix<T> sudokuKey)

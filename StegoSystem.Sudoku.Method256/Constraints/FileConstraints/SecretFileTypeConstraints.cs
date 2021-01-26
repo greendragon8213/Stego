@@ -1,4 +1,4 @@
-﻿namespace StegoSystem.Sudoku.FileConstraints
+﻿namespace StegoSystem.Sudoku.Method256.FileConstraints
 {
     public class SecretFileTypeConstraints : FileTypeConstraints
     {

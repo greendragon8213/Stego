@@ -1,9 +1,11 @@
 ﻿using NUnit.Framework;
 using StegoSystem;
+using StegoSystem.Constraints;
 using StegoSystem.Sudoku;
 using StegoSystem.Sudoku.Keys;
 using StegoSystem.Sudoku.Matrix;
 using StegoSystem.Sudoku.Method256;
+using StegoSystem.Sudoku.Method256.Constraints;
 using System.Diagnostics;
 using System.IO;
 
@@ -41,8 +43,9 @@ namespace SudkuStegoSystem.Tests
 
             var key = new PasswordKey("123456");
 
-            IStegoSystem<string> stegoSystem = 
-                new SudokuStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>());
+            IStegoSystem<string, ImageStegoConstraints> stegoSystem = 
+                new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(), 
+                new Method256ImageStegoConstraints());
 
             //Act 
             string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, key, outputDirPath);
@@ -68,8 +71,9 @@ namespace SudkuStegoSystem.Tests
 
             var key = new PasswordKey("123456");
 
-            IStegoSystem<string> stegoSystem = 
-                new SudokuStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>());
+            IStegoSystem<string, ImageStegoConstraints> stegoSystem = 
+                new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
+                new Method256ImageStegoConstraints());
 
             //Act 
             string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, key, outputDirPath);
@@ -99,8 +103,9 @@ namespace SudkuStegoSystem.Tests
 
             var key = new PasswordKey("123456");
 
-            IStegoSystem<string> stegoSystem =
-                new SudokuStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>());
+            IStegoSystem<string, ImageStegoConstraints> stegoSystem =
+                new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
+                new Method256ImageStegoConstraints());
 
             //Act 
             string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, key, outputDirPath);
@@ -126,8 +131,9 @@ namespace SudkuStegoSystem.Tests
 
             var key = new PasswordKey("123456");
 
-            IStegoSystem<string> stegoSystem =
-                new SudokuStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>());
+            IStegoSystem<string, ImageStegoConstraints> stegoSystem =
+                new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
+                new Method256ImageStegoConstraints());
 
             //Act 
             string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, key, outputDirPath);
@@ -157,8 +163,9 @@ namespace SudkuStegoSystem.Tests
 
             var key = new PasswordKey("123456");
 
-            IStegoSystem<string> stegoSystem =
-                new SudokuStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>());
+            IStegoSystem<string, ImageStegoConstraints> stegoSystem =
+                new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
+                new Method256ImageStegoConstraints());
 
             //Act 
             string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, key, outputDirPath);
@@ -190,8 +197,9 @@ namespace SudkuStegoSystem.Tests
 
             var key = new PasswordKey("123456");
 
-            IStegoSystem<string> stegoSystem =
-                new SudokuStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>());
+            IStegoSystem<string, ImageStegoConstraints> stegoSystem =
+                new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
+                new Method256ImageStegoConstraints());
 
             //Act 
             string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, key, outputDirPath);
@@ -217,8 +225,9 @@ namespace SudkuStegoSystem.Tests
 
             var key = new PasswordKey("123456");
 
-            IStegoSystem<string> stegoSystem =
-                new SudokuStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>());
+            IStegoSystem<string, ImageStegoConstraints> stegoSystem =
+                new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
+                new Method256ImageStegoConstraints());
 
             //Act 
             string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, key, outputDirPath);

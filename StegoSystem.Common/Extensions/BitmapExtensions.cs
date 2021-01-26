@@ -8,7 +8,7 @@ namespace StegoSystem.Common.Extensions
 {
     public static class BitmapExtensions
     {
-        public static (byte[] PayloadBytes, BitmapData Bitmap) GetByteArrayByImageFile(this Bitmap bitmap, ImageLockMode imageLockMode = ImageLockMode.ReadOnly)
+        public static (byte[] PayloadBytes, BitmapData Bitmap, int Depth) GetBitmapParts(this Bitmap bitmap, ImageLockMode imageLockMode = ImageLockMode.ReadOnly)
         {
             if (bitmap == null)
             {
@@ -17,8 +17,6 @@ namespace StegoSystem.Common.Extensions
 
             PixelFormat pxf = bitmap.PixelFormat;
             int depth = Image.GetPixelFormatSize(pxf);
-
-            CheckIfDepthIsSupported(depth);
 
             int bytesPerPixel = depth / 8;
 
@@ -41,7 +39,7 @@ namespace StegoSystem.Common.Extensions
                 ptr += bitmapData.Stride;
             }
 
-            return (payloadValues, bitmapData);
+            return (payloadValues, bitmapData, depth);
         }
 
         public static void UpdateBitmapPayloadBytes(this Bitmap bitmap, byte[] bytes, BitmapData bitmapData)
@@ -63,8 +61,6 @@ namespace StegoSystem.Common.Extensions
 
             PixelFormat pxf = bitmap.PixelFormat;
             int depth = Image.GetPixelFormatSize(pxf);
-
-            CheckIfDepthIsSupported(depth);
 
             int bytesPerPixel = depth / 8;
 
@@ -104,14 +100,6 @@ namespace StegoSystem.Common.Extensions
 
             bitmap.Save(path, imageFormat);
             return path;
-        }
-
-        private static void CheckIfDepthIsSupported(int depth)
-        {
-            if (depth != 8 && depth != 24 && depth != 32)
-            {
-                throw new ArgumentException("Only 8, 24 and 32 bpp images are supported.");
-            }
         }
     }
 }

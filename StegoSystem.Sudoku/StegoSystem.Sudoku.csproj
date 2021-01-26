@@ -59,16 +59,13 @@
     <Compile Include="Matrix\CoordinateFinders\INearestCoordinatesFinder.cs" />
     <Compile Include="Matrix\Creation\Generators\ISudokuMatrixGenerator.cs" />
     <Compile Include="Methods\ISudokuStegoMethod.cs" />
-    <Compile Include="FileConstraints\ContainerFileTypeConstraints.cs" />
-    <Compile Include="FileConstraints\SecretFileTypeConstraints.cs" />
-    <Compile Include="FileConstraints\StegoContainerFileTypeConstraints.cs" />
     <Compile Include="Matrix\SudokuCoordinates.cs" />
     <Compile Include="Matrix\CoordinateFinders\NearestCoordinatesFinder.cs" />
     <Compile Include="Matrix\Creation\Generators\Implementation\SudokuMatrixInitializerByPassword.cs" />
     <Compile Include="Matrix\Creation\Generators\Implementation\SudokuMatrixGeneratorInitial.cs" />
     <Compile Include="Matrix\SudokuMatrix.cs" />
     <Compile Include="Matrix\Creation\SudokuByPasswordMatrixFactory.cs" />
-    <Compile Include="SudokuStegoSystem.cs" />
+    <Compile Include="SudokuImageStegoSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StegoSystem.Common\StegoSystem.Common.csproj">

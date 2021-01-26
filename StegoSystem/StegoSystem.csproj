@@ -42,8 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constraints\ImageStegoConstraints.cs" />
+    <Compile Include="Constraints\StegoConstraints.cs" />
     <Compile Include="FileTypes\FileTypeConstraints.cs" />
     <Compile Include="FileTypes\FileTypes.cs" />
+    <Compile Include="FileTypes\ImageFileTypeConstraints.cs" />
     <Compile Include="IStegoSystem.cs" />
     <Compile Include="Models\IKey.cs" />
     <Compile Include="Models\SecretFile.cs" />

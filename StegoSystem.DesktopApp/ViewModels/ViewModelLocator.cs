@@ -15,10 +15,12 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using StegoSystem;
+using StegoSystem.Constraints;
 using StegoSystem.DesktopApp.Models;
 using StegoSystem.Sudoku;
 using StegoSystem.Sudoku.Matrix;
 using StegoSystem.Sudoku.Method256;
+using StegoSystem.Sudoku.Method256.Constraints;
 using SudkuStegoSystem.DesktopApp.Services;
 using System;
 
@@ -61,9 +63,12 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
 
         private static void RegisterDomainServices()
         {
+            SimpleIoc.Default.Register<ImageStegoConstraints, 
+                Method256ImageStegoConstraints >(true);
             SimpleIoc.Default.Register<ISudokuStegoMethod<byte>, SudokuStegoMethod256>(true);
             SimpleIoc.Default.Register<ISudokuMatrixFactory<byte, string>, SudokuByPasswordMatrixFactory<byte>>(true);
-            SimpleIoc.Default.Register<IStegoSystem<string>, SudokuStegoSystem<byte, string>>(true);
+            SimpleIoc.Default.Register<IStegoSystem<string, StegoConstraints<FileTypeConstraints, FileTypeConstraints, FileTypeConstraints>>, 
+                SudokuImageStegoSystem<byte, string>>(true);
         }
 
         private static void RegisterAppServices()
@@ -77,10 +82,10 @@ namespace SudkuStegoSystem.DesktopApp.ViewModels
             SimpleIoc.Default.Register<IFolderDialogService, FolderDialogService>(); //single instance per app is ok
 
             //UI VMs
-            var stegoSystem = ServiceLocator.Current.GetInstance<IStegoSystem<string>>();
-            SimpleIoc.Default.Register(() => CreateDropFileUCVM(stegoSystem.SecretFileConstraints, FileTypes.SecretFile), DropSecretFileKey);
-            SimpleIoc.Default.Register(() => CreateDropFileUCVM(stegoSystem.ContainerFileConstraints), DropContainerFileKey);
-            SimpleIoc.Default.Register(() => CreateDropFileUCVM(stegoSystem.StegoContainerFileConstraints), DropStegoContainerFileKey);
+            var stegoSystem = ServiceLocator.Current.GetInstance<IStegoSystem<string, StegoConstraints<FileTypeConstraints, FileTypeConstraints, FileTypeConstraints>>> ();
+            SimpleIoc.Default.Register(() => CreateDropFileUCVM(stegoSystem.StegoConstraints.SecretFileConstraints, FileTypes.SecretFile), DropSecretFileKey);
+            SimpleIoc.Default.Register(() => CreateDropFileUCVM(stegoSystem.StegoConstraints.ContainerFileConstraints), DropContainerFileKey);
+            SimpleIoc.Default.Register(() => CreateDropFileUCVM(stegoSystem.StegoConstraints.StegoContainerFileConstraints), DropStegoContainerFileKey);
 
             //I need them to be new every time requested, but for test it's ok to use:
             //SimpleIoc.Default.Register(() => new PasswordUCVM());

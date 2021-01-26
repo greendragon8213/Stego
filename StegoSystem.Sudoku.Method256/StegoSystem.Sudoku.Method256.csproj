@@ -42,6 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constraints\FileConstraints\Image\ContainerFileTypeConstraints.cs" />
+    <Compile Include="Constraints\FileConstraints\SecretFileTypeConstraints.cs" />
+    <Compile Include="Constraints\FileConstraints\Image\StegoContainerFileTypeConstraints.cs" />
+    <Compile Include="Constraints\Method256ImageStegoConstraints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SudokuStegoMethod256.cs" />
   </ItemGroup>
