@@ -192,7 +192,6 @@ namespace StegoSystem.Sudoku
             ValidateKey(key);
         }
 
-
         private void ValidateContainer(string containerFilePath)
         {
             if (!System.IO.File.Exists(containerFilePath))

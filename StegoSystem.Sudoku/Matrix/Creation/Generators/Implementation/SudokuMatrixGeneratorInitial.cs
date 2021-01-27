@@ -64,8 +64,6 @@ namespace StegoSystem.Sudoku.Matrix.Generators
                 }
             }
 
-            //ToDo assert that matrix is correct
-
             return sudokuMatrix;
         }
     }

@@ -72,7 +72,10 @@ namespace StegoSystem.Sudoku.Method256
                 throw new ArgumentException($"This steganography method works only with matrix {GetExpectedSudokuSize()}x{GetExpectedSudokuSize()}.");
             }
 
-            //ToDo mb, other validation
+            if (!sudokuKey.IsMatrixValid)
+            {
+                throw new ArgumentException("Invalid sudoku matrix");
+            }
         }
 
         #endregion
