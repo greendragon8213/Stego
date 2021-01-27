@@ -10,7 +10,7 @@ namespace StegoSystem
     {
         TConstraints StegoConstraints { get; }
 
-        string Encrypt(string containerFilePath, byte[] secret, IKey<T> key, string pathToStegocontainer);
+        string Encrypt(string containerFilePath, byte[] secret, IKey<T> key, string stegocontainerFilePath);
 
         /// <summary>
         /// Embeds secret data (from secretDataFilePath file) into container with key

@@ -1,12 +1,12 @@
-﻿using StegoSystem.Models;
+﻿using StegoSystem.Common.Extensions;
+using StegoSystem.Constraints;
+using StegoSystem.Models;
 using StegoSystem.Sudoku.Matrix;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using StegoSystem.Common.Extensions;
 using System.Text;
-using StegoSystem.Constraints;
 
 namespace StegoSystem.Sudoku
 {
@@ -17,9 +17,12 @@ namespace StegoSystem.Sudoku
     {
         private readonly ISudokuStegoMethod<T> _sudokuStegoMethod;
         private readonly ISudokuMatrixFactory<T, TKey> _sudokuMatrixFactory;
-        
-        public SudokuImageStegoSystem(ISudokuStegoMethod<T> sudokuStegoMethod, 
-            ISudokuMatrixFactory<T, TKey> sudokuMatrixFactory, 
+
+        public ImageStegoConstraints StegoConstraints { get; }
+
+        public SudokuImageStegoSystem(
+            ISudokuStegoMethod<T> sudokuStegoMethod,
+            ISudokuMatrixFactory<T, TKey> sudokuMatrixFactory,
             ImageStegoConstraints stegoConstraints)
         {
             _sudokuStegoMethod = sudokuStegoMethod;
@@ -27,57 +30,24 @@ namespace StegoSystem.Sudoku
             StegoConstraints = stegoConstraints;
         }
 
-        public ImageStegoConstraints StegoConstraints { get; }
-
-        public string Encrypt(string containerFilePath, byte[] secret, IKey<TKey> key, string pathToStegocontainer)
+        public string Encrypt(string containerFilePath, byte[] secret, IKey<TKey> key, string stegocontainerFilePath)
         {
-            #region checking arguments
+            CheckEncryptionArguments(containerFilePath, secret, key, stegocontainerFilePath);
 
-            ValidateContainer(containerFilePath);
+            var containerBitmap = OpenBitmap(containerFilePath, "container");
 
-            if (secret == null || secret.Length == 0)
-            {
-                throw new ArgumentException("No secret data provided");
-            }
-
-            ValidateStegocontainerPath(pathToStegocontainer);
-
-            ValidateKey(key);
-
-            #endregion
-
-            Bitmap containerBitmap = OpenBitmap(containerFilePath, "container");
-
-            byte[] secretData = GetSecretBytesToEmbed(secret);
+            var secretData = GetSecretBytesToEmbed(secret);
 
             EmbedSecret(containerBitmap, secretData, key);
 
-            return SaveStegocontainerFile(containerFilePath, pathToStegocontainer, containerBitmap);
+            return SaveStegocontainerFile(containerFilePath, stegocontainerFilePath, containerBitmap);
         }
 
-        public string Encrypt(string containerFilePath, string secretDataFilePath, IKey<TKey> key, string pathToStegocontainer)
+        public string Encrypt(string containerFilePath, string secretDataFilePath, IKey<TKey> key, string stegocontainerFilePath)
         {
-            #region checking arguments
+            CheckEncryptionArguments(containerFilePath, secretDataFilePath, key, stegocontainerFilePath);
 
-            ValidateContainer(containerFilePath);
-
-            if (!System.IO.File.Exists(secretDataFilePath))
-            {
-                throw new ArgumentException("Secret data file does not exist");
-            }
-
-            if (!StegoConstraints.SecretFileConstraints.IsFileExtensionAllowedByPath(secretDataFilePath))
-            {
-                throw new ArgumentException($"This steganography system does not allow to use as secret file with extension \"{Path.GetExtension(secretDataFilePath)}\"");
-            }
-
-            ValidateStegocontainerPath(pathToStegocontainer);
-
-            ValidateKey(key);
-
-            #endregion
-
-            Bitmap containerBitmap = OpenBitmap(containerFilePath, "container");
+            var containerBitmap = OpenBitmap(containerFilePath, "container");
 
             byte[] secretData;
             try
@@ -91,56 +61,45 @@ namespace StegoSystem.Sudoku
 
             EmbedSecret(containerBitmap, secretData, key);
 
-            return SaveStegocontainerFile(containerFilePath, pathToStegocontainer, containerBitmap);
+            return SaveStegocontainerFile(containerFilePath, stegocontainerFilePath, containerBitmap);
         }
 
         public byte[] Decrypt(string stegocontainerFilePath, IKey<TKey> key)
         {
-            #region checking arguments
+            CheckDecryptionArguments(stegocontainerFilePath, key);
 
-            ValidateStegocontainer(stegocontainerFilePath);
-
-            ValidateKey(key);
-
-            #endregion
-
-            Bitmap stegocontainerBitmap = OpenBitmap(stegocontainerFilePath, "stegocontainer");
+            var stegocontainerBitmap = OpenBitmap(stegocontainerFilePath, "stegocontainer");
             var stegoBitmapParts = GetBitmapParts(stegocontainerBitmap, StegoConstraints.StegoContainerFileConstraints, "stegocontainer");
 
-            SudokuMatrix<T> sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
+            var sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
 
-            byte[] secret = ExtractSecret(() => ExtractSecretBytes(stegoBitmapParts.PayloadBytes, sudokuKey),
-                stegocontainerBitmap, stegoBitmapParts.Bitmap, key.GetKeyName);
+            var secret = ExtractSecret(
+                () => ExtractSecretBytes(stegoBitmapParts.PayloadBytes, sudokuKey),
+                stegocontainerBitmap,
+                stegoBitmapParts.Bitmap,
+                key.GetKeyName);
 
             return secret;
         }
 
-        public string Decrypt(string stegocontainerFilePath, IKey<TKey> key, string pathToRestoreFile)
+        public string Decrypt(string stegocontainerFilePath, IKey<TKey> key, string restoreFilePath)
         {
-            #region checking arguments
+            CheckDecryptionArguments(stegocontainerFilePath, key, restoreFilePath);
 
-            ValidateStegocontainer(stegocontainerFilePath);
-
-            if (!Directory.Exists(pathToRestoreFile))
-            {
-                throw new ArgumentException("Output directory (to restore secret file) does not exist.");
-            }
-
-            ValidateKey(key);
-
-            #endregion
-
-            Bitmap stegocontainerBitmap = OpenBitmap(stegocontainerFilePath, "stegocontainer");
+            var stegocontainerBitmap = OpenBitmap(stegocontainerFilePath, "stegocontainer");
             var stegoBitmapParts = GetBitmapParts(stegocontainerBitmap, StegoConstraints.StegoContainerFileConstraints, "stegocontainer");
 
-            SudokuMatrix<T> sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
+            var sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
 
-            SecretFile secret = ExtractSecret(() => ExtractSecretFile(stegoBitmapParts.PayloadBytes, sudokuKey),
-                stegocontainerBitmap, stegoBitmapParts.Bitmap, key.GetKeyName);
+            var secret = ExtractSecret(
+                () => ExtractSecretFile(stegoBitmapParts.PayloadBytes, sudokuKey),
+                stegocontainerBitmap,
+                stegoBitmapParts.Bitmap,
+                key.GetKeyName);
 
             try
             {
-                return secret.Save(pathToRestoreFile);
+                return secret.Save(restoreFilePath);
             }
             catch (Exception e)
             {
@@ -149,40 +108,6 @@ namespace StegoSystem.Sudoku
         }
 
         #region Private methods
-
-        private void ValidateContainer(string containerFilePath)
-        {
-            if (!System.IO.File.Exists(containerFilePath))
-            {
-                throw new ArgumentException("Container file does not exist");
-            }
-
-            if (!StegoConstraints.ContainerFileConstraints.IsFileExtensionAllowedByPath(containerFilePath))
-            {
-                throw new ArgumentException($"This steganography system does not allow to use as container file with extension \"{Path.GetExtension(containerFilePath)}\"");
-            }
-        }
-
-        private static void ValidateStegocontainerPath(string pathToStegocontainer)
-        {
-            if (!Directory.Exists(pathToStegocontainer))
-            {
-                throw new ArgumentException("Stegocontainer (output) directory does not exist");
-            }
-        }
-
-        private void ValidateStegocontainer(string stegocontainerFilePath)
-        {
-            if (!System.IO.File.Exists(stegocontainerFilePath))
-            {
-                throw new ArgumentException("Container file does not exist.");
-            }
-
-            if (!StegoConstraints.StegoContainerFileConstraints.IsFileExtensionAllowedByPath(stegocontainerFilePath))
-            {
-                throw new ArgumentException($"This steganography system does not allow to use as stegocontainer file with extension \"{Path.GetExtension(stegocontainerFilePath)}\".");
-            }
-        }
 
         private void ValidateKey(IKey<TKey> key)
         {
@@ -204,8 +129,10 @@ namespace StegoSystem.Sudoku
             }
         }
 
-        private (byte[] PayloadBytes, BitmapData Bitmap, int Depth) GetBitmapParts(Bitmap bitmap, 
-            ImageFileTypeConstraints constraints, string bitmapName)
+        private (byte[] PayloadBytes, BitmapData Bitmap, int Depth) GetBitmapParts(
+            Bitmap bitmap,
+            ImageFileTypeConstraints constraints,
+            string bitmapName)
         {
             (byte[] PayloadBytes, BitmapData Bitmap, int Depth) bitmapParts;
             try
@@ -227,6 +154,64 @@ namespace StegoSystem.Sudoku
 
         #region Encryption
 
+        private void CheckEncryptionArguments(
+            string containerFilePath,
+            byte[] secret,
+            IKey<TKey> key,
+            string pathToStegocontainer)
+        {
+            ValidateContainer(containerFilePath);
+
+            if (secret == null || secret.Length == 0)
+            {
+                throw new ArgumentException("No secret data provided");
+            }
+
+            ValidateStegocontainerPath(pathToStegocontainer);
+
+            ValidateKey(key);
+        }
+
+        private void CheckEncryptionArguments(string containerFilePath, string secretDataFilePath, IKey<TKey> key, string pathToStegocontainer)
+        {
+            ValidateContainer(containerFilePath);
+
+            if (!System.IO.File.Exists(secretDataFilePath))
+            {
+                throw new ArgumentException("Secret data file does not exist");
+            }
+
+            if (!StegoConstraints.SecretFileConstraints.IsFileExtensionAllowedByPath(secretDataFilePath))
+            {
+                throw new ArgumentException($"This steganography system does not allow to use as secret file with extension \"{Path.GetExtension(secretDataFilePath)}\"");
+            }
+
+            ValidateStegocontainerPath(pathToStegocontainer);
+
+            ValidateKey(key);
+        }
+
+
+        private void ValidateContainer(string containerFilePath)
+        {
+            if (!System.IO.File.Exists(containerFilePath))
+            {
+                throw new ArgumentException("Container file does not exist");
+            }
+
+            if (!StegoConstraints.ContainerFileConstraints.IsFileExtensionAllowedByPath(containerFilePath))
+            {
+                throw new ArgumentException($"This steganography system does not allow to use as container file with extension \"{Path.GetExtension(containerFilePath)}\"");
+            }
+        }
+
+        private static void ValidateStegocontainerPath(string pathToStegocontainer)
+        {
+            if (!Directory.Exists(pathToStegocontainer))
+            {
+                throw new ArgumentException("Stegocontainer (output) directory does not exist");
+            }
+        }
         /// <summary>
         /// Gets bytes to encode by file. FL = 4 bytes, FNL = 4 bytes, FN = computed, Payload = computed 
         /// </summary>
@@ -247,7 +232,7 @@ namespace StegoSystem.Sudoku
 
             return resultBytes;
         }
-        
+
         private byte[] GetSecretBytesToEmbed(byte[] secretBytes)
         {
             byte[] secretBytesLength = BitConverter.GetBytes(secretBytes.Length);//4 bytes
@@ -256,7 +241,7 @@ namespace StegoSystem.Sudoku
 
             Buffer.BlockCopy(secretBytesLength, 0, resultBytes, 0, secretBytesLength.Length);
             Buffer.BlockCopy(secretBytes, 0, resultBytes, secretBytesLength.Length, secretBytes.Length);
-            
+
             return resultBytes;
         }
 
@@ -298,6 +283,36 @@ namespace StegoSystem.Sudoku
 
         #region Decryption
 
+        private void CheckDecryptionArguments(string stegocontainerFilePath, IKey<TKey> key)
+        {
+            ValidateStegocontainer(stegocontainerFilePath);
+
+            ValidateKey(key);
+        }
+
+        private void CheckDecryptionArguments(string stegocontainerFilePath, IKey<TKey> key, string restoreFilePath)
+        {
+            CheckDecryptionArguments(stegocontainerFilePath, key);
+
+            if (!Directory.Exists(restoreFilePath))
+            {
+                throw new ArgumentException("Output directory (to restore secret file) does not exist.");
+            }
+        }
+
+        private void ValidateStegocontainer(string stegocontainerFilePath)
+        {
+            if (!System.IO.File.Exists(stegocontainerFilePath))
+            {
+                throw new ArgumentException("Container file does not exist.");
+            }
+
+            if (!StegoConstraints.StegoContainerFileConstraints.IsFileExtensionAllowedByPath(stegocontainerFilePath))
+            {
+                throw new ArgumentException($"This steganography system does not allow to use as stegocontainer file with extension \"{Path.GetExtension(stegocontainerFilePath)}\".");
+            }
+        }
+
         private SecretFile ExtractSecretFile(byte[] stegoBytes, SudokuMatrix<T> sudokuKey)
         {
             int offset = 0;
@@ -336,7 +351,7 @@ namespace StegoSystem.Sudoku
                 throw new InvalidOperationException("Unable to extract secret data");
             }
         }
-        
+
         private byte[] ExtractSecretBytes(byte[] stegoBytes, SudokuMatrix<T> sudokuKey)
         {
             int offset = 0;
