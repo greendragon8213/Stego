@@ -69,7 +69,7 @@ namespace StegoSystem.Sudoku
             CheckDecryptionArguments(stegocontainerFilePath, key);
 
             var stegocontainerBitmap = OpenBitmap(stegocontainerFilePath, "stegocontainer");
-            var stegoBitmapParts = GetBitmapParts(stegocontainerBitmap, StegoConstraints.StegoContainerFileConstraints, "stegocontainer");
+            var stegoBitmapParts = GetBitmapParts(stegocontainerBitmap, ImageLockMode.ReadOnly, StegoConstraints.StegoContainerFileConstraints, "stegocontainer");
 
             var sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
 
@@ -87,7 +87,7 @@ namespace StegoSystem.Sudoku
             CheckDecryptionArguments(stegocontainerFilePath, key, restoreFilePath);
 
             var stegocontainerBitmap = OpenBitmap(stegocontainerFilePath, "stegocontainer");
-            var stegoBitmapParts = GetBitmapParts(stegocontainerBitmap, StegoConstraints.StegoContainerFileConstraints, "stegocontainer");
+            var stegoBitmapParts = GetBitmapParts(stegocontainerBitmap, ImageLockMode.ReadOnly, StegoConstraints.StegoContainerFileConstraints, "stegocontainer");
 
             var sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
 
@@ -131,13 +131,14 @@ namespace StegoSystem.Sudoku
 
         private (byte[] PayloadBytes, BitmapData Bitmap, int Depth) GetBitmapParts(
             Bitmap bitmap,
+            ImageLockMode lockMode,
             ImageFileTypeConstraints constraints,
             string bitmapName)
         {
             (byte[] PayloadBytes, BitmapData Bitmap, int Depth) bitmapParts;
             try
             {
-                bitmapParts = bitmap.GetBitmapParts(ImageLockMode.ReadOnly);
+                bitmapParts = bitmap.GetBitmapParts(lockMode);
             }
             catch (Exception e)
             {
@@ -247,7 +248,7 @@ namespace StegoSystem.Sudoku
 
         private void EmbedSecret(Bitmap containerBitmap, byte[] secretData, IKey<TKey> key)
         {
-            var containerBitmapParts = GetBitmapParts(containerBitmap, StegoConstraints.ContainerFileConstraints, "container");
+            var containerBitmapParts = GetBitmapParts(containerBitmap, ImageLockMode.ReadWrite, StegoConstraints.ContainerFileConstraints, "container");
 
             SudokuMatrix<T> sudokuKey = _sudokuMatrixFactory.Create(_sudokuStegoMethod.GetExpectedSudokuSize(), key);
 
