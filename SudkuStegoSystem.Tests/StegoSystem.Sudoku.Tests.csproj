@@ -49,10 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SudokuImageStegoSystemTests - positive.cs" />
-    <Compile Include="SudokuImageStegoSystemTests - negative.cs" />
-    <Compile Include="SudokuImageStegoSystemTests - wrong depth.cs" />
-    <Compile Include="SudokuImageStegoSystemTests - init.cs" />
+    <Compile Include="SudokuImageStegoSystem\EncryptDecryptTests.cs" />
+    <Compile Include="SudokuImageStegoSystem\DecryptTests.cs" />
+    <Compile Include="SudokuImageStegoSystem\EncryptTests.cs" />
+    <Compile Include="TestsSetUp.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestData\Containers\158x200_24.bmp">
@@ -118,6 +118,7 @@
       <Name>StegoSystem</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

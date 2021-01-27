@@ -6,22 +6,109 @@ using StegoSystem.Sudoku.Keys;
 using StegoSystem.Sudoku.Matrix;
 using StegoSystem.Sudoku.Method256;
 using StegoSystem.Sudoku.Method256.Constraints;
+using System;
 using System.IO;
 
-namespace SudkuStegoSystem.Tests
+namespace StegoSystem.Sudoku.Tests.SudokuImageStegoSystem
 {
     [TestFixture]
-    public partial class SudokuImageStegoSystemTests
+    internal class EncryptDecryptTests
     {
-        #region bmp
+        #region Wrong password
 
-        #region 24bpp
+        [Test]
+        public void GivenContainer24bppBmp_WrongDecryptionKey_ExpectedInvalidOperationExceptionThrown()
+        {
+            //Arrange
+            string outputDirPath = Path.Combine(TestsSetUp.TempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            Directory.CreateDirectory(outputDirPath);
+
+            string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
+                "158x200_24.bmp");
+
+            string secretPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
+                "lemur.jpg");
+
+            var encryptionKey = new PasswordKey("stO73b");
+            var decryptionKey = new PasswordKey("stO73c");
+
+            IStegoSystem<string, ImageStegoConstraints> stegoSystem =
+                new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
+                new Method256ImageStegoConstraints());
+
+            string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, encryptionKey, outputDirPath);
+
+            //Act & Assert
+            Assert.Throws(Is.TypeOf<InvalidOperationException>()
+                 .And.Message.EqualTo("Unable to extract secret data. Either the password is wrong or there is no secret data at all"),
+                 () => stegoSystem.Decrypt(stegocontainerPath, decryptionKey, outputDirPath));
+        }
+
+        [Test]
+        public void GivenContainer24bppPng_WrongDecryptionKey_ExpectedInvalidOperationExceptionThrown()
+        {
+            //Arrange
+            string outputDirPath = Path.Combine(TestsSetUp.TempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            Directory.CreateDirectory(outputDirPath);
+
+            string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
+                "300x255_24.png");
+
+            string secretPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
+                "gecon.jpg");
+
+            var encryptionKey = new PasswordKey("123Pfgh");
+            var decryptionKey = new PasswordKey("123Pfg");
+
+            IStegoSystem<string, ImageStegoConstraints> stegoSystem =
+                new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
+                new Method256ImageStegoConstraints());
+
+            string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, encryptionKey, outputDirPath);
+
+            //Act & Assert
+            Assert.Throws(Is.TypeOf<InvalidOperationException>()
+                 .And.Message.EqualTo("Unable to extract secret data. Either the password is wrong or there is no secret data at all"),
+                 () => stegoSystem.Decrypt(stegocontainerPath, decryptionKey, outputDirPath));
+        }
+
+        [Test]
+        public void GivenContainer16bppPng_WrongDecryptionKey_ExpectedInvalidOperationExceptionThrown()
+        {
+            //Arrange
+            string outputDirPath = Path.Combine(TestsSetUp.TempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            Directory.CreateDirectory(outputDirPath);
+
+            string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
+                "254x256_16.png");
+
+            string secretPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Secrets",
+                "gecon.jpg");
+
+            var encryptionKey = new PasswordKey("9hwT5nnp");
+            var decryptionKey = new PasswordKey("GhEP7vgDS");
+
+            IStegoSystem<string, ImageStegoConstraints> stegoSystem =
+                new SudokuImageStegoSystem<byte, string>(new SudokuStegoMethod256(), new SudokuByPasswordMatrixFactory<byte>(),
+                new Method256ImageStegoConstraints());
+
+            string stegocontainerPath = stegoSystem.Encrypt(containerPath, secretPath, encryptionKey, outputDirPath);
+
+            //Act & Assert
+            Assert.Throws(Is.TypeOf<InvalidOperationException>()
+                 .And.Message.EqualTo("Unable to extract secret data. Either the password is wrong or there is no secret data at all"),
+                 () => stegoSystem.Decrypt(stegocontainerPath, decryptionKey, outputDirPath));
+        }
+
+        #endregion
+
+        #region High capacity
 
         [Test]
         public void Given_ContainerWithPaddingBytesAnd24bppBmp_UsedCapacityIsHigh_ExpectedDecryptedEqualsInitialSecret()
         {
             //Arrange
-            string outputDirPath = Path.Combine(_tempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            string outputDirPath = Path.Combine(TestsSetUp.TempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
             Directory.CreateDirectory(outputDirPath);
 
             string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
@@ -49,7 +136,7 @@ namespace SudkuStegoSystem.Tests
         public void Given_ContainerNoPaddingBytesAnd24bppBmp_UsedCapacityIsHigh_ExpectedDecryptedEqualsInitialSecret()
         {
             //Arrange
-            string outputDirPath = Path.Combine(_tempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            string outputDirPath = Path.Combine(TestsSetUp.TempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
             Directory.CreateDirectory(outputDirPath);
 
             string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
@@ -75,13 +162,11 @@ namespace SudkuStegoSystem.Tests
 
         #endregion
 
-        #region 32bpp
-
         [Test]
         public void Given_ContainerNoPaddingBytesAnd32bppBmp_UsedCapacityIsLow_ExpectedDecryptedEqualsInitialSecret()
         {
             //Arrange
-            string outputDirPath = Path.Combine(_tempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            string outputDirPath = Path.Combine(TestsSetUp.TempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
             Directory.CreateDirectory(outputDirPath);
 
             string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
@@ -105,19 +190,11 @@ namespace SudkuStegoSystem.Tests
             FileAssert.AreEqual(secretPath, restoredSecretPath);
         }
 
-        #endregion
-
-        #endregion
-
-        #region jpg
-
-        #region 24bpp
-
         [Test]
         public void Given_ContainerLandscape24bppJpg_UsedCapacityIsLow_ExpectedDecryptedEqualsInitialSecret()
         {
             //Arrange
-            string outputDirPath = Path.Combine(_tempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            string outputDirPath = Path.Combine(TestsSetUp.TempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
             Directory.CreateDirectory(outputDirPath);
 
             string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
@@ -145,7 +222,7 @@ namespace SudkuStegoSystem.Tests
         public void Given_ContainerPortrait24bppJpg_UsedCapacityIsLow_ExpectedDecryptedEqualsInitialSecret()
         {
             //Arrange
-            string outputDirPath = Path.Combine(_tempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            string outputDirPath = Path.Combine(TestsSetUp.TempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
             Directory.CreateDirectory(outputDirPath);
 
             string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
@@ -169,19 +246,11 @@ namespace SudkuStegoSystem.Tests
             FileAssert.AreEqual(secretPath, restoredSecretPath);
         }
 
-        #endregion
-
-        #endregion
-
-        #region png
-
-        #region 16bpp
-
         [Test]
         public void Given_Container16bppPng_UsedCapacityIsLow_ExpectedDecryptedEqualsInitialSecret()
         {
             //Arrange
-            string outputDirPath = Path.Combine(_tempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            string outputDirPath = Path.Combine(TestsSetUp.TempDirectory, System.Reflection.MethodBase.GetCurrentMethod().Name);
             Directory.CreateDirectory(outputDirPath);
 
             string containerPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Containers",
@@ -204,9 +273,5 @@ namespace SudkuStegoSystem.Tests
             //restored and initial secrets are equal
             FileAssert.AreEqual(secretPath, restoredSecretPath);
         }
-
-        #endregion
-
-        #endregion
     }
 }
