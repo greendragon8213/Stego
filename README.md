@@ -23,6 +23,8 @@
 
 ## Usage
 
+To install the application click [here](https://greendragon8213.github.io/Stego/installation/Installer/setup.exe).
+
 Application consists of two tabs: encryption (1) and decryption (2).
 
 1. **Encryption tab** - embedding secret file: <br><br>
